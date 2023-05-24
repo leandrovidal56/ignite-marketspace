@@ -8,9 +8,9 @@ import SignUp from './src/screens/SignUp';
 export default function App() {
   return (
     <NativeBaseProvider>
-      {/* <Home/> */}
+      <Home/>
       {/* <SignIn/> */}
-      <SignUp/>
+      {/* <SignUp/> */}
     </NativeBaseProvider>
   );
 }
