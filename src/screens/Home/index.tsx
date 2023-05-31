@@ -31,7 +31,7 @@ export default function Home (){
                             <Text>anúncios ativos</Text>
                         </Column>
                     </Row>
-                    <Text>Meus anúncios -></Text>
+                    <Text>Meus anúncios</Text>
                 </Row>
                     <Text mt={8}>Compre produtos variados</Text>
                     <Input 
