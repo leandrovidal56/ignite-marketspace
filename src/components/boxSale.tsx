@@ -9,7 +9,7 @@ type Props = IButtonProps &{
 
 export function BoxSale({title, type, price, status = 'active', ...rest}: Props){
     return (
-        <Box width={153} height={143}>
+        <Box width={153} height={143} mb={6}>
             <Box background={'blue.400'} width={153} height={100}>
                 <Row justifyContent={'space-between'} padding={1}>
                     <Avatar size={8} />
