@@ -6,15 +6,17 @@ import SignIn from './src/screens/SignIn';
 import SignUp from './src/screens/SignUp';
 import Details from './src/screens/Details';
 import Adverts from './src/screens/Adverts';
+import { Routes } from './src/routes';
 
 export default function App() {
   return (
     <NativeBaseProvider>
-      {/* <Home/> */}
-      {/* <Details /> */}
-      <Adverts />
       {/* <SignIn/> */}
       {/* <SignUp/> */}
+      {/* <Home/> */}
+      {/* <Details /> */}
+      {/* <Adverts /> */}
+      <Routes/>
     </NativeBaseProvider>
   );
 }

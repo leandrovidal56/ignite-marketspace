@@ -4,7 +4,15 @@ import LogoSvg from '@assets/LogoSmall.svg'
 import Profile  from '@assets/Profile.svg'
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
+import { useNavigation } from '@react-navigation/native';
+
 export default function SignUp (){
+    const navigation = useNavigation();
+    
+    function handleGoToLogin(){
+        navigation.goBack()
+    }
+
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false} >
             <VStack flex={1}  color="#EDECEE" mb={10} px={10}>
@@ -47,6 +55,7 @@ export default function SignUp (){
                             title='Ir para o login'
                             mt={4}
                             variant='outline'
+                            onPress={handleGoToLogin}
                         />
                     </Center>
             </VStack>

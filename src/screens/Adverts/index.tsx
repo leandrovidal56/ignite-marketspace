@@ -36,7 +36,7 @@ export default function Adverts (){
                     type='usado'
                 />
             </Row>
-
+             
         </VStack>
     );
 }
