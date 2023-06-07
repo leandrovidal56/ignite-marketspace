@@ -1,10 +1,14 @@
-import { Center, Heading, Text, VStack, ScrollView, Avatar, Row, Column, SimpleGrid} from 'native-base';
+import { Center, Heading, Text, VStack, ScrollView, Avatar, Row, Column, SimpleGrid, IconButton} from 'native-base';
 
 import LogoSvg from '@assets/Logo.svg'
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { BoxSale } from '../../components/boxSale';
+import { useNavigation } from '@react-navigation/native';
 export default function Home (){
+    
+    
+
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false} padding={6}>
             <Center mt={16} justifyContent={'space-between'} height={42} flexDirection={'row'}>

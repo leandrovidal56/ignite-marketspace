@@ -3,7 +3,16 @@ import { Center, Heading, Text, VStack, ScrollView} from 'native-base';
 import LogoSvg from '@assets/Logo.svg'
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
+import { useNavigation } from '@react-navigation/native';
+import { AuthNavigatorRoutesProps } from '../../routes/auth.routes';
 export default function SignIn (){
+
+    const navigation = useNavigation<AuthNavigatorRoutesProps>();
+
+    function handleNewAccount(){
+        navigation.navigate('signUp')
+    }
+
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false} >
             <VStack flex={1}  color="#f7f7f8">
@@ -38,6 +47,7 @@ export default function SignIn (){
                             title='Criar uma conta'
                             mt={4}
                             variant='outline'
+                            onPress={handleNewAccount}
                         />
                     </Center>
                 </VStack>
