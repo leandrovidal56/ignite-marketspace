@@ -5,11 +5,12 @@ import { Button } from '../../components/button';
 import { BoxSale } from '../../components/boxSale';
 import { IconComponent } from '../../components/icon';
 import { Header } from '../../components/Header';
-export default function Details (){
+export default function DetailsMyAdverts (){
     return (
         <VStack justifyContent={'center'} paddingTop={12}>
             <Header 
                 back
+                showIconRight
             />
         <ScrollView>
             <Center>
@@ -65,17 +66,16 @@ export default function Details (){
                 </Column>
             </VStack>
             <VStack padding={6}>
-                <Row justifyContent={'space-between'} alignItems={'center'}>
-                    <Text fontSize={24} color={"#364d9d"} fontWeight={'bold'}>
-                        <Text fontSize={12}>R$</Text>
-                        120,00
-                    </Text>
                     <Button 
-                        title='Entrar em Contato'
-                        width={169}
+                        title='Reativar anúncio'
                         height={42}
                     />
-                </Row>
+                    <Button 
+                        title='Excluir anúncio'
+                        height={42}
+                        variant={'outline'}
+                        mt={2}
+                    />
             </VStack>
             </ScrollView>
         </VStack>
