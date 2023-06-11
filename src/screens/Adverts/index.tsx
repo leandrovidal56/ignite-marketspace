@@ -1,18 +1,17 @@
-import { Center, Heading, Text, VStack, ScrollView, Avatar, Row, Column, SimpleGrid, Box, Icon, List, Select} from 'native-base';
+import { Text, VStack, Row, Select} from 'native-base';
 
 import { BoxSale } from '../../components/boxSale';
-import { IconComponent } from '../../components/icon';
 import { useState } from 'react';
+import { Header } from '../../components/Header';
 export default function Adverts (){
     const [ select, setSelect] = useState('')
     return (
         <VStack flex={1} mt={9} padding={6}> 
             <Row alignItems={'center'} mb={10} justifyContent={'center'}>
-                <Text width={64} textAlign={'center'} bgColor={'red.500'} fontSize={20} fontWeight={700}>Meus anúncios</Text>
-                <IconComponent
-                    name="plus"
-                    size={5}
-                    color="#1A181B"
+                <Header
+                    title="Meus anúncios"
+                    showIconRight
+                    iconName='plus'
                 />
             </Row>
             <Row justifyContent={'space-between'} mb={5}>

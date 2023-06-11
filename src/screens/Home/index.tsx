@@ -1,12 +1,81 @@
-import { Center, Heading, Text, VStack, ScrollView, Avatar, Row, Column, Divider} from 'native-base';
+import { Center, Heading, Text, Modal, VStack, Checkbox, ScrollView, Avatar, Row, Column, Divider, Switch, Box} from 'native-base';
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { BoxSale } from '../../components/boxSale';
 import { IconComponent } from '../../components/icon';
+import { Modalize } from 'react-native-modalize'
+import { useRef, useState } from 'react';
+// import { Modal } from '../../components/modal';
 
 export default function Home (){
+
+    function openModal(){
+        <Modal />
+    }
+    const [showModal, setShowModal] = useState(false);
+
     return (
+            // <Modal/>
         <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false} padding={6} background={'#EDECEE'}>
+        <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+            <Modal.Content width="400px" bottom={3} marginTop={'auto'}>
+            <Modal.CloseButton />
+            <Modal.Header>Filtrar anúncios</Modal.Header>
+            <Modal.Body>
+            <Text fontSize={14} fontWeight={"bold"}>Condição</Text>
+                <Row>
+                    <Box width={76} height={28} borderRadius={20} bgColor={'gray.300'} mt={3} mb={6} mr={2} alignItems={'center'} justifyContent={'center'}>
+                        <Text fontSize={10} >NOVO</Text>
+                    </Box>
+                    <Box width={76} height={28} borderRadius={20} bgColor={'gray.300'} mt={3} mb={6} mr={2} alignItems={'center'} justifyContent={'center'}>
+                        <Text fontSize={10} >USADO</Text>
+                    </Box>
+                </Row>
+                <Text fontSize={14} fontWeight={"bold"}>Aceita troca ?</Text>
+                <Switch size="md" mt={3} mb={6} />
+                <Text fontSize={14} fontWeight={"bold"}>Meios de pagamento aceitos</Text>
+                <Checkbox mt={3}
+                    value="boleto"
+                    >
+                    Boleto
+                </Checkbox>
+                <Checkbox mt={3}
+                    value="pix"
+                    >
+                    Pix
+                </Checkbox>
+                <Checkbox mt={3}
+                    value="dinheiro"
+                    >
+                    Dinheiro
+                </Checkbox>
+                <Checkbox mt={3}
+                    value="cartao de credito"
+                    >
+                    Cartão de Crédito
+                </Checkbox>
+                <Checkbox mt={3}
+                    value="deposito bancario"
+                    >
+                    Depósito Bancário
+                </Checkbox>
+            </Modal.Body>
+            <Modal.Footer justifyContent={'space-between'}>
+                    <Button 
+                        title="Resetar filtros"
+                        backgroundColor={'#D9D8DA'}
+                        width={157}
+                        variant={'outline'}
+                    />
+                    <Button 
+                        title="Aplicar filtros"
+                        backgroundColor={'#1A181B'}
+                        width={157}
+                    />
+            </Modal.Footer>
+            </Modal.Content>
+        </Modal>
+
             <Center mt={16} justifyContent={'space-between'} height={42} flexDirection={'row'}>
                 <Row alignItems={'center'}>
                     <Avatar/>
@@ -64,6 +133,7 @@ export default function Home (){
                                     color="#1E1E1E"
                                     ml={3}
                                     mr={3}
+                                    onPress={() => setShowModal(true)}
                                 />
                                 
                             </Row>
