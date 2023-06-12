@@ -1,11 +1,11 @@
-import { Center, Heading, Text, VStack, ScrollView, Avatar, Row, Column,  Image, SimpleGrid, Box, Icon} from 'native-base';
-
-import { Input } from '../../components/input';
+import { Center, Text, VStack, ScrollView, Avatar, Row, Column,  Image, Box} from 'native-base';
+import {  MaterialCommunityIcons  } from '@expo/vector-icons'
 import { Button } from '../../components/button';
-import { BoxSale } from '../../components/boxSale';
 import { IconComponent } from '../../components/icon';
 import { Header } from '../../components/Header';
+
 export default function Details (){
+    
     return (
         <VStack justifyContent={'center'} paddingTop={12}>
             <Header 
@@ -51,7 +51,7 @@ export default function Details (){
                         <Text>Pix</Text>
                     </Row>
                     <Row>
-                        <IconComponent name='money' size={5} mr={2} />
+                        <IconComponent name='cash' familyIcon={MaterialCommunityIcons} size={5} mr={2} />
                         <Text>Dinheiro</Text>
                     </Row>
                     <Row>

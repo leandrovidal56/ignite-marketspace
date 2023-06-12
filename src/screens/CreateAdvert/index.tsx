@@ -1,20 +1,28 @@
-import { Checkbox, Heading, Radio, Row, ScrollView, Switch, Text, VStack } from "native-base";
+import { Checkbox, Radio, Row, ScrollView, Switch, Text, VStack } from "native-base";
 import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
 import { Input } from "../../components/input";
 import React from "react";
 import { Button } from "../../components/button";
+import { useNavigation } from "@react-navigation/native";
+import { AppNavigatorRoutesProps } from "../../routes/app.routes";
 
 export default function CreateAdvert (){
     const [value, setValue] = React.useState("one");
+
+    const navigation = useNavigation<AppNavigatorRoutesProps>()
+
+    function handlePreviewAdverts(){
+        navigation.navigate('preview');
+    }
     return (
-        <ScrollView background={'#F7F7F8'} >
-            <SafeAreaView   >
+        <SafeAreaView style={{ backgroundColor : '#EDECEE'}} >
+                <Header
+                    back
+                    title="Criar anúncio"
+                />
+                <ScrollView  >
                 <VStack paddingBottom={7} paddingX={6} background={'#EDECEE'} >
-                    <Header
-                        back
-                        title="Criar anúncio"
-                    />
                     <Text fontSize={14} fontWeight={"bold"}>Imagens</Text>
                     <Text mt={2}>Escolha até 3 imagens para mostrar o quanto o seu produto é incrível</Text>
                     <Text fontSize={14} fontWeight={"bold"}>Sobre o produto</Text>
@@ -70,6 +78,7 @@ export default function CreateAdvert (){
                 </VStack>
                 <Row height={90} justifyContent={'space-between'}  mt={6}   paddingX={6}
                 alignItems={'center'}
+                background={'#F7F7F8'}
                 
                 >
                     <Button 
@@ -82,10 +91,11 @@ export default function CreateAdvert (){
                         title="Avançar"
                         backgroundColor={'#1A181B'}
                         width={157}
+                        onPress={handlePreviewAdverts}
                     />
                 </Row>
-            </SafeAreaView>
         </ScrollView>
+            </SafeAreaView>
     )
 
 }

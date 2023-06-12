@@ -1,18 +1,28 @@
-import { Center, Heading, Text, VStack, ScrollView, Avatar, Row, Column,  Image, SimpleGrid, Box, Icon} from 'native-base';
+import { Center, Text, VStack, ScrollView, Avatar, Row, Column,  Image, Box} from 'native-base';
+import {  MaterialCommunityIcons  } from '@expo/vector-icons'
 
-import { Input } from '../../components/input';
 import { Button } from '../../components/button';
-import { BoxSale } from '../../components/boxSale';
 import { IconComponent } from '../../components/icon';
 import { Header } from '../../components/Header';
+import { useNavigation } from '@react-navigation/native';
+import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 export default function DetailsMyAdverts (){
+
+    const navigation = useNavigation<AppNavigatorRoutesProps>()
+    
+    function handleEditMyAdvert(){
+        console.log('testando')
+        navigation.navigate('editAdverts')
+    }
+
     return (
         <VStack justifyContent={'center'} paddingTop={12}>
             <Header 
                 back
                 showIconRight
+                navigationIconRight={handleEditMyAdvert}
             />
-        <ScrollView>
+        <ScrollView marginBottom={10}>
             <Center>
             <Image 
                 source={{
@@ -23,7 +33,7 @@ export default function DetailsMyAdverts (){
                 alt='foto'
             />
             </Center>
-            <VStack padding={6} bgColor={"#EDECEE"}>
+            <VStack padding={6} bgColor={"#EDECEE"} >
 
                 <Row alignItems={'center'} >
                     <Avatar size={6} mr={2}/>
@@ -36,30 +46,30 @@ export default function DetailsMyAdverts (){
                     <Text fontSize={20} fontWeight={'semibold'}>Bicicleta</Text>
                     <Text color={"#647ac7"}  fontWeight={'bold'} fontSize={20} >R$ 120,00</Text>
                 </Row>
-                <Text fontWeight={'normal'} fontSize={14} lineHeight={18.2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis voluptas accusantium, delectus eius fugit enim, debitis dolor cumque eveniet consequatur soluta distinctio maxime libero. Nobis asperiores doloremque saepe eius velit.</Text>
+                <Text color={'#3E3A40'} fontWeight={'normal'} fontSize={14} lineHeight={18.2} mt={2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis voluptas accusantium, delectus eius fugit enim, debitis dolor cumque eveniet consequatur soluta distinctio maxime libero. Nobis asperiores doloremque saepe eius velit.</Text>
                 <Row mt={6}>
                     <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Aceitar troca?</Text>
                     <Text ml={2}>Sim</Text>
                 </Row>
                 <Column>
-                    <Text>Meios de pagamento:</Text>
+                    <Text fontSize={14} lineHeight={18} fontWeight={'bold'} mt={4}>Meios de pagamento:</Text>
                     <Row mt={2}>
                         <IconComponent name='barcode' size={5} mr={2} />
                         <Text>Boleto</Text>
                     </Row>
-                    <Row>
+                    <Row mt={1}>
                     <IconComponent name='qrcode' size={5} mr={2} />
                         <Text>Pix</Text>
                     </Row>
-                    <Row>
-                        <IconComponent name='money' size={5} mr={2} />
+                    <Row mt={1}>
+                        <IconComponent name='cash' familyIcon={MaterialCommunityIcons} size={5} mr={2} />
                         <Text>Dinheiro</Text>
                     </Row>
-                    <Row>
+                    <Row mt={1}>
                         <IconComponent name='creditcard' size={5} mr={2} />       
                         <Text>Cartão de Crédito</Text>
                     </Row>
-                    <Row>   
+                    <Row mt={1}>   
                         <IconComponent name='bank' size={5} mr={2} />
                         <Text>Depósito Bancário</Text>
                     </Row>

@@ -3,15 +3,26 @@ import { Text, VStack, Row, Select} from 'native-base';
 import { BoxSale } from '../../components/boxSale';
 import { useState } from 'react';
 import { Header } from '../../components/Header';
+import { useNavigation } from '@react-navigation/native';
+import { AppNavigatorRoutesProps } from '../../routes/app.routes';
+import { BottomNavigation } from '../../components/bottomNavigation';
 export default function Adverts (){
     const [ select, setSelect] = useState('')
+    const navigation = useNavigation<AppNavigatorRoutesProps>()
+
+    function handleDetailsMyAdvert(){
+        navigation.navigate('detailsMyAdverts')
+    }
+    
     return (
+        <>
+        
         <VStack flex={1} mt={9} padding={6}> 
             <Row alignItems={'center'} mb={10} justifyContent={'center'}>
                 <Header
                     title="Meus anúncios"
                     showIconRight
-                    iconName='plus'
+                    iconLeftName='plus'
                 />
             </Row>
             <Row justifyContent={'space-between'} mb={5}>
@@ -38,6 +49,7 @@ export default function Adverts (){
                     type='novo'
                     imageAdress='https://wallpaperaccess.com/thumb/246323.jpg'
                     altImage='cidade'
+                    onPress={handleDetailsMyAdvert}
                 />
                 <BoxSale 
                     price={80}
@@ -45,6 +57,7 @@ export default function Adverts (){
                     type='novo'
                     imageAdress='https://wallpaperaccess.com/thumb/216323.jpg'
                     altImage='cidade'
+                    onPress={handleDetailsMyAdvert}
                 />
             </Row>
             <Row justifyContent={'space-between'}>
@@ -54,6 +67,7 @@ export default function Adverts (){
                     type='usado'
                     imageAdress='https://wallpaperaccess.com/thumb/296323.jpg'
                     altImage='cidade'
+                    onPress={handleDetailsMyAdvert}
                 />
                 <BoxSale 
                     price={80}
@@ -61,9 +75,11 @@ export default function Adverts (){
                     type='usado'
                     imageAdress='https://wallpaperaccess.com/thumb/246321.jpg'
                     altImage='cidade'
+                    onPress={handleDetailsMyAdvert}
                 />
             </Row>
-             
         </VStack>
+        <BottomNavigation/>
+        </>
     );
 }

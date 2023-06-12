@@ -1,13 +1,10 @@
-import {   Box, Center,  Checkbox,  Row, Switch, Text, VStack, View  } from "native-base"
+import { Box, Checkbox,  Row, Switch, Text, VStack, View  } from "native-base"
 import { IconComponent } from "../icon";
-import { useNavigation } from "@react-navigation/native";
 import { useRef } from "react";
 import { Modalize } from "react-native-modalize";
-import { Header } from "../Header";
 import { Button } from "../button";
 
 type Props =  {
-    // onOpen: () => void
 }
 
 export function Modal({   }: Props){
