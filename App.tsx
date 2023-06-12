@@ -11,11 +11,6 @@ import { Routes } from './src/routes';
 export default function App() {
   return (
     <NativeBaseProvider>
-      {/* <SignIn/> */}
-      {/* <SignUp/> */}
-      {/* <Home/> */}
-      {/* <Details /> */}
-      {/* <Adverts /> */}
       <Routes/>
     </NativeBaseProvider>
   );

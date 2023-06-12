@@ -1,12 +1,14 @@
-import { Checkbox, Heading, Radio, Row, ScrollView, Switch, Text, TextArea, VStack } from "native-base";
+import React from "react";
+import { Checkbox, Radio, Row, ScrollView, Switch, Text, TextArea, VStack } from "native-base";
 import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
 import { Input } from "../../components/input";
-import React from "react";
 import { Button } from "../../components/button";
 
 export default function EditAdvert (){
+    
     const [value, setValue] = React.useState("one");
+
     return (
         <ScrollView background={'#F7F7F8'} >
             <SafeAreaView   >
@@ -17,7 +19,7 @@ export default function EditAdvert (){
                     />
                     <Text fontSize={14} fontWeight={"bold"}>Imagens</Text>
                     <Text mt={2}>Escolha até 3 imagens para mostrar o quanto o seu produto é incrível</Text>
-                    <Text fontSize={14} fontWeight={"bold"}>Sobre o produto</Text>
+                    <Text fontSize={14} fontWeight={"bold"} mt={8}>Sobre o produto</Text>
                     <Input placeholder="Título do anúncio"/>
                     <TextArea borderRadius={8} borderColor={'#F7F7F8'} bgColor={'#F7F7F8'} h={40} mt={4} w="100%" placeholder="Descrição do produto" autoCompleteType={'none'} />
                 
@@ -77,16 +79,19 @@ export default function EditAdvert (){
                         title="Cancelar"
                         backgroundColor={'#D9D8DA'}
                         width={157}
+                        height={42}
                         variant={'outline'}
+                        borderRadius={6}
                     />
                     <Button 
                         title="Avançar"
                         backgroundColor={'#1A181B'}
                         width={157}
+                        height={42}
+                        borderRadius={6}
                     />
                 </Row>
             </SafeAreaView>
         </ScrollView>
     )
-
 }

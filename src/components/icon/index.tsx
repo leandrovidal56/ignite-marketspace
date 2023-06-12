@@ -9,12 +9,13 @@ type Props = IIconProps & {
     ml?: number
     mt?: number
     mb?: number
+    familyIcon?: Object 
 }
 
-export function IconComponent({name, color, size, mr, ml, mt, mb, ...rest}: Props){
+export function IconComponent({name, color, size, mr, ml, mt, mb, familyIcon, ...rest}: Props){
     return (
         <Icon 
-            as={AntDesign}
+            as={familyIcon ?? AntDesign}
             name={name}
             color={color}
             size={size}

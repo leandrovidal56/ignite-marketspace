@@ -3,19 +3,38 @@ import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { BoxSale } from '../../components/boxSale';
 import { IconComponent } from '../../components/icon';
-import { Modalize } from 'react-native-modalize'
-import { useRef, useState } from 'react';
-// import { Modal } from '../../components/modal';
+import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { AppNavigatorRoutesProps } from '../../routes/app.routes';
+import { BottomNavigation } from '../../components/bottomNavigation';
+import { SafeAreaView } from 'react-native';
 
 export default function Home (){
+
+    const navigation = useNavigation<AppNavigatorRoutesProps>()
+    
+    function handleNewAdvert(){
+        navigation.navigate('createAdverts')
+    }
+
+    function handleGoMyAdvert(){
+        navigation.navigate('adverts')
+    }
+
+    function handleDetails(){
+        navigation.navigate('details')
+    }
 
     function openModal(){
         <Modal />
     }
+    
     const [showModal, setShowModal] = useState(false);
 
     return (
-            // <Modal/>
+    <SafeAreaView>
+
+    
         <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false} padding={6} background={'#EDECEE'}>
         <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
             <Modal.Content width="400px" bottom={3} marginTop={'auto'}>
@@ -66,6 +85,7 @@ export default function Home (){
                         backgroundColor={'#D9D8DA'}
                         width={157}
                         variant={'outline'}
+                        onPress={() => setShowModal(false)}
                     />
                     <Button 
                         title="Aplicar filtros"
@@ -76,7 +96,7 @@ export default function Home (){
             </Modal.Content>
         </Modal>
 
-            <Center mt={16} justifyContent={'space-between'} height={42} flexDirection={'row'}>
+            <Center justifyContent={'space-between'} height={42} flexDirection={'row'}>
                 <Row alignItems={'center'}>
                     <Avatar/>
                     <Column ml={4}>
@@ -88,12 +108,13 @@ export default function Home (){
                     background={'black'}
                     title='Criar anúncio'
                     width={139}
-                    iconName='plus'
+                    iconLeftName='plus'
                     iconColor='#F7F7F8'
+                    onPress={handleNewAdvert}
                 />
             </Center>
             <VStack mt={8}>
-                <Text>Seus produtos anunciados para venda</Text>
+                <Text color={'#5F5B62'}>Seus produtos anunciados para venda</Text>
                 <Row mt={4} alignItems={'center'} justifyContent={'space-between'} padding={4} background={'blue.100'}>
                     <Row  alignItems={'center'}>
                         <IconComponent
@@ -106,15 +127,17 @@ export default function Home (){
                             <Text>anúncios ativos</Text>
                         </Column>
                     </Row>
-                    <Row alignItems={'center'}>
-                        <Text>Meus anúncios</Text>
-                        <IconComponent
-                            name="arrowright"
-                            size={4}
-                            color="#364D9D"
-                            ml={2}
-                        />
-                    </Row>
+                    <Button 
+                        title='Meus anúncios'
+                        width={111}
+                        backgroundColor={'none'}
+                        iconRightName='arrowright'
+                        textColor='#364D9D'
+                        iconColor='#364D9D'
+                        mr={5}
+                        onPress={handleGoMyAdvert}
+                    
+                    />
                 </Row>
                     <Text mt={8}>Compre produtos variados</Text>
                     <Input 
@@ -147,22 +170,25 @@ export default function Home (){
                             price={59.90}
                             imageAdress='https://wallpaperaccess.com/full/317501.jpg'
                             altImage='oceano'
+                            onPress={handleDetails}
                         />
                         <BoxSale
-                            type='usado'
+                            type='novo'
                             title='Tênis vermelho'
                             price={59.90}
                             imageAdress='https://wallpaperaccess.com/thumb/833259.jpg'
                             altImage='cidade'
+                            onPress={handleDetails}
                         />
                     </Row>
                     <Row justifyContent={'space-between'} mt={6}>
                         <BoxSale
-                            type='usado'
+                            type='novo'
                             title='Tênis vermelho'
                             price={59.90}
                             imageAdress='https://wallpaperaccess.com/thumb/254828.jpg'
                             altImage='cidade'
+                            onPress={handleDetails}
                         />
                         <BoxSale
                             type='usado'
@@ -170,6 +196,7 @@ export default function Home (){
                             price={59.90}
                             imageAdress='https://wallpaperaccess.com/thumb/447855.jpg'
                             altImage='cidade'
+                            onPress={handleDetails}
                         />
                     </Row>
                     <Row justifyContent={'space-between'} mt={6}>
@@ -179,6 +206,7 @@ export default function Home (){
                             price={59.90}
                             imageAdress='https://wallpaperaccess.com/thumb/246623.jpg'
                             altImage='cidade'
+                            onPress={handleDetails}
                         />
                         <BoxSale
                             type='usado'
@@ -186,10 +214,13 @@ export default function Home (){
                             price={59.90}
                             imageAdress='https://wallpaperaccess.com/thumb/246323.jpg'
                             altImage='cidade'
+                            onPress={handleDetails}
                         />
                     </Row>
             </VStack>
-
         </ScrollView>
+        <BottomNavigation/>
+    </SafeAreaView>
+
     );
 }

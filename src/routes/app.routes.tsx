@@ -1,4 +1,5 @@
 import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from "../screens/Home";
 import Details from "../screens/Details";
 import Adverts from "../screens/Adverts";
@@ -15,43 +16,84 @@ type AppRoutes ={
     editAdverts: undefined;
     detailsMyAdverts: undefined;
     preview: undefined;
+    logout: undefined;
 }
 
 export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>
 
 const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>();
 
+const Stack = createNativeStackNavigator();
+
 export function AppRoutes(){
     return (
-        <Navigator screenOptions={{ headerShown: false}}>
-            <Screen
+        <Stack.Navigator
+            screenOptions={{ headerShown: false }}
+        >
+            <Stack.Screen 
                 name="home"
                 component={Home}
             />
-            <Screen
+
+            <Stack.Screen
                 name="details"
                 component={Details}
             />
-            <Screen
+
+            <Stack.Screen
                 name="adverts"
                 component={Adverts}
             />
-            <Screen
+
+            <Stack.Screen
                 name="createAdverts"
                 component={CreateAdvert}
             />
-            <Screen
+            
+            <Stack.Screen
                 name="editAdverts"
                 component={EditAdvert}
             />
-            <Screen
+
+            <Stack.Screen
                 name="detailsMyAdverts"
                 component={DetailsMyAdverts}
             />
-            <Screen
+
+            <Stack.Screen
                 name="preview"
                 component={Preview}
             />
-        </Navigator>
+
+        </Stack.Navigator>
     )
+    //     <Navigator screenOptions={{ headerShown: false}}>
+    //         <Screen
+    //             name="home"
+    //             component={Home}
+    //             // options={{    
+    //             //     tabBarShowLabel: false,
+    //             //     tabBarIcon: () => (
+    //             //         <IconComponent name="home" familyIcon={MaterialIcons} size={7} />
+    //             //     )
+    //             // }}
+    //             options={{
+    //                 tabBarButton: () => null
+    //             }}
+    //         />
+    
+    //         <Screen
+    //             name="adverts"
+    //             component={Adverts}
+    //             options={{
+    //                 tabBarButton: () => null
+    //             }}
+    //             // options={{    
+    //             //     tabBarShowLabel: false,
+    //             //     tabBarIcon: () => (
+    //             //         <IconComponent name="tag" size={7} />
+    //             //     )
+    //             // }}
+    //         />
+    
 }

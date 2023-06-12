@@ -1,11 +1,19 @@
-import { Center, Heading, Text, VStack, ScrollView, Avatar, Row, Column,  Image, SimpleGrid, Box, Icon} from 'native-base';
-
-import { Input } from '../../components/input';
+import { Center, Text, VStack, ScrollView, Avatar, Row, Column, Image, Box} from 'native-base';
 import { Button } from '../../components/button';
-import { BoxSale } from '../../components/boxSale';
 import { IconComponent } from '../../components/icon';
 import { Header } from '../../components/Header';
+import { useNavigation } from '@react-navigation/native';
+import { AppNavigatorRoutesProps } from '../../routes/app.routes';
+import {  MaterialCommunityIcons  } from '@expo/vector-icons'
+
 export default function Preview (){
+    
+    const navigation = useNavigation<AppNavigatorRoutesProps>()
+
+    function handleFinished(){
+        navigation.navigate('adverts');
+    }
+
     return (
         <VStack justifyContent={'center'} paddingTop={12}>
             <Header 
@@ -51,7 +59,7 @@ export default function Preview (){
                         <Text>Pix</Text>
                     </Row>
                     <Row>
-                        <IconComponent name='money' size={5} mr={2} />
+                        <IconComponent name='cash' familyIcon={MaterialCommunityIcons} size={5} mr={2} />
                         <Text>Dinheiro</Text>
                     </Row>
                     <Row>
@@ -76,6 +84,7 @@ export default function Preview (){
                         title='Publicar'
                         width={157}
                         height={42}
+                        onPress={handleFinished}
                     />
                 </Row>
             </VStack>

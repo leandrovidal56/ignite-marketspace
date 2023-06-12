@@ -4,11 +4,14 @@ import {  AntDesign  } from '@expo/vector-icons'
 type Props = IButtonProps &{
     title: string;
     variant?: 'solid' | 'outline';
-    iconName?: string;
+    iconLeftName?: string;
+    iconRightName?: string;
     iconColor?: string;
+    textColor?: string;
+    textSize?: number;
 }
 
-export function Button({title, iconName, iconColor, variant = 'solid', ...rest}: Props){
+export function Button({title, iconLeftName, iconRightName, iconColor, variant = 'solid', textColor = '#F7F7F8', textSize = 14, ...rest}: Props){
     return (
         <ButtonNativeBase 
             w="full"
@@ -21,23 +24,33 @@ export function Button({title, iconName, iconColor, variant = 'solid', ...rest}:
             {...rest}
         >
             <Row alignItems={'center'} justifyContent={'space-between'}>
-                {iconName
+                {iconLeftName
                 ?
                 <Icon
                     as={AntDesign}
-                    name={iconName}
+                    name={iconLeftName}
                     color={iconColor}
                     size={4}
                     mr={2}
                 />
                 : ''}
                 <Text
-                    color={variant === 'outline' ? '#3E3A40' :"#F7F7F8"}
+                    color={variant === 'outline' ? '#3E3A40' :textColor}
                     fontFamily="heading"
-                    fontSize="sm"
+                    fontSize={textSize}
                 >
                     {title}
                 </Text>
+                {iconRightName
+                ?
+                <Icon
+                    as={AntDesign}
+                    name={iconRightName}
+                    color={iconColor}
+                    size={4}
+                    ml={2}
+                />
+                : ''}
             </Row>
         </ButtonNativeBase>
 
