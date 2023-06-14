@@ -14,6 +14,9 @@ export default function Preview (){
     function handleFinished(){
         navigation.navigate('adverts');
     }
+    function handleGoBack(){
+        navigation.goBack();
+    }
 
     return (
         <SafeAreaView style={{ backgroundColor:"#647AC7"}}>
@@ -30,83 +33,87 @@ export default function Preview (){
                 É assim que seu produto vai aparecer</Text>
 
             </Box>
-        <VStack justifyContent={'center'} bgColor={'#EDECEE'}>
-        <ScrollView>
-            <Center>
-            <Image 
-                source={{
-                    uri: 'https://wallpaperaccess.com/full/317501.jpg'
-                }}
-                width={390} 
-                height={280}
-                alt='foto'
-            />
-            </Center>
-            <VStack padding={6} bgColor={"#EDECEE"}>
+        <ScrollView >
+            <VStack justifyContent={'center'} bgColor={'#EDECEE'} >
+                <Center>
+                <Image 
+                    source={{
+                        uri: 'https://wallpaperaccess.com/full/317501.jpg'
+                    }}
+                    width={390} 
+                    height={280}
+                    alt='foto'
+                />
+                </Center>
+                <VStack 
+                paddingX={6}
+                paddingTop={6}
+                bgColor={"#EDECEE"}
+                paddingBottom={'20'}
+                >
+                    <Row alignItems={'center'} >
+                        <Avatar size={6} mr={2}/>
+                        <Text>Markenna Baptista</Text>
+                    </Row>
+                    <Box width={43} height={17} borderRadius={20} bgColor={'gray.300'} mt={6} alignItems={'center'} justifyContent={'center'}>
+                        <Text fontSize={10} >NOVO</Text>
+                    </Box>
+                    <Row justifyContent={'space-between'} mt={2}>
+                        <Text fontSize={20} fontWeight={'semibold'}>Bicicleta</Text>
+                        <Text color={"#647ac7"}  fontWeight={'bold'} fontSize={20} >R$ 120,00</Text>
+                    </Row>
+                    <Text mt={2} fontWeight={'normal'} fontSize={14} lineHeight={18.2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis voluptas accusantium, delectus eius fugit enim, debitis dolor cumque eveniet consequatur soluta distinctio maxime libero. Nobis asperiores doloremque saepe eius velit.</Text>
+                    <Row mt={6}>
+                        <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Aceitar troca?</Text>
+                        <Text ml={2}>Sim</Text>
+                    </Row>
+                    <Column>
+                        <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Meios de pagamento:</Text>
+                        <Row mt={1}>
+                            <IconComponent name='barcode' size={5} mr={2} />
+                            <Text>Boleto</Text>
+                        </Row>
+                        <Row mt={1}>
+                        <IconComponent name='qrcode' size={5} mr={2} />
+                            <Text>Pix</Text>
+                        </Row>
+                        <Row mt={1}>
+                            <IconComponent name='cash' familyIcon={MaterialCommunityIcons} size={5} mr={2} />
+                            <Text>Dinheiro</Text>
+                        </Row>
+                        <Row mt={1}>
+                            <IconComponent name='creditcard' size={5} mr={2} />       
+                            <Text>Cartão de Crédito</Text>
+                        </Row>
+                        <Row mt={1}>   
+                            <IconComponent name='bank' size={5} mr={2} />
+                            <Text>Depósito Bancário</Text>
+                        </Row>
+                    </Column>
 
-                <Row alignItems={'center'} >
-                    <Avatar size={6} mr={2}/>
-                    <Text>Markenna Baptista</Text>
-                </Row>
-                <Box width={43} height={17} borderRadius={20} bgColor={'gray.300'} mt={6} alignItems={'center'} justifyContent={'center'}>
-                    <Text fontSize={10} >NOVO</Text>
-                </Box>
-                <Row justifyContent={'space-between'} mt={2}>
-                    <Text fontSize={20} fontWeight={'semibold'}>Bicicleta</Text>
-                    <Text color={"#647ac7"}  fontWeight={'bold'} fontSize={20} >R$ 120,00</Text>
-                </Row>
-                <Text mt={2} fontWeight={'normal'} fontSize={14} lineHeight={18.2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis voluptas accusantium, delectus eius fugit enim, debitis dolor cumque eveniet consequatur soluta distinctio maxime libero. Nobis asperiores doloremque saepe eius velit.</Text>
-                <Row mt={6}>
-                    <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Aceitar troca?</Text>
-                    <Text ml={2}>Sim</Text>
-                </Row>
-                <Column>
-                    <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Meios de pagamento:</Text>
-                    <Row mt={1}>
-                        <IconComponent name='barcode' size={5} mr={2} />
-                        <Text>Boleto</Text>
+                    <Row mt={6} justifyContent={'space-between'} alignItems={'center'}>
+                        <Button 
+                            iconLeftName='arrowleft'
+                            iconColor='#3E3A40'
+                            textColor='#3E3A40'
+                            title='Voltar e editar'
+                            width={157}
+                            height={42}
+                            variant={'outline'}
+                            onPress={handleGoBack}
+                        />
+                        <Button 
+                            iconLeftName='tag'
+                            iconColor='white'
+                            title='Publicar'
+                            width={157}
+                            height={42}
+                            onPress={handleFinished}
+                        />
                     </Row>
-                    <Row mt={1}>
-                    <IconComponent name='qrcode' size={5} mr={2} />
-                        <Text>Pix</Text>
-                    </Row>
-                    <Row mt={1}>
-                        <IconComponent name='cash' familyIcon={MaterialCommunityIcons} size={5} mr={2} />
-                        <Text>Dinheiro</Text>
-                    </Row>
-                    <Row mt={1}>
-                        <IconComponent name='creditcard' size={5} mr={2} />       
-                        <Text>Cartão de Crédito</Text>
-                    </Row>
-                    <Row mt={1}>   
-                        <IconComponent name='bank' size={5} mr={2} />
-                        <Text>Depósito Bancário</Text>
-                    </Row>
-                </Column>
+                </VStack>
             </VStack>
-            <VStack padding={6}>
-                <Row justifyContent={'space-between'} alignItems={'center'}>
-                    <Button 
-                        iconLeftName='arrowleft'
-                        iconColor='#3E3A40'
-                        textColor='#3E3A40'
-                        title='Voltar e editar'
-                        width={157}
-                        height={42}
-                        variant={'outline'}
-                    />
-                    <Button 
-                        iconLeftName='tag'
-                        iconColor='white'
-                        title='Publicar'
-                        width={157}
-                        height={42}
-                        onPress={handleFinished}
-                    />
-                </Row>
-            </VStack>
-            </ScrollView>
-        </VStack>
+        </ScrollView>
     </SafeAreaView>
     );
 }

@@ -1,5 +1,4 @@
 import { Text, VStack, Row, Select} from 'native-base';
-
 import { BoxSale } from '../../components/boxSale';
 import { useState } from 'react';
 import { Header } from '../../components/Header';

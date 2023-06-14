@@ -30,6 +30,18 @@ export default function Home (){
     }
     
     const [showModal, setShowModal] = useState(false);
+    const [change, setChange] = useState(false);
+    const [type, setType] = useState('');
+
+    function handleSelectType(value: string){
+        console.log(value);
+        setType(value)
+    }
+    
+    function teste (value: string){
+        return  type.includes(value)
+    }
+
 
     return (
     <SafeAreaView style={{ backgroundColor: '#EDECEE'}}>
@@ -42,16 +54,38 @@ export default function Home (){
             <Modal.Header>Filtrar anúncios</Modal.Header>
             <Modal.Body>
             <Text fontSize={14} fontWeight={"bold"}>Condição</Text>
-                <Row>
-                    <Box width={76} height={28} borderRadius={20} bgColor={'gray.300'} mt={3} mb={6} mr={2} alignItems={'center'} justifyContent={'center'}>
-                        <Text fontSize={10} >NOVO</Text>
-                    </Box>
-                    <Box width={76} height={28} borderRadius={20} bgColor={'gray.300'} mt={3} mb={6} mr={2} alignItems={'center'} justifyContent={'center'}>
-                        <Text fontSize={10} >USADO</Text>
-                    </Box>
+                <Row mt={3}>
+                    <Button 
+                        title='Novo'
+                        width={76}
+                        height={28}
+                        padding={0}
+                        fontSize={10}
+                        fontWeight={'bold'}
+                        background={teste('Novo') ? '#647AC7' : 'gray.300'}
+                        borderRadius={20}
+                        mr={2}
+                        onPress={() => handleSelectType('Novo')}
+                        iconRightName={teste('Novo') ? 'close' : ''} 
+                        iconColor='white'
+                    />
+                    <Button 
+                        title='Usado'
+                        width={76}
+                        height={28}
+                        padding={0}
+                        fontSize={10}
+                        fontWeight={'bold'}
+                        background={'gray.300'}
+                        borderRadius={20}
+                        mr={2}
+                        onPress={() => handleSelectType('Usado')}
+                        isPressed={true}
+                    />
+                    
                 </Row>
-                <Text fontSize={14} fontWeight={"bold"}>Aceita troca ?</Text>
-                <Switch size="md" mt={3} mb={6} />
+                <Text fontSize={14} fontWeight={"bold"} mt={6}>Aceita troca ?</Text>
+                <Switch size="md" mt={3} mb={6} value={!setChange} />
                 <Text fontSize={14} fontWeight={"bold"}>Meios de pagamento aceitos</Text>
                 <Checkbox mt={3}
                     value="boleto"
@@ -114,7 +148,7 @@ export default function Home (){
                     onPress={handleNewAdvert}
                 />
             </Center>
-            <VStack mt={8}>
+            <VStack mt={8} mb={16}>
                 <Text color={'#5F5B62'}>Seus produtos anunciados para venda</Text>
                 <Row mt={4} alignItems={'center'} justifyContent={'space-between'} padding={4} background={"#647AC71A"}>
                     <Row  alignItems={'center'}>

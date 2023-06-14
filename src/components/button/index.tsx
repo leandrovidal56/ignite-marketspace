@@ -14,6 +14,7 @@ type Props = IButtonProps &{
 }
 
 export function Button({title, iconLeftName, iconRightName, iconColor, variant = 'solid', iconFamily, textColor = '#F7F7F8', textSize = 14,textWeight, ...rest}: Props){
+
     return (
         <ButtonNativeBase 
             w="full"
@@ -25,6 +26,7 @@ export function Button({title, iconLeftName, iconRightName, iconColor, variant =
             }}
             {...rest}
         >
+         
             <Row alignItems={'center'} justifyContent={'space-between'}>
                 {iconLeftName
                 ?

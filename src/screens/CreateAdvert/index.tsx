@@ -1,4 +1,4 @@
-import { Checkbox, Radio, Row, ScrollView, Switch, Text, VStack } from "native-base";
+import { Checkbox, Radio, Row, ScrollView, Switch, Text, TextArea, VStack } from "native-base";
 import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
 import { Input } from "../../components/input";
@@ -27,7 +27,7 @@ export default function CreateAdvert (){
                     <Text mt={2}>Escolha até 3 imagens para mostrar o quanto o seu produto é incrível</Text>
                     <Text fontSize={14} fontWeight={"bold"}>Sobre o produto</Text>
                     <Input placeholder="Título do anúncio"/>
-                    <Input placeholder="Descrição do produto"/>
+                    <TextArea borderRadius={8} borderColor={'#F7F7F8'} bgColor={'#F7F7F8'} h={40} mt={4} w="100%" placeholder="Descrição do produto" autoCompleteType={'none'} />
                         <Radio.Group 
                             name="myRadioGroup" 
                             accessibilityLabel="favorite number" 
