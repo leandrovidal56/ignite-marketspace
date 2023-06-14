@@ -7,11 +7,13 @@ type Props = IButtonProps &{
     iconLeftName?: string;
     iconRightName?: string;
     iconColor?: string;
+    iconFamily?: object;
     textColor?: string;
     textSize?: number;
+    textWeight?: string;
 }
 
-export function Button({title, iconLeftName, iconRightName, iconColor, variant = 'solid', textColor = '#F7F7F8', textSize = 14, ...rest}: Props){
+export function Button({title, iconLeftName, iconRightName, iconColor, variant = 'solid', iconFamily, textColor = '#F7F7F8', textSize = 14,textWeight, ...rest}: Props){
     return (
         <ButtonNativeBase 
             w="full"
@@ -27,7 +29,7 @@ export function Button({title, iconLeftName, iconRightName, iconColor, variant =
                 {iconLeftName
                 ?
                 <Icon
-                    as={AntDesign}
+                    as={iconFamily ? iconFamily : AntDesign}
                     name={iconLeftName}
                     color={iconColor}
                     size={4}
@@ -38,6 +40,7 @@ export function Button({title, iconLeftName, iconRightName, iconColor, variant =
                     color={variant === 'outline' ? '#3E3A40' :textColor}
                     fontFamily="heading"
                     fontSize={textSize}
+                    fontWeight={textWeight}
                 >
                     {title}
                 </Text>

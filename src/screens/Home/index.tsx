@@ -32,10 +32,10 @@ export default function Home (){
     const [showModal, setShowModal] = useState(false);
 
     return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: '#EDECEE'}}>
 
     
-        <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false} padding={6} background={'#EDECEE'}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false} padding={6} >
         <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
             <Modal.Content width="400px" bottom={3} marginTop={'auto'}>
             <Modal.CloseButton />
@@ -109,22 +109,23 @@ export default function Home (){
                     title='Criar anúncio'
                     width={139}
                     iconLeftName='plus'
+                    textWeight={'bold'}
                     iconColor='#F7F7F8'
                     onPress={handleNewAdvert}
                 />
             </Center>
             <VStack mt={8}>
                 <Text color={'#5F5B62'}>Seus produtos anunciados para venda</Text>
-                <Row mt={4} alignItems={'center'} justifyContent={'space-between'} padding={4} background={'blue.100'}>
+                <Row mt={4} alignItems={'center'} justifyContent={'space-between'} padding={4} background={"#647AC71A"}>
                     <Row  alignItems={'center'}>
                         <IconComponent
                             name="tag"
                             size={5}
-                            color="#364D9D"
+                            color="#364D9D"                            
                         />
                         <Column ml={4}>
-                            <Heading>4</Heading>
-                            <Text>anúncios ativos</Text>
+                            <Heading color="#3E3A40">4</Heading>
+                            <Text color="#3E3A40">anúncios ativos</Text>
                         </Column>
                     </Row>
                     <Button 

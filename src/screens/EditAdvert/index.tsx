@@ -10,9 +10,9 @@ export default function EditAdvert (){
     const [value, setValue] = React.useState("one");
 
     return (
-        <ScrollView background={'#F7F7F8'} >
+        <ScrollView background={'#EDECEE'} >
             <SafeAreaView   >
-                <VStack paddingBottom={7} paddingX={6} background={'#EDECEE'} >
+                <VStack paddingBottom={7} paddingX={6} >
                     <Header
                         back
                         title="Editar anúncio"
@@ -28,14 +28,15 @@ export default function EditAdvert (){
                             accessibilityLabel="favorite number" 
                             value={value} 
                             
+                            
                             onChange={nextValue => {
                                 setValue(nextValue);
                             }}>
                             <Row mt={4}>
-                                <Radio value="Produto usado">
+                                <Radio value="Produto usado" colorScheme="blue" >
                                     Produto usado
                                 </Radio>
-                                <Radio value="Produto novo" ml={6}>
+                                <Radio value="Produto novo" colorScheme="blue" ml={6}>
                                     Produto novo
                                 </Radio>
                             </Row>

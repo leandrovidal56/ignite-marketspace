@@ -13,6 +13,9 @@ export default function Adverts (){
     function handleDetailsMyAdvert(){
         navigation.navigate('detailsMyAdverts')
     }
+    function handleCreateAdvert(){
+        navigation.navigate('createAdverts')
+    }
     
     return (
         <>
@@ -23,10 +26,11 @@ export default function Adverts (){
                     title="Meus anúncios"
                     showIconRight
                     iconLeftName='plus'
+                    navigationIconRight={handleCreateAdvert}
                 />
             </Row>
             <Row justifyContent={'space-between'} mb={5}>
-                <Text>9 anúncios</Text>
+                <Text color="#3E3A40">9 anúncios</Text>
                 <Select 
                     selectedValue={select} 
                     minWidth="111" 
@@ -50,6 +54,7 @@ export default function Adverts (){
                     imageAdress='https://wallpaperaccess.com/thumb/246323.jpg'
                     altImage='cidade'
                     onPress={handleDetailsMyAdvert}
+                    hideProfilePicture={true}
                 />
                 <BoxSale 
                     price={80}
@@ -58,6 +63,7 @@ export default function Adverts (){
                     imageAdress='https://wallpaperaccess.com/thumb/216323.jpg'
                     altImage='cidade'
                     onPress={handleDetailsMyAdvert}
+                    hideProfilePicture={true}
                 />
             </Row>
             <Row justifyContent={'space-between'}>
@@ -68,6 +74,7 @@ export default function Adverts (){
                     imageAdress='https://wallpaperaccess.com/thumb/296323.jpg'
                     altImage='cidade'
                     onPress={handleDetailsMyAdvert}
+                    hideProfilePicture={true}
                 />
                 <BoxSale 
                     price={80}
@@ -76,6 +83,7 @@ export default function Adverts (){
                     imageAdress='https://wallpaperaccess.com/thumb/246321.jpg'
                     altImage='cidade'
                     onPress={handleDetailsMyAdvert}
+                    hideProfilePicture={true}
                 />
             </Row>
         </VStack>
