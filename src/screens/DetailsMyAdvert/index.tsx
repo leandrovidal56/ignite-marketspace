@@ -1,5 +1,5 @@
 import { Center, Text, VStack, ScrollView, Avatar, Row, Column,  Image, Box} from 'native-base';
-import {  MaterialCommunityIcons  } from '@expo/vector-icons'
+import {  MaterialCommunityIcons, FontAwesome  } from '@expo/vector-icons'
 
 import { Button } from '../../components/button';
 import { IconComponent } from '../../components/icon';
@@ -77,11 +77,15 @@ export default function DetailsMyAdverts (){
             </VStack>
             <VStack padding={6}>
                     <Button 
+                        iconLeftName='poweroff' 
+                        iconColor='white'
                         title='Reativar anúncio'
                         height={42}
                     />
                     <Button 
+                        iconLeftName='trash'
                         title='Excluir anúncio'
+                        iconFamily={FontAwesome}
                         height={42}
                         variant={'outline'}
                         mt={2}

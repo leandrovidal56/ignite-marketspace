@@ -37,10 +37,10 @@ export default function CreateAdvert (){
                                 setValue(nextValue);
                             }}>
                             <Row mt={4}>
-                                <Radio value="Produto usado">
+                                <Radio value="Produto usado" colorScheme="blue">
                                     Produto usado
                                 </Radio>
-                                <Radio value="Produto novo" ml={6}>
+                                <Radio value="Produto novo" colorScheme="blue" ml={6}>
                                     Produto novo
                                 </Radio>
                             </Row>
@@ -76,7 +76,7 @@ export default function CreateAdvert (){
                         Depósito Bancário
                     </Checkbox>
                 </VStack>
-                <Row height={90} justifyContent={'space-between'}  mt={6}   paddingX={6}
+                <Row height={90} justifyContent={'space-between'} paddingBottom={7}  mt={6}   paddingX={6}
                 alignItems={'center'}
                 background={'#F7F7F8'}
                 

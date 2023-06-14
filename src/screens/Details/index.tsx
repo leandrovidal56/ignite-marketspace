@@ -3,11 +3,12 @@ import {  MaterialCommunityIcons  } from '@expo/vector-icons'
 import { Button } from '../../components/button';
 import { IconComponent } from '../../components/icon';
 import { Header } from '../../components/Header';
+import { SafeAreaView } from 'react-native';
 
 export default function Details (){
     
     return (
-        <VStack justifyContent={'center'} paddingTop={12}>
+        <SafeAreaView>
             <Header 
                 back
             />
@@ -35,42 +36,44 @@ export default function Details (){
                     <Text fontSize={20} fontWeight={'semibold'}>Bicicleta</Text>
                     <Text color={"#647ac7"}  fontWeight={'bold'} fontSize={20} >R$ 120,00</Text>
                 </Row>
-                <Text fontWeight={'normal'} fontSize={14} lineHeight={18.2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis voluptas accusantium, delectus eius fugit enim, debitis dolor cumque eveniet consequatur soluta distinctio maxime libero. Nobis asperiores doloremque saepe eius velit.</Text>
+                <Text mt={2} fontWeight={'400'} fontSize={14} lineHeight={18.2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis voluptas accusantium, delectus eius fugit enim, debitis dolor cumque eveniet consequatur soluta distinctio maxime libero. Nobis asperiores doloremque saepe eius velit.</Text>
                 <Row mt={6}>
                     <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Aceitar troca?</Text>
                     <Text ml={2}>Sim</Text>
                 </Row>
                 <Column>
                     <Text>Meios de pagamento:</Text>
-                    <Row mt={2}>
+                    <Row mt={1}>
                         <IconComponent name='barcode' size={5} mr={2} />
                         <Text>Boleto</Text>
                     </Row>
-                    <Row>
+                    <Row mt={1}>
                     <IconComponent name='qrcode' size={5} mr={2} />
                         <Text>Pix</Text>
                     </Row>
-                    <Row>
+                    <Row mt={1}>
                         <IconComponent name='cash' familyIcon={MaterialCommunityIcons} size={5} mr={2} />
                         <Text>Dinheiro</Text>
                     </Row>
-                    <Row>
+                    <Row mt={1}>
                         <IconComponent name='creditcard' size={5} mr={2} />       
                         <Text>Cartão de Crédito</Text>
                     </Row>
-                    <Row>   
+                    <Row mt={1}>   
                         <IconComponent name='bank' size={5} mr={2} />
                         <Text>Depósito Bancário</Text>
                     </Row>
                 </Column>
             </VStack>
-            <VStack padding={6}>
+            <VStack padding={6} marginBottom={4} >
                 <Row justifyContent={'space-between'} alignItems={'center'}>
                     <Text fontSize={24} color={"#364d9d"} fontWeight={'bold'}>
                         <Text fontSize={12}>R$</Text>
                         120,00
                     </Text>
                     <Button 
+                        iconLeftName={'phone'}
+                        iconColor='white'
                         title='Entrar em Contato'
                         width={169}
                         height={42}
@@ -78,6 +81,6 @@ export default function Details (){
                 </Row>
             </VStack>
             </ScrollView>
-        </VStack>
+        </SafeAreaView>
     );
 }
