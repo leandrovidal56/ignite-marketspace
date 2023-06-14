@@ -3,9 +3,11 @@ import {  MaterialCommunityIcons  } from '@expo/vector-icons'
 import { Button } from '../../components/button';
 import { IconComponent } from '../../components/icon';
 import { Header } from '../../components/Header';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
+import Carousel from 'react-native-reanimated-carousel';
 
 export default function Details (){
+    const testando = [1, 2, 3, 4, 5, 6, 7, 8]
     
     return (
         <SafeAreaView>
@@ -22,6 +24,19 @@ export default function Details (){
                 height={280}
                 alt='foto'
             />
+
+            {/* <Carousel
+                width={390}
+                data={testando}
+                renderItem={({ index }) => (
+                    <Text>
+                        {index}
+                    </Text>
+
+                )}
+                />
+                 */}
+        
             </Center>
             <VStack padding={6} bgColor={"#EDECEE"}>
 
