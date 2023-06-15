@@ -1,18 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import Home from './src/screens/Home';
 import { NativeBaseProvider } from 'native-base';
-import SignIn from './src/screens/SignIn';
-import SignUp from './src/screens/SignUp';
-import Details from './src/screens/Details';
-import Adverts from './src/screens/Adverts';
 import { Routes } from './src/routes';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 export default function App() {
   return (
-    <NativeBaseProvider>
-      <Routes/>
-    </NativeBaseProvider>
+    <GestureHandlerRootView style={{ flex: 1}}>
+      <NativeBaseProvider>
+        <Routes/>
+      </NativeBaseProvider>
+    </GestureHandlerRootView>
   );
 }
 

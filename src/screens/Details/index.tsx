@@ -7,7 +7,8 @@ import { SafeAreaView, View } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 
 export default function Details (){
-    const testando = [1, 2, 3, 4, 5, 6, 7, 8]
+    const testando = [1, 2, 3]
+    const testando1 = ['https://wallpaperaccess.com/full/317501.jpg', 'https://wallpaperaccess.com/full/317502.jpg', 'https://wallpaperaccess.com/full/317503.jpg']
     
     return (
         <SafeAreaView>
@@ -16,27 +17,19 @@ export default function Details (){
             />
         <ScrollView>
             <Center>
-            <Image 
-                source={{
-                    uri: 'https://wallpaperaccess.com/full/317501.jpg'
-                }}
-                width={390} 
-                height={280}
-                alt='foto'
-            />
-
-            {/* <Carousel
-                width={390}
-                data={testando}
-                renderItem={({ index }) => (
-                    <Text>
-                        {index}
-                    </Text>
-
-                )}
+                <Carousel
+                    width={390}
+                    height={280}
+                    data={testando1}
+                    renderItem={({ index }) => (
+                        <Image 
+                            source={{ uri: `${testando1[index]}`}}
+                            width={390} 
+                            height={280}
+                            alt='foto'
+                        /> 
+                    )}
                 />
-                 */}
-        
             </Center>
             <VStack padding={6} bgColor={"#EDECEE"}>
 
