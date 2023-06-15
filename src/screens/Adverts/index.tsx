@@ -54,6 +54,7 @@ export default function Adverts (){
                     altImage='cidade'
                     onPress={handleDetailsMyAdvert}
                     hideProfilePicture={true}
+                    status='disable'
                 />
                 <BoxSale 
                     price={80}
@@ -63,6 +64,7 @@ export default function Adverts (){
                     altImage='cidade'
                     onPress={handleDetailsMyAdvert}
                     hideProfilePicture={true}
+                    status="active"
                 />
             </Row>
             <Row justifyContent={'space-between'}>
