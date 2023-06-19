@@ -1,20 +1,41 @@
-import { Checkbox, Radio, Row, ScrollView, Switch, Text, TextArea, VStack } from "native-base";
+import { Box, Checkbox, Icon, Button, Radio, Row, ScrollView, Switch, Text, TextArea, VStack } from "native-base";
 import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
 import { Input } from "../../components/input";
-import React from "react";
-import { Button } from "../../components/button";
+import React, { useState } from "react";
+// import { Button } from "../../components/button";
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "../../routes/app.routes";
+import { IconComponent } from "../../components/icon";
+import * as ImagePicker from 'expo-image-picker';
 
 export default function CreateAdvert (){
     const [value, setValue] = React.useState("one");
+    const [image, setImage] = useState(['']);
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
 
     function handlePreviewAdverts(){
         navigation.navigate('preview');
     }
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+    
+        console.log(result);
+
+        if(!result.canceled){
+            setImage(result.assets[0].uri)
+        }
+
+      };
+      console.log(image)
+
     return (
         <SafeAreaView style={{ backgroundColor : '#EDECEE'}} >
                 <Header
@@ -25,6 +46,14 @@ export default function CreateAdvert (){
                 <VStack paddingBottom={7} paddingX={6} background={'#EDECEE'} >
                     <Text fontSize={14} fontWeight={"bold"}>Imagens</Text>
                     <Text mt={2}>Escolha até 3 imagens para mostrar o quanto o seu produto é incrível</Text>
+                    <Button 
+                        onPress={pickImage} 
+                        mt={3} mb={5} width={100} height={100} background={'#D9D8DA'} 
+                        alignItems={'center'} 
+                        justifyContent={'center'} 
+                        borderRadius={6}
+                        startIcon={<IconComponent name="plus" size={5} />}
+                    />
                     <Text fontSize={14} fontWeight={"bold"}>Sobre o produto</Text>
                     <Input placeholder="Título do anúncio"/>
                     <TextArea borderRadius={8} borderColor={'#F7F7F8'} bgColor={'#F7F7F8'} h={40} mt={4} w="100%" placeholder="Descrição do produto" autoCompleteType={'none'} />

@@ -26,7 +26,11 @@ export default function Home (){
     }
 
     function openModal(){
-        <Modal />
+        setShowModal(true)
+    }
+
+    function closeModal(){
+        setShowModal(false)
     }
     
     const [showModal, setShowModal] = useState(false);
@@ -34,7 +38,6 @@ export default function Home (){
     const [type, setType] = useState('');
 
     function handleSelectType(value: string){
-        console.log(value);
         setType(value)
     }
     
@@ -44,14 +47,31 @@ export default function Home (){
 
 
     return (
-    <SafeAreaView style={{ backgroundColor: '#EDECEE'}}>
-
-    
-        <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false} padding={6} >
-        <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+    <SafeAreaView style={{ backgroundColor: '#EDECEE'}} >
+        <VStack padding={2} mb={8} alignItems={'center'}>
+         <Center justifyContent={'space-between'} height={42} width={350} flexDirection={'row'}> 
+                <Row alignItems={'center'}>
+                    <Avatar/>
+                    <Column ml={4}>
+                        <Text>Boas Vindas,</Text>
+                        <Heading>Maria!</Heading>
+                    </Column>
+                </Row>
+                <Button
+                    background={'black'}
+                    title='Criar anúncio'
+                    width={139}
+                    iconLeftName='plus'
+                    textWeight={'bold'}
+                    iconColor='#F7F7F8'
+                    onPress={handleNewAdvert}
+                />
+            </Center>
+        <ScrollView width={350}  showsVerticalScrollIndicator={false}  >
+        <Modal isOpen={showModal} onClose={closeModal}>
             <Modal.Content width="400px" bottom={3} marginTop={'auto'}>
             <Modal.CloseButton />
-            <Modal.Header>Filtrar anúncios</Modal.Header>
+            <Text padding={4} fontSize={14} fontWeight={"bold"}>Filtrar anúncios</Text>
             <Modal.Body>
             <Text fontSize={14} fontWeight={"bold"}>Condição</Text>
                 <Row mt={3}>
@@ -113,41 +133,23 @@ export default function Home (){
                     Depósito Bancário
                 </Checkbox>
             </Modal.Body>
-            <Modal.Footer justifyContent={'space-between'}>
+                <Row width={'full'} justifyContent={'space-between'} padding={4}>
                     <Button 
                         title="Resetar filtros"
                         backgroundColor={'#D9D8DA'}
                         width={157}
                         variant={'outline'}
-                        onPress={() => setShowModal(false)}
+                        onPress={closeModal}
                     />
                     <Button 
                         title="Aplicar filtros"
                         backgroundColor={'#1A181B'}
                         width={157}
+                        onPress={closeModal}
                     />
-            </Modal.Footer>
+                </Row>
             </Modal.Content>
         </Modal>
-
-            <Center justifyContent={'space-between'} height={42} flexDirection={'row'}>
-                <Row alignItems={'center'}>
-                    <Avatar/>
-                    <Column ml={4}>
-                        <Text>Boas Vindas,</Text>
-                        <Heading>Maria!</Heading>
-                    </Column>
-                </Row>
-                <Button
-                    background={'black'}
-                    title='Criar anúncio'
-                    width={139}
-                    iconLeftName='plus'
-                    textWeight={'bold'}
-                    iconColor='#F7F7F8'
-                    onPress={handleNewAdvert}
-                />
-            </Center>
             <VStack mt={8} mb={16}>
                 <Text color={'#5F5B62'}>Seus produtos anunciados para venda</Text>
                 <Row mt={4} alignItems={'center'} justifyContent={'space-between'} padding={4} background={"#647AC71A"}>
@@ -191,7 +193,7 @@ export default function Home (){
                                     color="#1E1E1E"
                                     ml={3}
                                     mr={3}
-                                    onPress={() => setShowModal(true)}
+                                    onPress={openModal}
                                 />
                                 
                             </Row>
@@ -255,6 +257,7 @@ export default function Home (){
             </VStack>
         </ScrollView>
         <BottomNavigation/>
+        </VStack>
     </SafeAreaView>
 
     );

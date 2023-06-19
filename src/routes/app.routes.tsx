@@ -7,6 +7,8 @@ import CreateAdvert from "../screens/CreateAdvert";
 import EditAdvert from "../screens/EditAdvert";
 import DetailsMyAdverts from "../screens/DetailsMyAdvert";
 import Preview from "../screens/Preview";
+import SignIn from "../screens/SignIn";
+import SignUp from "../screens/SignUp";
 
 type AppRoutes ={ 
     home: undefined;
@@ -17,6 +19,8 @@ type AppRoutes ={
     detailsMyAdverts: undefined;
     preview: undefined;
     logout: undefined;
+    signIn: undefined;
+    signUp: undefined;
 }
 
 export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>
@@ -30,6 +34,15 @@ export function AppRoutes(){
         <Stack.Navigator
             screenOptions={{ headerShown: false }}
         >
+             <Stack.Screen
+                name="signIn"
+                component={SignIn}
+            />
+            <Stack.Screen
+                name="signUp"
+                component={SignUp}
+            />
+         
             <Stack.Screen 
                 name="home"
                 component={Home}
@@ -67,33 +80,5 @@ export function AppRoutes(){
 
         </Stack.Navigator>
     )
-    //     <Navigator screenOptions={{ headerShown: false}}>
-    //         <Screen
-    //             name="home"
-    //             component={Home}
-    //             // options={{    
-    //             //     tabBarShowLabel: false,
-    //             //     tabBarIcon: () => (
-    //             //         <IconComponent name="home" familyIcon={MaterialIcons} size={7} />
-    //             //     )
-    //             // }}
-    //             options={{
-    //                 tabBarButton: () => null
-    //             }}
-    //         />
-    
-    //         <Screen
-    //             name="adverts"
-    //             component={Adverts}
-    //             options={{
-    //                 tabBarButton: () => null
-    //             }}
-    //             // options={{    
-    //             //     tabBarShowLabel: false,
-    //             //     tabBarIcon: () => (
-    //             //         <IconComponent name="tag" size={7} />
-    //             //     )
-    //             // }}
-    //         />
     
 }
