@@ -5,12 +5,17 @@ import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigatorRoutesProps } from '../../routes/auth.routes';
+import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 export default function SignIn (){
 
-    const navigation = useNavigation<AuthNavigatorRoutesProps>();
+    const navigation = useNavigation<AppNavigatorRoutesProps>();
 
     function handleNewAccount(){
         navigation.navigate('signUp')
+    }
+
+    function handleLogin(){
+        navigation.navigate('home')
     }
 
     return (
@@ -37,6 +42,7 @@ export default function SignIn (){
                             title='Entrar'
                             mt={8}
                             mb={16}
+                            onPress={handleLogin}
                         />
                     </Center>
                 </VStack>

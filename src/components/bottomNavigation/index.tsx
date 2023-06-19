@@ -5,7 +5,7 @@ import { AppNavigatorRoutesProps } from "../../routes/app.routes";
 import { useNavigation } from "@react-navigation/native";
 
 export function BottomNavigation(){
-    const navigation = useNavigation<AppNavigatorRoutesProps>()
+    const navigation = useNavigation<AppNavigatorRoutesProps >()
 
     function handleGoHome(){
         navigation.navigate('home')
@@ -16,7 +16,7 @@ export function BottomNavigation(){
     }
 
     function handleLogout(){
-        console.log('logged out')
+        navigation.navigate('signIn')
     }
 
     return (
@@ -24,7 +24,7 @@ export function BottomNavigation(){
             bgColor={'#F7F7F8'} 
             height={20} 
             paddingX={12} 
-            width={'full'} 
+            width={400} 
             paddingBottom={7} 
             bottom={0} 
             position={'absolute'} 

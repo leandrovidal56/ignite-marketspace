@@ -1,4 +1,4 @@
-import { Center, Text, VStack, ScrollView, Avatar, Row, Column,  Image, Box} from 'native-base';
+import { Center, Text, VStack, ScrollView, Avatar, Row, Column,  Image, Box, Modal} from 'native-base';
 import {  MaterialCommunityIcons, FontAwesome  } from '@expo/vector-icons'
 
 import { Button } from '../../components/button';
@@ -6,32 +6,71 @@ import { IconComponent } from '../../components/icon';
 import { Header } from '../../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
+import { useState } from 'react';
 export default function DetailsMyAdverts (){
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
+
+    const [showModal, setShowModal] = useState(false);
+    const [active, setActive] = useState(true);
     
     function handleEditMyAdvert(){
-        console.log('testando')
         navigation.navigate('editAdverts')
+    }
+    
+    function openModal(){
+        setShowModal(true)
     }
 
     return (
         <VStack justifyContent={'center'} paddingTop={12}>
+            <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+             <Modal.Content width="full" bottom={3} marginTop={'auto'}>
+            <Modal.CloseButton />
+                <Modal.Body>
+                    <Text fontSize={14} fontWeight={"bold"}>Deseja excluir o anúncio</Text>
+                        <Row justifyContent={'space-between'} mt={5}>
+                            <Button 
+                                title="Não"
+                                backgroundColor={'#D9D8DA'}
+                                width={157}
+                                variant={'outline'}
+                                onPress={() => setShowModal(false)}
+                            />
+                            <Button 
+                                title="Sim"
+                                backgroundColor={'#1A181B'}
+                                width={157}
+                                onPress={() => setShowModal(false)}
+                            />
+                        </Row>
+                </Modal.Body>
+            </Modal.Content>
+        </Modal>
             <Header 
                 back
                 showIconRight
                 navigationIconRight={handleEditMyAdvert}
             />
         <ScrollView marginBottom={10}>
-            <Center>
-            <Image 
-                source={{
-                    uri: 'https://wallpaperaccess.com/full/317501.jpg'
-                }}
-                width={390} 
-                height={280}
-                alt='foto'
-            />
+            <Center 
+            background={active ? '#1A181B' : 'transparent'}
+            >
+                {active ? 
+                    <Text position={'absolute'} fontWeight={'bold'} color={'#F7F7F8'} zIndex={10}>
+                        Anúncio desativado
+                    </Text>
+                    : ''
+                }
+                <Image 
+                    source={{
+                        uri: 'https://wallpaperaccess.com/full/317501.jpg'
+                    }}
+                    width={390} 
+                    height={280}
+                    alt='foto'
+                    opacity={active ? 0.6 : 1}
+                />
             </Center>
             <VStack padding={6} bgColor={"#EDECEE"} >
 
@@ -79,8 +118,10 @@ export default function DetailsMyAdverts (){
                     <Button 
                         iconLeftName='poweroff' 
                         iconColor='white'
-                        title='Reativar anúncio'
+                        title={active? 'Reativar anúncio' : 'Desativar anúncio'}
                         height={42}
+                        background={!active? '#647AC7' : '#1A181B'}
+                        textWeight={'bold'}
                     />
                     <Button 
                         iconLeftName='trash'
@@ -89,6 +130,7 @@ export default function DetailsMyAdverts (){
                         height={42}
                         variant={'outline'}
                         mt={2}
+                        onPress={openModal}
                     />
             </VStack>
             </ScrollView>
