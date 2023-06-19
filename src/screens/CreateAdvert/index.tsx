@@ -1,9 +1,9 @@
-import { Box, Checkbox, Icon, Button, Radio, Row, ScrollView, Switch, Text, TextArea, VStack } from "native-base";
+import { Box, Checkbox, Icon,  Radio, Row, ScrollView, Switch, Text, TextArea, VStack } from "native-base";
 import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
 import { Input } from "../../components/input";
 import React, { useState } from "react";
-// import { Button } from "../../components/button";
+import { Button } from "../../components/button";
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "../../routes/app.routes";
 import { IconComponent } from "../../components/icon";

@@ -7,6 +7,7 @@ import { Header } from '../../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import { useState } from 'react';
+import { Alert } from 'react-native';
 export default function DetailsMyAdverts (){
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
@@ -20,6 +21,10 @@ export default function DetailsMyAdverts (){
     
     function openModal(){
         setShowModal(true)
+    }
+    function deleteAdvert(){
+        Alert.alert('Excluído com sucesso')
+        navigation.navigate('home')
     }
 
     return (
@@ -41,7 +46,7 @@ export default function DetailsMyAdverts (){
                                 title="Sim"
                                 backgroundColor={'#1A181B'}
                                 width={157}
-                                onPress={() => setShowModal(false)}
+                                onPress={deleteAdvert}
                             />
                         </Row>
                 </Modal.Body>
