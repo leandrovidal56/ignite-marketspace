@@ -7,7 +7,9 @@ import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import { BottomNavigation } from '../../components/bottomNavigation';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['We can not support a function callback. See Github Issues for details https://github.com/adobe/react-spectrum/issues/2320'])
 
 export default function Home (){
 
@@ -105,7 +107,7 @@ export default function Home (){
                     />
                 </Row>
                 <Text fontSize={14} fontWeight={"bold"} mt={6}>Aceita troca ?</Text>
-                <Switch size="md" mt={3} mb={6} value={!setChange} />
+                <Switch size="md" mt={3} mb={6} value={change} onChange={() => setChange(!change)}/>
                 <Text fontSize={14} fontWeight={"bold"}>Meios de pagamento aceitos</Text>
                 <Checkbox mt={3}
                     value="boleto"
