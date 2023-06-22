@@ -1,4 +1,4 @@
-import { Center, Heading, Text, Modal, VStack, Checkbox, ScrollView, Avatar, Row, Column, Divider, Switch, Box} from 'native-base';
+import { Center, Heading, Text, Modal, VStack, Checkbox, ScrollView, Avatar, Row, Column, Divider, Switch} from 'native-base';
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { BoxSale } from '../../components/boxSale';
@@ -7,11 +7,23 @@ import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import { BottomNavigation } from '../../components/bottomNavigation';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['We can not support a function callback. See Github Issues for details https://github.com/adobe/react-spectrum/issues/2320'])
 
 export default function Home (){
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
+
+    const [newProduct, setNewProduct] = useState(false)
+    const [usedProduct, setUsedProduct] = useState(false)
+
+    function clickNewProduct (){
+        setNewProduct(!newProduct)
+    }
+    function clickUsedProduct (){
+        setUsedProduct(!usedProduct)
+    }
     
     function handleNewAdvert(){
         navigation.navigate('createAdverts')
@@ -35,16 +47,6 @@ export default function Home (){
     
     const [showModal, setShowModal] = useState(false);
     const [change, setChange] = useState(false);
-    const [type, setType] = useState('');
-
-    function handleSelectType(value: string){
-        setType(value)
-    }
-    
-    function teste (value: string){
-        return  type.includes(value)
-    }
-
 
     return (
     <SafeAreaView style={{ backgroundColor: '#EDECEE'}} >
@@ -82,11 +84,11 @@ export default function Home (){
                         padding={0}
                         fontSize={10}
                         fontWeight={'bold'}
-                        background={teste('Novo') ? '#647AC7' : 'gray.300'}
+                        background={newProduct ? '#647AC7' : 'gray.300'}
                         borderRadius={20}
                         mr={2}
-                        onPress={() => handleSelectType('Novo')}
-                        iconRightName={teste('Novo') ? 'close' : ''} 
+                        onPress={clickNewProduct}
+                        iconRightName={newProduct ? 'close' : ''} 
                         iconColor='white'
                     />
                     <Button 
@@ -96,16 +98,16 @@ export default function Home (){
                         padding={0}
                         fontSize={10}
                         fontWeight={'bold'}
-                        background={'gray.300'}
+                        background={usedProduct ? '#647AC7' : 'gray.300'}
                         borderRadius={20}
                         mr={2}
-                        onPress={() => handleSelectType('Usado')}
-                        isPressed={true}
+                        onPress={clickUsedProduct}
+                        iconRightName={usedProduct ? 'close' : ''} 
+                        iconColor='white'
                     />
-                    
                 </Row>
                 <Text fontSize={14} fontWeight={"bold"} mt={6}>Aceita troca ?</Text>
-                <Switch size="md" mt={3} mb={6} value={!setChange} />
+                <Switch size="md" mt={3} mb={6} value={change} onChange={() => setChange(!change)}/>
                 <Text fontSize={14} fontWeight={"bold"}>Meios de pagamento aceitos</Text>
                 <Checkbox mt={3}
                     value="boleto"

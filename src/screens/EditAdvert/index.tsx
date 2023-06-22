@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Checkbox, Radio, Row, ScrollView, Switch, Text, TextArea, VStack } from "native-base";
 import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
@@ -6,12 +6,12 @@ import { Input } from "../../components/input";
 import { Button } from "../../components/button";
 
 export default function EditAdvert (){
-    
-    const [value, setValue] = React.useState("one");
+    const [value, setValue] = useState('Produto usado');
+    const [change, setChange] = useState(false);
 
     return (
-        <ScrollView background={'#EDECEE'} >
-            <SafeAreaView   >
+        <SafeAreaView style={{ backgroundColor: '#EDECEE'}} >
+            <ScrollView>
                 <VStack paddingBottom={7} paddingX={6} >
                     <Header
                         back
@@ -22,16 +22,13 @@ export default function EditAdvert (){
                     <Text fontSize={14} fontWeight={"bold"} mt={8}>Sobre o produto</Text>
                     <Input placeholder="Título do anúncio"/>
                     <TextArea borderRadius={8} borderColor={'#F7F7F8'} bgColor={'#F7F7F8'} h={40} mt={4} w="100%" placeholder="Descrição do produto" autoCompleteType={'none'} />
-                
                         <Radio.Group 
                             name="myRadioGroup" 
                             accessibilityLabel="favorite number" 
                             value={value} 
-                            
-                            
                             onChange={nextValue => {
                                 setValue(nextValue);
-                            }}>
+                              }}>
                             <Row mt={4}>
                                 <Radio value="Produto usado" colorScheme="blue" >
                                     Produto usado
@@ -44,7 +41,7 @@ export default function EditAdvert (){
                     <Text fontSize={14} fontWeight={"bold"} mt={8}>Venda</Text>
                     <Input placeholder="Valor do produto"/>
                     <Text fontSize={14} fontWeight={"bold"} mt={4}>Aceita troca ?</Text>
-                    <Switch size="md" mt={3} mb={6} />
+                    <Switch size="md" mt={3} mb={6} value={change} onChange={() => setChange(!change)}/>
                     <Text fontSize={14} fontWeight={"bold"}>Meios de pagamento aceitos</Text>
                     <Checkbox mt={3}
                         value="boleto"
@@ -92,7 +89,7 @@ export default function EditAdvert (){
                         borderRadius={6}
                     />
                 </Row>
-            </SafeAreaView>
-        </ScrollView>
+            </ScrollView>
+        </SafeAreaView>
     )
 }
