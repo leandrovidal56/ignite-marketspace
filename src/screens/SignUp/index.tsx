@@ -1,7 +1,6 @@
 import { Center, Heading, Text, VStack, ScrollView, useToast} from 'native-base';
 
 import LogoSvg from '@assets/LogoSmall.svg'
-import Profile  from '@assets/Profile.svg'
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { useNavigation } from '@react-navigation/native';
@@ -11,7 +10,9 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useState } from 'react';
 import { AppError } from '../../utils/AppError';
-import * as ImagePicker from 'expo-image-picker';
+import { UserPhoto } from '../../components/Profile';
+import { AppNavigatorRoutesProps } from '../../routes/app.routes';
+import { Alert } from 'react-native';
 
 type FormDataProps = {
     name: string;
@@ -22,41 +23,27 @@ type FormDataProps = {
 }
 
 const signUpSchema = yup.object({
-    name: yup.string().required('Informe o nome.'),
-    email: yup.string().required('Informe o e-mail.').email('E-mail inválido'),
-    tel: yup.string().required('Informe o telefone.'),
-    password: yup.string().required('Informe a senha.').min(6, 'A senha deve ter pelo menos 6 caracteres' ),
-    password_confirm: yup.string().required('Confirme a senha.').oneOf([yup.ref('password')], 'A confirmação da senha não confere')
+    name: yup.string().required('Informe o nome.').default(''),
+    email: yup.string().required('Informe o e-mail.').email('E-mail inválido').default(''),
+    tel: yup.string().required('Informe o telefone.').default(''),
+    password: yup.string().required('Informe a senha.').min(6, 'A senha deve ter pelo menos 6 caracteres' ).default(''),
+    password_confirm: yup.string().required('Confirme a senha.').oneOf([yup.ref('password')], 'A confirmação da senha não confere').default('')
 })
 
 export default function SignUp (){
     const [ isLoading, setIsLoading] = useState(false)
     const [avatar, setAvatar] = useState('');
-    const navigation = useNavigation();
+    const navigation = useNavigation<AppNavigatorRoutesProps>();
     const toast = useToast()
-    const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
+    const { control, handleSubmit, formState: {errors}, reset } = useForm<FormDataProps>({
         resolver: yupResolver(signUpSchema)
     });
-
-    const pickImage = async () => {
-        try{
-
-            let result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.All,
-                allowsEditing: true,
-                aspect: [4, 3],
-                quality: 0.1,
-            });
-            console.log(result);
-            if(!result.canceled){
-                await setAvatar(result.assets[0].uri)
-            }
-        } catch(err){
-            console.log(err)
-        }
-      };
     
     async function handleSignUp({ name, email, tel, password }: FormDataProps) {
+        if(!avatar){
+            return Alert.alert("Please fill image ")
+        }
+
         try{
             console.log(avatar,'avatar')
             const data = new FormData()
@@ -68,6 +55,7 @@ export default function SignUp (){
                 type: 'image/jpeg',
                 name: 'avatar'
             });
+
             data.append('password', password)
             
             const response = await api.post('/users',  data, 
@@ -75,19 +63,21 @@ export default function SignUp (){
                 headers: { "Content-Type": "multipart/form-data"}
             }
             );
-            console.log(response, 'take response create user')
+            if(response.status === 200 || 201){
+                reset()
+                navigation.navigate('home')
+            }
         }
         catch(error){
-            console.log('passou aqui55')
-        setIsLoading(false);
-          const isAppError = error instanceof AppError
-          const title = isAppError ? error.message : 'Não foi possível criar a conta. Tente novamente mais tarde.' 
+            setIsLoading(false);
+            const isAppError = error instanceof AppError
+            const title = isAppError ? error.message : 'Não foi possível criar a conta. Tente novamente mais tarde.' 
 
-          toast.show({
-            title,
-            placement: 'top',
-            bgColor: 'red.500'
-          })
+            toast.show({
+                title,
+                placement: 'top',
+                bgColor: 'red.500'
+            })
         }
     }
     
@@ -105,13 +95,9 @@ export default function SignUp (){
                         <Text color='#5F5B62' >Crie sua conta e use o espaço para comprar itens variados e vender seus produtos</Text>
                     </Center>
                     <Center mb={4}>
-                        {/* <Profile onPress={pickImage} /> */}
-                        <Controller
-                            control={control}
-                            name="avatar"
-                            render={({field: {onChange, value}}) => (
-                                <Profile onPress={pickImage} />
-                            )}
+                        <UserPhoto 
+                            setImage={setAvatar}
+                            image={avatar}
                         />
                         <Controller
                             control={control}

@@ -35,11 +35,9 @@ export default function SignIn (){
 
     async function handleLogin({ email, password}: FormDataProps){
         try{
-            console.log(email, password)
             const response = await api.post('/sessions', {email, password})
-            console.log(response.data, 'take response')
-
-            navigation.navigate('home')
+            console.log(response, 'take complete response')
+            navigation.navigate('home', {data: response.data})
         }catch(error){
             alert(error)
         }
