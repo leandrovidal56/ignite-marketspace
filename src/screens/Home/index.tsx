@@ -11,7 +11,11 @@ import { SafeAreaView, LogBox } from 'react-native';
 
 LogBox.ignoreLogs(['We can not support a function callback. See Github Issues for details https://github.com/adobe/react-spectrum/issues/2320'])
 
-export default function Home (){
+export default function Home ({ route } ){
+
+    const { data } = route.params
+    console.log(data, 'take data in new screen') 
+    console.log(data.user.name, 'take data in new screen') 
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
 
