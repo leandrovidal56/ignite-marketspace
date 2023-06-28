@@ -31,7 +31,7 @@ const signUpSchema = yup.object({
 
 export default function SignUp (){
     const [ isLoading, setIsLoading] = useState(false)
-    const [avatar, setAvatar] = useState(['']);
+    const [avatar, setAvatar] = useState('');
     const navigation = useNavigation();
     const toast = useToast()
     const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
@@ -39,22 +39,43 @@ export default function SignUp (){
     });
 
     const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
-        });
-        console.log(result);
-        if(!result.canceled){
-            await setAvatar(result.assets[0].uri)
+        try{
+
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 0.1,
+            });
+            console.log(result);
+            if(!result.canceled){
+                await setAvatar(result.assets[0].uri)
+            }
+        } catch(err){
+            console.log(err)
         }
       };
     
     async function handleSignUp({ name, email, tel, password }: FormDataProps) {
         try{
             console.log(avatar,'avatar')
-            await api.post('/users', {name, email,  tel, password, avatar });
+            const data = new FormData()
+            data.append('name', name)
+            data.append('email', email)
+            data.append('tel', tel)
+            data.append('avatar',{
+                uri: avatar,
+                type: 'image/jpeg',
+                name: 'avatar'
+            });
+            data.append('password', password)
+            
+            const response = await api.post('/users',  data, 
+            {
+                headers: { "Content-Type": "multipart/form-data"}
+            }
+            );
+            console.log(response, 'take response create user')
         }
         catch(error){
             console.log('passou aqui55')
@@ -84,7 +105,14 @@ export default function SignUp (){
                         <Text color='#5F5B62' >Crie sua conta e use o espaço para comprar itens variados e vender seus produtos</Text>
                     </Center>
                     <Center mb={4}>
-                        <Profile onPress={pickImage} />
+                        {/* <Profile onPress={pickImage} /> */}
+                        <Controller
+                            control={control}
+                            name="avatar"
+                            render={({field: {onChange, value}}) => (
+                                <Profile onPress={pickImage} />
+                            )}
+                        />
                         <Controller
                             control={control}
                             name="name"
