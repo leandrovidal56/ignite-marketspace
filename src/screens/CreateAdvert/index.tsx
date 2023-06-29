@@ -8,14 +8,45 @@ import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "../../routes/app.routes";
 import { IconComponent } from "../../components/icon";
 import * as ImagePicker from 'expo-image-picker';
+import { useForm, Controller} from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup'
+import { api } from '../../services/api';
+
+
+type FormDataProps = {
+    name: string;
+    price: string;
+}
+
+const createAdvertSchema = yup.object({
+    name: yup.string().required('Informe o título do anúncio.'),
+    price: yup.string().required('Informe o valor do produto.'),
+})
+
 
 export default function CreateAdvert (){
-    const [value, setValue] = React.useState("one");
+    const [isNew, setIsNew] = useState("one");
     const [image, setImage] = useState(['']);
+    const [description, setDescription] = useState('');
+    const [acceptTrade, setAceeptTrade] = useState(false);
+    const [paymentMethods, setPaymentMethods] = React.useState([]);
+
+    const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
+        resolver: yupResolver(createAdvertSchema)
+    });
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
 
-    function handlePreviewAdverts(){
+    function handlePreviewAdverts({ name, price} : FormDataProps){
+        // const data = new FormData()
+        // data.append('name', name)
+        // data.append('description', description)
+        // data.append('isNew', isNew)
+        // data.append('price', price)
+        // data.append('acceptTrade', acceptTrade)
+        // data.append('paymentMethods[]', JSON.stringify(paymentMethods))
+        // console.log(data)
         navigation.navigate('preview');
     }
 
@@ -55,15 +86,26 @@ export default function CreateAdvert (){
                         startIcon={<IconComponent name="plus" size={5} />}
                     />
                     <Text fontSize={14} fontWeight={"bold"}>Sobre o produto</Text>
-                    <Input placeholder="Título do anúncio"/>
-                    <TextArea borderRadius={8} borderColor={'#F7F7F8'} bgColor={'#F7F7F8'} h={40} mt={4} w="100%" placeholder="Descrição do produto" autoCompleteType={'none'} />
+                    <Controller
+                            control={control}
+                            name="name"
+                            render={({field: {onChange, value}}) => (
+                                <Input 
+                                    placeholder="Título do anúncio"
+                                    autoCapitalize='none'
+                                    onChangeText={onChange}
+                                    value={value}
+                                    errorMessage={errors.name?.message}
+                                />
+                            )}
+                    />
+                    <TextArea onChangeText={setDescription} value={description} borderRadius={8} borderColor={'#F7F7F8'} bgColor={'#F7F7F8'} h={40} mt={4} w="100%" placeholder="Descrição do produto" autoCompleteType={'none'} />
                         <Radio.Group 
                             name="myRadioGroup" 
                             accessibilityLabel="favorite number" 
-                            value={value} 
-                            
+                            value={isNew} 
                             onChange={nextValue => {
-                                setValue(nextValue);
+                                setIsNew(nextValue);
                             }}>
                             <Row mt={4}>
                                 <Radio value="Produto usado" colorScheme="blue">
@@ -75,35 +117,48 @@ export default function CreateAdvert (){
                             </Row>
                         </Radio.Group>
                     <Text fontSize={14} fontWeight={"bold"} mt={8}>Venda</Text>
-                    <Input placeholder="Valor do produto"/>
+                    <Controller
+                            control={control}
+                            name="price"
+                            render={({field: {onChange, value}}) => (
+                                <Input 
+                                    placeholder="Valor do produto"
+                                    onChangeText={onChange}
+                                    value={value}
+                                    errorMessage={errors.price?.message}
+                                />
+                            )}
+                    />
                     <Text fontSize={14} fontWeight={"bold"} mt={4}>Aceita troca ?</Text>
-                    <Switch size="md" mt={3} mb={6} />
+                    <Switch size="md" mt={3} mb={6} value={acceptTrade} onValueChange={setAceeptTrade}  />
                     <Text fontSize={14} fontWeight={"bold"}>Meios de pagamento aceitos</Text>
-                    <Checkbox mt={3}
-                        value="boleto"
-                        >
-                        Boleto
-                    </Checkbox>
-                    <Checkbox mt={3}
-                        value="pix"
-                        >
-                        Pix
-                    </Checkbox>
-                    <Checkbox mt={3}
-                        value="dinheiro"
-                        >
-                        Dinheiro
-                    </Checkbox>
-                    <Checkbox mt={3}
-                        value="cartao de credito"
-                        >
-                        Cartão de Crédito
-                    </Checkbox>
-                    <Checkbox mt={3}
-                        value="deposito bancario"
-                        >
-                        Depósito Bancário
-                    </Checkbox>
+                    <Checkbox.Group onChange={setPaymentMethods} value={paymentMethods} accessibilityLabel="choose numbers">
+                        <Checkbox mt={3}
+                            value="boleto"
+                            >
+                            Boleto
+                        </Checkbox>
+                        <Checkbox mt={3}
+                            value="pix"
+                            >
+                            Pix
+                        </Checkbox>
+                        <Checkbox mt={3}
+                            value="dinheiro"
+                            >
+                            Dinheiro
+                        </Checkbox>
+                        <Checkbox mt={3}
+                            value="cartao de credito"
+                            >
+                            Cartão de Crédito
+                        </Checkbox>
+                        <Checkbox mt={3}
+                            value="deposito bancario"
+                            >
+                            Depósito Bancário
+                        </Checkbox>
+                    </Checkbox.Group>
                 </VStack>
                 <Row height={90} justifyContent={'space-between'} paddingBottom={7}  mt={6}   paddingX={6}
                 alignItems={'center'}
@@ -120,7 +175,7 @@ export default function CreateAdvert (){
                         title="Avançar"
                         backgroundColor={'#1A181B'}
                         width={157}
-                        onPress={handlePreviewAdverts}
+                        onPress={handleSubmit(handlePreviewAdverts)}
                     />
                 </Row>
         </ScrollView>

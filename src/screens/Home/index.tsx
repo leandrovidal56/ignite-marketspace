@@ -8,14 +8,15 @@ import { useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import { BottomNavigation } from '../../components/bottomNavigation';
 import { SafeAreaView, LogBox } from 'react-native';
+import { api } from '../../services/api';
 
 LogBox.ignoreLogs(['We can not support a function callback. See Github Issues for details https://github.com/adobe/react-spectrum/issues/2320'])
 
 export default function Home ({ route } ){
 
-    const { data } = route.params
-    console.log(data, 'take data in new screen') 
-    console.log(data.user.name, 'take data in new screen') 
+    // const { data } = route?.params
+    // console.log(data, 'take data in new screen') 
+    // console.log(data.user.name, 'take data in new screen') 
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
 
@@ -28,7 +29,7 @@ export default function Home ({ route } ){
     function clickUsedProduct (){
         setUsedProduct(!usedProduct)
     }
-    
+
     function handleNewAdvert(){
         navigation.navigate('createAdverts')
     }

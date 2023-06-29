@@ -16,7 +16,7 @@ type FormDataProps = {
     password: string;
 }
 
-const signUpSchema = yup.object({
+const signIpSchema = yup.object({
     email: yup.string().required('Informe o e-mail.').email('E-mail inválido'),
     password: yup.string().required('Informe a senha.').min(6, 'A senha deve ter pelo menos 6 caracteres' ),
 })
@@ -24,7 +24,7 @@ const signUpSchema = yup.object({
 
 export default function SignIn (){
     const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
-        resolver: yupResolver(signUpSchema)
+        resolver: yupResolver(signIpSchema)
     });
 
     const navigation = useNavigation<AppNavigatorRoutesProps>();
