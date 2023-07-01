@@ -34,7 +34,8 @@ export default function SignIn (){
         resolver: yupResolver(signIpSchema)
     });
 
-    const navigation = useNavigation<AppNavigatorRoutesProps>();
+    const navigation = useNavigation<AuthNavigatorRoutesProps>();
+    const AppNavigation = useNavigation<AppNavigatorRoutesProps>();
 
     function handleNewAccount(){
         navigation.navigate('signUp')
@@ -46,7 +47,7 @@ export default function SignIn (){
             setIsLoading(true)
             await signIn(email, password)
             reset()
-            navigation.navigate('home')
+            AppNavigation.navigate('home')
 
         }catch(error){
             const isAppError = error instanceof AppError
