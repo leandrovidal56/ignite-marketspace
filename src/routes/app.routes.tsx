@@ -1,5 +1,6 @@
 import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
 import Home from "../screens/Home";
 import Details from "../screens/Details";
 import Adverts from "../screens/Adverts";
@@ -7,8 +8,6 @@ import CreateAdvert from "../screens/CreateAdvert";
 import EditAdvert from "../screens/EditAdvert";
 import DetailsMyAdverts from "../screens/DetailsMyAdvert";
 import Preview from "../screens/Preview";
-import SignIn from "../screens/SignIn";
-import SignUp from "../screens/SignUp";
 
 type AppRoutes ={ 
     home: undefined;
@@ -18,9 +17,6 @@ type AppRoutes ={
     editAdverts: undefined;
     detailsMyAdverts: undefined;
     preview: undefined;
-    logout: undefined;
-    signIn: undefined;
-    signUp: undefined;
 }
 
 export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>
@@ -34,15 +30,6 @@ export function AppRoutes(){
         <Stack.Navigator
             screenOptions={{ headerShown: false }}
         >
-             <Stack.Screen
-                name="signIn"
-                component={SignIn}
-            />
-            <Stack.Screen
-                name="signUp"
-                component={SignUp}
-            />
-         
             <Stack.Screen 
                 name="home"
                 component={Home}

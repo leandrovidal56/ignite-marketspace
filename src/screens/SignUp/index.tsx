@@ -13,6 +13,7 @@ import { AppError } from '../../utils/AppError';
 import { UserPhoto } from '../../components/Profile';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import { Alert } from 'react-native';
+import axios from 'axios';
 
 type FormDataProps = {
     name: string;
@@ -69,6 +70,11 @@ export default function SignUp (){
             }
         }
         catch(error){
+
+            // if(axios.isAxiosError(error)){
+            //     console.log(error.response?.data)
+            // }
+
             setIsLoading(false);
             const isAppError = error instanceof AppError
             const title = isAppError ? error.message : 'Não foi possível criar a conta. Tente novamente mais tarde.' 

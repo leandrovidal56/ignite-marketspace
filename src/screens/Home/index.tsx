@@ -9,13 +9,22 @@ import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import { BottomNavigation } from '../../components/bottomNavigation';
 import { SafeAreaView, LogBox } from 'react-native';
 import { api } from '../../services/api';
+import { useAuth } from '../../hookes/useAuth';
 
 LogBox.ignoreLogs(['We can not support a function callback. See Github Issues for details https://github.com/adobe/react-spectrum/issues/2320'])
 
-export default function Home ({ route } ){
-
+export default function Home (){
+    const { user } = useAuth()
+    console.log(user, 'take user') 
+    console.log(user?.user?.avatar, 'take avatar') 
+    console.log(user?.user?.email, 'take email') 
+    console.log(user?.user?.id, 'take id') 
+    console.log(user?.user?.name, 'take name') 
+    console.log(user?.user?.password, 'take password') 
+    console.log(user?.refresh_token, 'take refresh token') 
+    console.log(user?.token, 'take token') 
+    console.log(user?.user?.tel, 'take tel') 
     // const { data } = route?.params
-    // console.log(data, 'take data in new screen') 
     // console.log(data.user.name, 'take data in new screen') 
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()

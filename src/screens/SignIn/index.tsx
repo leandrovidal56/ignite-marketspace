@@ -1,4 +1,4 @@
-import { Center, Heading, Text, VStack, ScrollView} from 'native-base';
+import { Center, Heading, Text, VStack, ScrollView, useToast} from 'native-base';
 
 import LogoSvg from '@assets/Logo.svg'
 import { Input } from '../../components/input';
@@ -10,6 +10,9 @@ import { useForm, Controller} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { api } from '../../services/api';
+import { useAuth } from '../../hookes/useAuth';
+import { AppError } from '../../utils/AppError';
+import { useState } from 'react';
 
 type FormDataProps = {
     email: string;
@@ -23,7 +26,11 @@ const signIpSchema = yup.object({
 
 
 export default function SignIn (){
-    const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
+    const [loading, setIsLoading] = useState(false)
+    const { signIn } = useAuth()
+    const toast = useToast()
+
+    const { control, handleSubmit, formState: {errors}, reset  } = useForm<FormDataProps>({
         resolver: yupResolver(signIpSchema)
     });
 
@@ -34,13 +41,33 @@ export default function SignIn (){
     }
 
     async function handleLogin({ email, password}: FormDataProps){
+        console.log( 'passou aqui')
         try{
-            const response = await api.post('/sessions', {email, password})
-            console.log(response, 'take complete response')
-            navigation.navigate('home', {data: response.data})
+            setIsLoading(true)
+            await signIn(email, password)
+            reset()
+            navigation.navigate('home')
+
         }catch(error){
-            alert(error)
+            const isAppError = error instanceof AppError
+            const title = isAppError ? error.message : 'Não foi possível acessar a sua conta. Tente novamente mais tarde.' 
+        
+            toast.show({
+                title,
+                placement: 'top',
+                bgColor: 'red.500'
+            })
+        } finally{
+            setIsLoading(false)
         }
+        // try{
+        //     const response = await api.post('/sessions', {email, password})
+        //     console.log(response, 'take complete response')
+        //     setUser(response.data)
+        //     navigation.navigate('home', {data: response.data})
+        // }catch(error){
+        //     alert(error)
+        // }
     }
 
     return (
@@ -87,6 +114,7 @@ export default function SignIn (){
                             mt={8}
                             mb={16}
                             onPress={handleSubmit(handleLogin)}
+                            isLoading={loading}
                         />
                     </Center>
                 </VStack>
