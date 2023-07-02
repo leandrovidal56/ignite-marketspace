@@ -5,10 +5,12 @@ import { AppNavigatorRoutesProps } from "../../routes/app.routes";
 import { useNavigation } from "@react-navigation/native";
 import { Button } from "../button";
 import { useState } from "react";
+import { useAuth } from "../../hookes/useAuth";
 
 export function BottomNavigation(){
     const navigation = useNavigation<AppNavigatorRoutesProps >()
     const [showModal, setShowModal] = useState(false);
+    const { signOut } = useAuth();
 
     function handleGoHome(){
         navigation.navigate('home')
@@ -19,7 +21,7 @@ export function BottomNavigation(){
     }
 
     function handleLogout(){
-        navigation.navigate('signIn')
+        signOut();
     }
 
     function openModal(){

@@ -10,25 +10,16 @@ import { BottomNavigation } from '../../components/bottomNavigation';
 import { SafeAreaView, LogBox } from 'react-native';
 import { api } from '../../services/api';
 import { useAuth } from '../../hookes/useAuth';
+import { UserPhoto } from '../../components/UserPhoto';
 
 LogBox.ignoreLogs(['We can not support a function callback. See Github Issues for details https://github.com/adobe/react-spectrum/issues/2320'])
 
 export default function Home (){
     const { user } = useAuth()
-    console.log(user, 'take user') 
-    console.log(user?.user?.avatar, 'take avatar') 
-    console.log(user?.user?.email, 'take email') 
-    console.log(user?.user?.id, 'take id') 
-    console.log(user?.user?.name, 'take name') 
-    console.log(user?.user?.password, 'take password') 
-    console.log(user?.refresh_token, 'take refresh token') 
-    console.log(user?.token, 'take token') 
-    console.log(user?.user?.tel, 'take tel') 
-    // const { data } = route?.params
-    // console.log(data.user.name, 'take data in new screen') 
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
 
+    const [avatar, setAvatar] = useState({ })
     const [newProduct, setNewProduct] = useState(false)
     const [usedProduct, setUsedProduct] = useState(false)
 
@@ -61,16 +52,21 @@ export default function Home (){
     
     const [showModal, setShowModal] = useState(false);
     const [change, setChange] = useState(false);
+    console.log(avatar, 'in home screen')
 
     return (
     <SafeAreaView style={{ backgroundColor: '#EDECEE'}} >
         <VStack padding={2} mb={8} alignItems={'center'}>
          <Center justifyContent={'space-between'} height={42} width={350} flexDirection={'row'}> 
                 <Row alignItems={'center'}>
-                    <Avatar/>
+                    <Avatar
+                     source={{
+                         uri:  `${api.defaults.baseURL}/images/${user.avatar}`
+                     }}
+                     />
                     <Column ml={4}>
                         <Text>Boas Vindas,</Text>
-                        <Heading>Maria!</Heading>
+                        <Heading>{user.name}!</Heading>
                     </Column>
                 </Row>
                 <Button

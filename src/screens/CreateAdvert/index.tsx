@@ -39,14 +39,6 @@ export default function CreateAdvert (){
     const navigation = useNavigation<AppNavigatorRoutesProps>()
 
     function handlePreviewAdverts({ name, price} : FormDataProps){
-        // const data = new FormData()
-        // data.append('name', name)
-        // data.append('description', description)
-        // data.append('isNew', isNew)
-        // data.append('price', price)
-        // data.append('acceptTrade', acceptTrade)
-        // data.append('paymentMethods[]', JSON.stringify(paymentMethods))
-        // console.log(data)
         navigation.navigate('preview');
     }
 
@@ -58,14 +50,12 @@ export default function CreateAdvert (){
           quality: 1,
         });
     
-        console.log(result);
 
         if(!result.canceled){
             setImage(result.assets[0].uri)
         }
 
       };
-      console.log(image)
 
     return (
         <SafeAreaView style={{ backgroundColor : '#EDECEE'}} >

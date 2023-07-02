@@ -10,10 +10,11 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useState } from 'react';
 import { AppError } from '../../utils/AppError';
-import { UserPhoto } from '../../components/Profile';
+import { UserPhoto } from '../../components/UserPhoto';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import { Alert } from 'react-native';
 import axios from 'axios';
+import { useAuth } from '../../hookes/useAuth';
 
 type FormDataProps = {
     name: string;
@@ -32,10 +33,11 @@ const signUpSchema = yup.object({
 })
 
 export default function SignUp (){
-    const [ isLoading, setIsLoading] = useState(false)
-    const [avatar, setAvatar] = useState('');
+    const [ loading, setIsLoading] = useState(false)
+    const [avatar, setAvatar] = useState<any>({ })
     const navigation = useNavigation<AppNavigatorRoutesProps>();
     const toast = useToast()
+    const { signIn } = useAuth()
     const { control, handleSubmit, formState: {errors}, reset } = useForm<FormDataProps>({
         resolver: yupResolver(signUpSchema)
     });
@@ -46,16 +48,14 @@ export default function SignUp (){
         }
 
         try{
-            console.log(avatar,'avatar')
+            console.log(avatar, 'take avatar inside submit')
+            setIsLoading(true);
+
             const data = new FormData()
             data.append('name', name)
             data.append('email', email)
             data.append('tel', tel)
-            data.append('avatar',{
-                uri: avatar,
-                type: 'image/jpeg',
-                name: 'avatar'
-            });
+            data.append('avatar', avatar);
 
             data.append('password', password)
             
@@ -64,18 +64,15 @@ export default function SignUp (){
                 headers: { "Content-Type": "multipart/form-data"}
             }
             );
+            console.log(response, 'take all response')
+            console.log(response.data, 'take data')
+            console.log(response.data.avatar, 'take dataAvatar')
             if(response.status === 200 || 201){
                 reset()
-                navigation.navigate('home')
+                await signIn(email, password)
             }
         }
         catch(error){
-
-            // if(axios.isAxiosError(error)){
-            //     console.log(error.response?.data)
-            // }
-
-            setIsLoading(false);
             const isAppError = error instanceof AppError
             const title = isAppError ? error.message : 'Não foi possível criar a conta. Tente novamente mais tarde.' 
 
@@ -84,6 +81,8 @@ export default function SignUp (){
                 placement: 'top',
                 bgColor: 'red.500'
             })
+        } finally{
+            setIsLoading(false);
         }
     }
     
@@ -103,7 +102,7 @@ export default function SignUp (){
                     <Center mb={4}>
                         <UserPhoto 
                             setImage={setAvatar}
-                            image={avatar}
+                            // image={avatar}
                         />
                         <Controller
                             control={control}
@@ -179,6 +178,7 @@ export default function SignUp (){
                             mb={16}
                             background="#1A181B"
                             onPress={handleSubmit(handleSignUp)}
+                            isLoading={loading}
                         />
                         <Text mt={3} color='#3E3A40'>Já tem uma conta?</Text>
                         <Button

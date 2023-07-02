@@ -42,7 +42,6 @@ export default function SignIn (){
     }
 
     async function handleLogin({ email, password}: FormDataProps){
-        console.log( 'passou aqui')
         try{
             setIsLoading(true)
             await signIn(email, password)
@@ -61,14 +60,6 @@ export default function SignIn (){
         } finally{
             setIsLoading(false)
         }
-        // try{
-        //     const response = await api.post('/sessions', {email, password})
-        //     console.log(response, 'take complete response')
-        //     setUser(response.data)
-        //     navigation.navigate('home', {data: response.data})
-        // }catch(error){
-        //     alert(error)
-        // }
     }
 
     return (
