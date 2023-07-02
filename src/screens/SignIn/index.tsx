@@ -1,4 +1,4 @@
-import { Center, Heading, Text, VStack, ScrollView} from 'native-base';
+import { Center, Heading, Text, VStack, ScrollView, useToast} from 'native-base';
 
 import LogoSvg from '@assets/Logo.svg'
 import { Input } from '../../components/input';
@@ -10,24 +10,32 @@ import { useForm, Controller} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { api } from '../../services/api';
+import { useAuth } from '../../hookes/useAuth';
+import { AppError } from '../../utils/AppError';
+import { useState } from 'react';
 
 type FormDataProps = {
     email: string;
     password: string;
 }
 
-const signUpSchema = yup.object({
+const signIpSchema = yup.object({
     email: yup.string().required('Informe o e-mail.').email('E-mail inválido'),
     password: yup.string().required('Informe a senha.').min(6, 'A senha deve ter pelo menos 6 caracteres' ),
 })
 
 
 export default function SignIn (){
-    const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
-        resolver: yupResolver(signUpSchema)
+    const [loading, setIsLoading] = useState(false)
+    const { signIn } = useAuth()
+    const toast = useToast()
+
+    const { control, handleSubmit, formState: {errors}, reset  } = useForm<FormDataProps>({
+        resolver: yupResolver(signIpSchema)
     });
 
-    const navigation = useNavigation<AppNavigatorRoutesProps>();
+    const navigation = useNavigation<AuthNavigatorRoutesProps>();
+    const AppNavigation = useNavigation<AppNavigatorRoutesProps>();
 
     function handleNewAccount(){
         navigation.navigate('signUp')
@@ -35,11 +43,22 @@ export default function SignIn (){
 
     async function handleLogin({ email, password}: FormDataProps){
         try{
-            const response = await api.post('/sessions', {email, password})
-            console.log(response, 'take complete response')
-            navigation.navigate('home', {data: response.data})
+            setIsLoading(true)
+            await signIn(email, password)
+            reset()
+            AppNavigation.navigate('home')
+
         }catch(error){
-            alert(error)
+            const isAppError = error instanceof AppError
+            const title = isAppError ? error.message : 'Não foi possível acessar a sua conta. Tente novamente mais tarde.' 
+        
+            toast.show({
+                title,
+                placement: 'top',
+                bgColor: 'red.500'
+            })
+        } finally{
+            setIsLoading(false)
         }
     }
 
@@ -87,6 +106,7 @@ export default function SignIn (){
                             mt={8}
                             mb={16}
                             onPress={handleSubmit(handleLogin)}
+                            isLoading={loading}
                         />
                     </Center>
                 </VStack>
