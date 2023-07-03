@@ -52,7 +52,6 @@ export default function Home (){
     
     const [showModal, setShowModal] = useState(false);
     const [change, setChange] = useState(false);
-    console.log(avatar, 'in home screen')
 
     return (
     <SafeAreaView style={{ backgroundColor: '#EDECEE'}} >
@@ -66,7 +65,7 @@ export default function Home (){
                      />
                     <Column ml={4}>
                         <Text>Boas Vindas,</Text>
-                        <Heading>{user.name}!</Heading>
+                        {/* <Heading>{user.name}!</Heading> */}
                     </Column>
                 </Row>
                 <Button

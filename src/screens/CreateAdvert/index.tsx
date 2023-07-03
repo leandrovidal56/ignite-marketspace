@@ -12,6 +12,8 @@ import { useForm, Controller} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { api } from '../../services/api';
+import { ProductDTO } from "../../dtos/productDTO";
+import { useAuth } from "../../hookes/useAuth";
 
 
 type FormDataProps = {
@@ -26,8 +28,8 @@ const createAdvertSchema = yup.object({
 
 
 export default function CreateAdvert (){
-    const [isNew, setIsNew] = useState("one");
-    const [image, setImage] = useState(['']);
+    const [isNew, setIsNew] = useState("Produto usado");
+    const [image, setImage] = useState('');
     const [description, setDescription] = useState('');
     const [acceptTrade, setAceeptTrade] = useState(false);
     const [paymentMethods, setPaymentMethods] = React.useState([]);
@@ -36,10 +38,23 @@ export default function CreateAdvert (){
         resolver: yupResolver(createAdvertSchema)
     });
 
+    const { setProduct, product, productSave } = useAuth()
+
     const navigation = useNavigation<AppNavigatorRoutesProps>()
 
-    function handlePreviewAdverts({ name, price} : FormDataProps){
-        navigation.navigate('preview');
+    async function handlePreviewAdverts({ name, price} : FormDataProps){
+        const teste = {
+            name, 
+            description,
+            is_new: true,
+            price,
+            image,
+            accept_trade: acceptTrade, 
+            payment_methods: paymentMethods            
+        } as ProductDTO
+        console.log(teste, 'take teste')
+        await productSave(teste)
+        // navigation.navigate('preview');
     }
 
     const pickImage = async () => {
@@ -134,17 +149,17 @@ export default function CreateAdvert (){
                             Pix
                         </Checkbox>
                         <Checkbox mt={3}
-                            value="dinheiro"
+                            value="cash"
                             >
                             Dinheiro
                         </Checkbox>
                         <Checkbox mt={3}
-                            value="cartao de credito"
+                            value="card"
                             >
                             Cartão de Crédito
                         </Checkbox>
                         <Checkbox mt={3}
-                            value="deposito bancario"
+                            value="deposit"
                             >
                             Depósito Bancário
                         </Checkbox>
@@ -153,7 +168,6 @@ export default function CreateAdvert (){
                 <Row height={90} justifyContent={'space-between'} paddingBottom={7}  mt={6}   paddingX={6}
                 alignItems={'center'}
                 background={'#F7F7F8'}
-                
                 >
                     <Button 
                         title="Cancelar"
