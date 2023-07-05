@@ -1,26 +1,52 @@
-import { Center, Text, VStack, ScrollView, Avatar, Row, Column, Image, Box} from 'native-base';
+import { Center, Text, VStack, ScrollView, Avatar, Row, Column, Image, Box, useToast} from 'native-base';
 import { Button } from '../../components/button';
 import { IconComponent } from '../../components/icon';
-import { Header } from '../../components/Header';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import {  MaterialCommunityIcons  } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-native';
 import { useAuth } from '../../hookes/useAuth';
-import { useEffect } from 'react';
 import { api } from '../../services/api';
+import { Loading } from '../../components/loading';
+import { getIconName, transformLabel } from './types';
+import {  AntDesign  } from '@expo/vector-icons'
+import { useState } from 'react';
+import { AppError } from '../../utils/AppError';
 
 export default function Preview (){
-    
+    const [isLoadingProductSave, setIsLoadingProductSave ] = useState(false)
+
     const navigation = useNavigation<AppNavigatorRoutesProps>()
-    const { product, user } = useAuth()
+    const { product, user, productSave } = useAuth()
+    const toast = useToast()
     
 
-    console.log(user, 'testing')
-    console.log(product, 'testing')
 
-    function handleFinished(){
-        navigation.navigate('adverts');
+    async function handleFinished(){
+        try{
+            setIsLoadingProductSave(true)
+            await productSave()
+            await toast.show({
+                title: 'Produto cadastrado com sucesso!',
+                placement: 'top',
+                bgColor: 'green.500'
+            })
+            navigation.navigate('adverts');
+
+        }catch(error){
+            const isAppError = error instanceof AppError
+            const title = isAppError ? error.message : 'Não foi possível salvar seu produto. Tente novamente mais tarde.' 
+        
+            toast.show({
+                title,
+                placement: 'top',
+                bgColor: 'red.500'
+            })
+            
+        } finally{
+            setIsLoadingProductSave(false)
+        }
+        
     }
     function handleGoBack(){
         navigation.goBack();
@@ -42,6 +68,9 @@ export default function Preview (){
 
             </Box>
         <ScrollView >
+        {!product.image ? 
+            <Loading/> : 
+            
             <VStack justifyContent={'center'} bgColor={'#EDECEE'} >
                 <Center>
                 <Image 
@@ -68,7 +97,7 @@ export default function Preview (){
                         <Text>{user.name}</Text>
                     </Row>
                     <Box width={43} height={17} borderRadius={20} bgColor={'gray.300'} mt={6} alignItems={'center'} justifyContent={'center'}>
-                        <Text fontSize={10} >{product.is_new ? 'Sim' : 'Não'}</Text>
+                        <Text fontSize={10} >{product.is_new === true ? 'Novo' : 'Usado'}</Text>
                     </Box>
                     <Row justifyContent={'space-between'} mt={2}>
                         <Text fontSize={20} fontWeight={'semibold'}>{product.name}</Text>
@@ -82,40 +111,15 @@ export default function Preview (){
                     <Column>
                         <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Meios de pagamento:</Text>
                         
-                        {/* {product.payment_methods.map(item => {
+                        {product.payment_methods.map(item => {
                             return(
                                 <Row mt={1}>
-                                    <IconComponent name='barcode' size={5} mr={2} />
-                                    <Text>{item}</Text>
+                                    <IconComponent familyIcon={item === "cash" ? MaterialCommunityIcons : AntDesign } name={getIconName(item)} size={5} mr={2} />
+                                    <Text>{transformLabel(item)}</Text>
                                 </Row>
                             )
-                        }
-
-                        )} */}
-
-
-                        {/* <Row mt={1}>
-                            <IconComponent name='barcode' size={5} mr={2} />
-                            <Text>Boleto</Text>
-                        </Row>
-                        <Row mt={1}>
-                        <IconComponent name='qrcode' size={5} mr={2} />
-                            <Text>Pix</Text>
-                        </Row>
-                        <Row mt={1}>
-                            <IconComponent name='cash' familyIcon={MaterialCommunityIcons} size={5} mr={2} />
-                            <Text>Dinheiro</Text>
-                        </Row>
-                        <Row mt={1}>
-                            <IconComponent name='creditcard' size={5} mr={2} />       
-                            <Text>Cartão de Crédito</Text>
-                        </Row>
-                        <Row mt={1}>   
-                            <IconComponent name='bank' size={5} mr={2} />
-                            <Text>Depósito Bancário</Text>
-                        </Row> */}
+                        })}
                     </Column>
-
                     <Row mt={6} justifyContent={'space-between'} alignItems={'center'}>
                         <Button 
                             iconLeftName='arrowleft'
@@ -134,10 +138,12 @@ export default function Preview (){
                             width={157}
                             height={42}
                             onPress={handleFinished}
+                            isLoading={isLoadingProductSave}
                         />
                     </Row>
                 </VStack>
             </VStack>
+            }
         </ScrollView>
     </SafeAreaView>
     );
