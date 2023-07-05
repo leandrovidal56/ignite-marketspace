@@ -35,7 +35,7 @@ export default function SignIn (){
     });
 
     const navigation = useNavigation<AuthNavigatorRoutesProps>();
-    const AppNavigation = useNavigation<AppNavigatorRoutesProps>();
+    const appNavigation = useNavigation<AppNavigatorRoutesProps>()
 
     function handleNewAccount(){
         navigation.navigate('signUp')
@@ -46,7 +46,6 @@ export default function SignIn (){
             setIsLoading(true)
             await signIn(email, password)
             reset()
-            AppNavigation.navigate('home')
 
         }catch(error){
             const isAppError = error instanceof AppError
