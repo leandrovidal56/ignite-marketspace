@@ -11,19 +11,18 @@ import * as ImagePicker from 'expo-image-picker';
 import { useForm, Controller} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
-import { api } from '../../services/api';
 import { ProductDTO } from "../../dtos/productDTO";
 import { useAuth } from "../../hookes/useAuth";
 
 
 type FormDataProps = {
     name: string;
-    price: string;
+    price: number;
 }
 
 const createAdvertSchema = yup.object({
     name: yup.string().required('Informe o título do anúncio.'),
-    price: yup.string().required('Informe o valor do produto.'),
+    price: yup.number().required('Informe o valor do produto.'),
 })
 
 
@@ -32,17 +31,18 @@ export default function CreateAdvert (){
     const [image, setImage] = useState('');
     const [description, setDescription] = useState('');
     const [acceptTrade, setAceeptTrade] = useState(false);
-    const [paymentMethods, setPaymentMethods] = React.useState([]);
+    const [paymentMethods, setPaymentMethods] = React.useState<string[]>([]);
 
     const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
         resolver: yupResolver(createAdvertSchema)
     });
 
-    const { setProduct, product, productSave } = useAuth()
+    const { productSave, productGet } = useAuth()
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
 
     async function handlePreviewAdverts({ name, price} : FormDataProps){
+        navigation.navigate('preview');
         const teste = {
             name, 
             description,
@@ -52,9 +52,11 @@ export default function CreateAdvert (){
             accept_trade: acceptTrade, 
             payment_methods: paymentMethods            
         } as ProductDTO
-        console.log(teste, 'take teste')
         await productSave(teste)
-        // navigation.navigate('preview');
+    }
+
+     function handleProductGet(){
+        navigation.navigate('preview');
     }
 
     const pickImage = async () => {
@@ -174,6 +176,7 @@ export default function CreateAdvert (){
                         backgroundColor={'#D9D8DA'}
                         width={157}
                         variant={'outline'}
+                        onPress={handleProductGet}
                     />
                     <Button 
                         title="Avançar"

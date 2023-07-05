@@ -6,3 +6,12 @@ import { ProductDTO } from "../dtos/productDTO";
 export async function storageProductSave(product: ProductDTO){
     await AsyncStorage.setItem(PRODUCT_STORAGE, JSON.stringify(product));
 }
+
+export async function storageProductGet() {
+    const storage = await AsyncStorage.getItem(PRODUCT_STORAGE);
+
+    const product : ProductDTO = storage ? JSON.parse(storage) : { };
+
+    return product
+
+}

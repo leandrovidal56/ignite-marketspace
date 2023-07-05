@@ -2,14 +2,22 @@ import { Center, Text, VStack, ScrollView, Avatar, Row, Column, Image, Box} from
 import { Button } from '../../components/button';
 import { IconComponent } from '../../components/icon';
 import { Header } from '../../components/Header';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import {  MaterialCommunityIcons  } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-native';
+import { useAuth } from '../../hookes/useAuth';
+import { useEffect } from 'react';
+import { api } from '../../services/api';
 
 export default function Preview (){
     
     const navigation = useNavigation<AppNavigatorRoutesProps>()
+    const { product, user } = useAuth()
+    
+
+    console.log(user, 'testing')
+    console.log(product, 'testing')
 
     function handleFinished(){
         navigation.navigate('adverts');
@@ -38,7 +46,7 @@ export default function Preview (){
                 <Center>
                 <Image 
                     source={{
-                        uri: 'https://wallpaperaccess.com/full/317501.jpg'
+                        uri:  `${product.image}`
                     }}
                     width={390} 
                     height={280}
@@ -52,24 +60,41 @@ export default function Preview (){
                 paddingBottom={'20'}
                 >
                     <Row alignItems={'center'} >
-                        <Avatar size={6} mr={2}/>
-                        <Text>Markenna Baptista</Text>
+                        <Avatar size={6} mr={2} 
+                        source={{
+                            uri:  `${api.defaults.baseURL}/images/${user.avatar}`
+                        }}
+                        />
+                        <Text>{user.name}</Text>
                     </Row>
                     <Box width={43} height={17} borderRadius={20} bgColor={'gray.300'} mt={6} alignItems={'center'} justifyContent={'center'}>
-                        <Text fontSize={10} >NOVO</Text>
+                        <Text fontSize={10} >{product.is_new ? 'Sim' : 'Não'}</Text>
                     </Box>
                     <Row justifyContent={'space-between'} mt={2}>
-                        <Text fontSize={20} fontWeight={'semibold'}>Bicicleta</Text>
-                        <Text color={"#647ac7"}  fontWeight={'bold'} fontSize={20} >R$ 120,00</Text>
+                        <Text fontSize={20} fontWeight={'semibold'}>{product.name}</Text>
+                        <Text color={"#647ac7"}  fontWeight={'bold'} fontSize={20} >R$ {product.price}</Text>
                     </Row>
-                    <Text mt={2} fontWeight={'normal'} fontSize={14} lineHeight={18.2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis voluptas accusantium, delectus eius fugit enim, debitis dolor cumque eveniet consequatur soluta distinctio maxime libero. Nobis asperiores doloremque saepe eius velit.</Text>
+                    <Text mt={2} fontWeight={'normal'} fontSize={14} lineHeight={18.2}>{product.description}</Text>
                     <Row mt={6}>
                         <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Aceitar troca?</Text>
-                        <Text ml={2}>Sim</Text>
+                        <Text ml={2}>{product.accept_trade ? 'Sim' : 'Não'}</Text>
                     </Row>
                     <Column>
                         <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Meios de pagamento:</Text>
-                        <Row mt={1}>
+                        
+                        {/* {product.payment_methods.map(item => {
+                            return(
+                                <Row mt={1}>
+                                    <IconComponent name='barcode' size={5} mr={2} />
+                                    <Text>{item}</Text>
+                                </Row>
+                            )
+                        }
+
+                        )} */}
+
+
+                        {/* <Row mt={1}>
                             <IconComponent name='barcode' size={5} mr={2} />
                             <Text>Boleto</Text>
                         </Row>
@@ -88,7 +113,7 @@ export default function Preview (){
                         <Row mt={1}>   
                             <IconComponent name='bank' size={5} mr={2} />
                             <Text>Depósito Bancário</Text>
-                        </Row>
+                        </Row> */}
                     </Column>
 
                     <Row mt={6} justifyContent={'space-between'} alignItems={'center'}>

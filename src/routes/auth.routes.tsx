@@ -1,4 +1,4 @@
-import { NativeStackNavigationProp, createNativeStackNavigator } from "@react-navigation/native-stack" 
+import { createNativeStackNavigator } from "@react-navigation/native-stack" 
 import SignIn from "../screens/SignIn";
 import SignUp from "../screens/SignUp";
 import { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
@@ -23,11 +23,11 @@ export function AuthRoutes() {
             <Stack.Screen
                 name="signIn"
                 component={SignIn}
-                />
+            />
             <Stack.Screen
                 name="signUp"
                 component={SignUp}
-                />
+            />
         </Stack.Navigator>
     )
 }

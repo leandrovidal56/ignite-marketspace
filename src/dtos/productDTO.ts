@@ -5,7 +5,6 @@ export type ProductDTO = {
     price: string;
     image: string;
     accept_trade: boolean;
-    payment_method: [
-        string
-    ]
+    payment_methods: string[];
+    
 }
