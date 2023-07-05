@@ -14,7 +14,8 @@ export type AuthContextDataProps = {
     isLoadingUserStorageData: boolean;
     product: ProductDTO;
     setProduct: (product: ProductDTO) => void;
-    productSave: (product: ProductDTO) => void;
+    productSave: () => void;
+    productSaveStorage: (product: ProductDTO) => void;
     productGet: () => Promise<ProductDTO>;
     
 }
@@ -103,12 +104,18 @@ export function AuthContextProvider({ children } : AuthContextProviderProps){
         }
     }
     
-    async function productSave(product: ProductDTO){
+    async function productSaveStorage(product: ProductDTO){
         try{
             await storageProductSave(product)
             setProduct(product)
-            const response = await api.post('/products/',  product)
-            
+        }catch(error){
+            throw error
+        } 
+    }
+
+    async function productSave(){
+        try{
+            await api.post('/products/',  product)
         }catch(error){
             throw error
         } finally{
@@ -146,7 +153,8 @@ export function AuthContextProvider({ children } : AuthContextProviderProps){
             signIn, 
             signOut, 
             isLoadingUserStorageData,
-            product, setProduct, productSave, productGet
+            product, setProduct, productSave, productGet,
+            productSaveStorage
              }}> 
             {children}
         </AuthContext.Provider>

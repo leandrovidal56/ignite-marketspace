@@ -1,4 +1,4 @@
-import { Box, Checkbox, Icon,  Radio, Row, ScrollView, Switch, Text, TextArea, VStack } from "native-base";
+import { Box, Checkbox, Icon,  Radio, Row, ScrollView, Switch, Text, TextArea, VStack, useToast } from "native-base";
 import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
 import { Input } from "../../components/input";
@@ -13,6 +13,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ProductDTO } from "../../dtos/productDTO";
 import { useAuth } from "../../hookes/useAuth";
+import { AppError } from "../../utils/AppError";
 
 
 type FormDataProps = {
@@ -27,36 +28,57 @@ const createAdvertSchema = yup.object({
 
 
 export default function CreateAdvert (){
-    const [isNew, setIsNew] = useState("Produto usado");
-    const [image, setImage] = useState('');
+    const [isNew, setIsNew] = useState(true);
+    const [productCondition, setProductCondition] = useState('Produto novo');
+    const [image, setImage] = useState([]);
     const [description, setDescription] = useState('');
     const [acceptTrade, setAceeptTrade] = useState(false);
     const [paymentMethods, setPaymentMethods] = React.useState<string[]>([]);
+    const [isLoadingProductStorageData, setIsLoadingProductStorageData ] = useState(false)
 
     const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
         resolver: yupResolver(createAdvertSchema)
     });
 
-    const { productSave, productGet } = useAuth()
+    const { productSaveStorage } = useAuth()
+    const toast = useToast()
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
 
     async function handlePreviewAdverts({ name, price} : FormDataProps){
-        navigation.navigate('preview');
-        const teste = {
-            name, 
-            description,
-            is_new: true,
-            price,
-            image,
-            accept_trade: acceptTrade, 
-            payment_methods: paymentMethods            
-        } as ProductDTO
-        await productSave(teste)
+        try{
+            setIsLoadingProductStorageData(true)
+            
+            const productData = {
+                name, 
+                description,
+                is_new: isNew,
+                price,
+                image,
+                accept_trade: acceptTrade, 
+                payment_methods: paymentMethods            
+            } as ProductDTO
+
+            await productSaveStorage(productData)
+
+            navigation.navigate('preview');
+        }catch(error){
+            const isAppError = error instanceof AppError
+            const title = isAppError ? error.message : 'Não foi possível salvar seu produto. Tente novamente mais tarde.' 
+        
+            toast.show({
+                title,
+                placement: 'top',
+                bgColor: 'red.500'
+            })
+            
+        } finally{
+            setIsLoadingProductStorageData(false)
+        }
     }
 
-     function handleProductGet(){
-        navigation.navigate('preview');
+     function handleCanceled(){
+        navigation.goBack();
     }
 
     const pickImage = async () => {
@@ -110,16 +132,19 @@ export default function CreateAdvert (){
                         <Radio.Group 
                             name="myRadioGroup" 
                             accessibilityLabel="favorite number" 
-                            value={isNew} 
+                            value={productCondition} 
                             onChange={nextValue => {
-                                setIsNew(nextValue);
+                                setProductCondition(nextValue)
+                                nextValue === 'Produto novo' ? 
+                                setIsNew(true): 
+                                setIsNew(false)
                             }}>
                             <Row mt={4}>
-                                <Radio value="Produto usado" colorScheme="blue">
-                                    Produto usado
-                                </Radio>
-                                <Radio value="Produto novo" colorScheme="blue" ml={6}>
+                                <Radio value="Produto novo" colorScheme="blue"  >
                                     Produto novo
+                                </Radio>
+                                <Radio value="Produto usado" colorScheme="blue" ml={6}>
+                                    Produto usado
                                 </Radio>
                             </Row>
                         </Radio.Group>
@@ -129,8 +154,9 @@ export default function CreateAdvert (){
                             name="price"
                             render={({field: {onChange, value}}) => (
                                 <Input 
+                                    keyboardType="number-pad"  
                                     placeholder="Valor do produto"
-                                    onChangeText={onChange}
+                                    onChangeText={onChange}                                    
                                     value={value}
                                     errorMessage={errors.price?.message}
                                 />
@@ -176,13 +202,15 @@ export default function CreateAdvert (){
                         backgroundColor={'#D9D8DA'}
                         width={157}
                         variant={'outline'}
-                        onPress={handleProductGet}
+                        onPress={handleCanceled}
+                        
                     />
                     <Button 
                         title="Avançar"
                         backgroundColor={'#1A181B'}
                         width={157}
                         onPress={handleSubmit(handlePreviewAdverts)}
+                        isLoading={isLoadingProductStorageData}
                     />
                 </Row>
         </ScrollView>
