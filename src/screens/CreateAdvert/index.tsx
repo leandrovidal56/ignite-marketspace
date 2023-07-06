@@ -14,6 +14,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { ProductDTO } from "../../dtos/productDTO";
 import { useAuth } from "../../hookes/useAuth";
 import { AppError } from "../../utils/AppError";
+import { UserPhoto } from "../../components/UserPhoto";
+import { AdvertPhoto } from "../../components/AdvertPhoto";
 
 
 type FormDataProps = {
@@ -76,7 +78,7 @@ export default function CreateAdvert (){
             setIsLoadingProductStorageData(false)
         }
     }
-
+console.log(image, 'take image')
      function handleCanceled(){
         navigation.goBack();
     }
@@ -106,14 +108,29 @@ export default function CreateAdvert (){
                 <VStack paddingBottom={7} paddingX={6} background={'#EDECEE'} >
                     <Text fontSize={14} fontWeight={"bold"}>Imagens</Text>
                     <Text mt={2}>Escolha até 3 imagens para mostrar o quanto o seu produto é incrível</Text>
-                    <Button 
+                    <Row>
+
+                    <AdvertPhoto 
+                        setImage={setImage}
+                        // setImage={pickImage}
+                    />
+                    <AdvertPhoto 
+                    setImage={setImage}
+                        // setImage={pickImage}
+                    />
+                    <AdvertPhoto 
+                    setImage={setImage}
+                        // setImage={pickImage}
+                    />
+                    </Row>
+                    {/* <Button 
                         onPress={pickImage} 
                         mt={3} mb={5} width={100} height={100} background={'#D9D8DA'} 
                         alignItems={'center'} 
                         justifyContent={'center'} 
                         borderRadius={6}
                         startIcon={<IconComponent name="plus" size={5} />}
-                    />
+                    /> */}
                     <Text fontSize={14} fontWeight={"bold"}>Sobre o produto</Text>
                     <Controller
                             control={control}

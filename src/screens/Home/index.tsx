@@ -65,7 +65,7 @@ export default function Home (){
                      />
                     <Column ml={4}>
                         <Text>Boas Vindas,</Text>
-                        {/* <Heading>{user.name}!</Heading> */}
+                        <Heading>{user?.name ?? ''}!</Heading>
                     </Column>
                 </Row>
                 <Button

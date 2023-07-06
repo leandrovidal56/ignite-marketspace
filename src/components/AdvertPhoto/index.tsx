@@ -7,13 +7,12 @@ import { useAuth } from "../../hookes/useAuth";
 import { api } from "../../services/api";
 
 type Props = IImageProps & {
-    setImage:  React.Dispatch<React.SetStateAction<{}>>
-    image?: string
-    size?: number   
+    setImage:  React.Dispatch<React.SetStateAction<string[]>>
+    show?: boolean
 }
 
-export function UserPhoto({ setImage, image, size, ...rest}: Props){
-    const [avatar, setAvatar] = useState('https://e7.pngegg.com/pngimages/348/800/png-clipart-man-wearing-blue-shirt-illustration-computer-icons-avatar-user-login-avatar-blue-child.png')
+export function AdvertPhoto({ show, setImage,  ...rest}: Props){
+    const [advertPhoto, setAdvertPhoto] = useState('https://cdn.iconscout.com/icon/free/png-256/free-photo-size-select-actual-1782180-1512958.png')
     const toast = useToast()
     const { user } = useAuth()
     const pickImage = async () => {
@@ -42,52 +41,35 @@ export function UserPhoto({ setImage, image, size, ...rest}: Props){
                     })
                 }
                 const fileExtension = result.assets[0].uri.split('.').pop()
-                console.log(fileExtension, 'take file extension')
 
                 const photoFile = {
                     name : `${user.name}.${fileExtension}`.toLowerCase(),
                     uri: result.assets[0].uri,
                     type: `${result.assets[0].type}/${fileExtension}`
                 } as any
-
-                console.log(photoFile, 'take photofile' )
-                setImage(photoFile)
-                setAvatar(photoFile.uri)
+                setImage(photoFile.uri)
+                setAdvertPhoto(photoFile.uri)
             }
 
         } catch(err){
             console.log(err)
         }
       };
-
-      async function getAvatar(){
-        try{
-
-        }catch(error){
-            console.log(error, 'error response 1')
-
-        }
-      }
       
-      useEffect(() => {
-      }, [image])
-      console.log(avatar, 'get avatar')
-
+    
     return (
+
         <ButtonNativeBase 
-            size={size || 20}
-            borderRadius={50}
+            size={100}
+            borderRadius={6}
             onPress={pickImage}
+            mr={2}
         >
             <Image
-                size={size || 20}
-                borderRadius={50}
-                source={
-                    { uri: user.avatar ? `${api.defaults.baseURL}/images/${user.avatar}`
-                    // : 'https://e7.pngegg.com/pngimages/348/800/png-clipart-man-wearing-blue-shirt-illustration-computer-icons-avatar-user-login-avatar-blue-child.png'
-                    : avatar
-                    }
-                  }
+                size={100}
+                borderRadius={6}
+                source={{ uri: advertPhoto }}
+                background={'#D9D8DA'}
                 {...rest}
                 alt="Image de Perfil"
             />
