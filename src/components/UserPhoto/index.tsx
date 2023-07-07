@@ -82,12 +82,7 @@ export function UserPhoto({ setImage, image, size, ...rest}: Props){
             <Image
                 size={size || 20}
                 borderRadius={50}
-                source={
-                    { uri: user.avatar ? `${api.defaults.baseURL}/images/${user.avatar}`
-                    // : 'https://e7.pngegg.com/pngimages/348/800/png-clipart-man-wearing-blue-shirt-illustration-computer-icons-avatar-user-login-avatar-blue-child.png'
-                    : avatar
-                    }
-                  }
+                source={{ uri: user.avatar ? `${api.defaults.baseURL}/images/${user.avatar}` : avatar } }
                 {...rest}
                 alt="Image de Perfil"
             />

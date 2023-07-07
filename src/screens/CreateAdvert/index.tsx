@@ -1,4 +1,4 @@
-import { Box, Checkbox, Icon,  Radio, Row, ScrollView, Switch, Text, TextArea, VStack, useToast } from "native-base";
+import {  Checkbox, Radio, Row, ScrollView, Switch, Text, TextArea, VStack, useToast } from "native-base";
 import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
 import { Input } from "../../components/input";
@@ -6,16 +6,14 @@ import React, { useState } from "react";
 import { Button } from "../../components/button";
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "../../routes/app.routes";
-import { IconComponent } from "../../components/icon";
-import * as ImagePicker from 'expo-image-picker';
 import { useForm, Controller} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ProductDTO } from "../../dtos/productDTO";
 import { useAuth } from "../../hookes/useAuth";
 import { AppError } from "../../utils/AppError";
-import { UserPhoto } from "../../components/UserPhoto";
 import { AdvertPhoto } from "../../components/AdvertPhoto";
+import { Alert } from 'react-native';
 
 
 type FormDataProps = {
@@ -32,7 +30,7 @@ const createAdvertSchema = yup.object({
 export default function CreateAdvert (){
     const [isNew, setIsNew] = useState(true);
     const [productCondition, setProductCondition] = useState('Produto novo');
-    const [image, setImage] = useState([]);
+    const [image, setImage] = useState<string[]>([]);
     const [description, setDescription] = useState('');
     const [acceptTrade, setAceeptTrade] = useState(false);
     const [paymentMethods, setPaymentMethods] = React.useState<string[]>([]);
@@ -48,6 +46,11 @@ export default function CreateAdvert (){
     const navigation = useNavigation<AppNavigatorRoutesProps>()
 
     async function handlePreviewAdverts({ name, price} : FormDataProps){
+
+        if(image.length <= 0){
+            return Alert.alert("Please fill image ")
+        }
+
         try{
             setIsLoadingProductStorageData(true)
             
@@ -78,25 +81,12 @@ export default function CreateAdvert (){
             setIsLoadingProductStorageData(false)
         }
     }
-console.log(image, 'take image')
+
      function handleCanceled(){
         navigation.goBack();
     }
 
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
-        });
-    
-
-        if(!result.canceled){
-            setImage(result.assets[0].uri)
-        }
-
-      };
+   
 
     return (
         <SafeAreaView style={{ backgroundColor : '#EDECEE'}} >
@@ -112,25 +102,18 @@ console.log(image, 'take image')
 
                     <AdvertPhoto 
                         setImage={setImage}
-                        // setImage={pickImage}
                     />
-                    <AdvertPhoto 
-                    setImage={setImage}
-                        // setImage={pickImage}
-                    />
-                    <AdvertPhoto 
-                    setImage={setImage}
-                        // setImage={pickImage}
-                    />
+                       { image.length > 0 ? 
+                        <AdvertPhoto 
+                        setImage={setImage}
+                        />
+                    : ''}
+                    { image.length > 1 ? 
+                        <AdvertPhoto 
+                        setImage={setImage}
+                        />
+                    : ''}
                     </Row>
-                    {/* <Button 
-                        onPress={pickImage} 
-                        mt={3} mb={5} width={100} height={100} background={'#D9D8DA'} 
-                        alignItems={'center'} 
-                        justifyContent={'center'} 
-                        borderRadius={6}
-                        startIcon={<IconComponent name="plus" size={5} />}
-                    /> */}
                     <Text fontSize={14} fontWeight={"bold"}>Sobre o produto</Text>
                     <Controller
                             control={control}
