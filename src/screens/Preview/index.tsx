@@ -12,6 +12,7 @@ import { getIconName, transformLabel } from './types';
 import {  AntDesign  } from '@expo/vector-icons'
 import { useState } from 'react';
 import { AppError } from '../../utils/AppError';
+import Carousel from 'react-native-reanimated-carousel';
 
 export default function Preview (){
     const [isLoadingProductSave, setIsLoadingProductSave ] = useState(false)
@@ -74,13 +75,18 @@ export default function Preview (){
             
             <VStack justifyContent={'center'} bgColor={'#EDECEE'} >
                 <Center>
-                <Image 
-                    source={{
-                        uri:  `${product.image}`
-                    }}
-                    width={390} 
+                <Carousel
+                    width={390}
                     height={280}
-                    alt='foto'
+                    data={product.image}
+                    renderItem={({ index }) => (
+                        <Image 
+                            source={{ uri: `${product.image[index]}`}}
+                            width={390} 
+                            height={280}
+                            alt='foto'
+                        /> 
+                    )}
                 />
                 </Center>
                 <VStack 

@@ -102,15 +102,18 @@ export default function CreateAdvert (){
 
                     <AdvertPhoto 
                         setImage={setImage}
+                        testando={0}
                     />
                        { image.length > 0 ? 
                         <AdvertPhoto 
                         setImage={setImage}
+                        testando={1}
                         />
                     : ''}
                     { image.length > 1 ? 
                         <AdvertPhoto 
                         setImage={setImage}
+                        testando={2}
                         />
                     : ''}
                     </Row>
