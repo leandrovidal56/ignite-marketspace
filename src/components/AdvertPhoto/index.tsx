@@ -8,10 +8,12 @@ import { IconComponent } from "../icon";
 
 type Props = IImageProps & {
     setImage:  React.Dispatch<React.SetStateAction<string[]>>
-    show?: boolean
+    
+    testando: number
+
 }
 
-export function AdvertPhoto({ show, setImage,  ...rest}: Props){
+export function AdvertPhoto({ setImage, testando,  ...rest}: Props){
     const [advertPhoto, setAdvertPhoto] = useState('')
     const toast = useToast()
     const { user } = useAuth()
@@ -46,7 +48,7 @@ export function AdvertPhoto({ show, setImage,  ...rest}: Props){
                     uri: result.assets[0].uri,
                     type: `${result.assets[0].type}/${fileExtension}`
                 } as any
-
+                
                 setImage( prevState => [...prevState, result.assets[0].uri])
                 setAdvertPhoto(photoFile.uri)
             }
@@ -54,8 +56,11 @@ export function AdvertPhoto({ show, setImage,  ...rest}: Props){
         } catch(err){
             console.log(err)
         }
-      };
-      
+    };
+      function newFunction(){
+          console.log('new function', testando)
+        setImage( prevState => [...prevState.splice(testando, 1)])
+      }
     
     return (
         <ButtonNativeBase 
@@ -68,6 +73,7 @@ export function AdvertPhoto({ show, setImage,  ...rest}: Props){
             {!advertPhoto ?
             <IconComponent  name="plus" size={5} />
             :
+            <>
              <Image
                 size={100}
                 borderRadius={6}
@@ -76,7 +82,10 @@ export function AdvertPhoto({ show, setImage,  ...rest}: Props){
                 {...rest}
                 
                 alt="Image de Perfil"
-            /> 
+                />
+
+                <IconComponent onPress={newFunction} position={'absolute'} right={0}  name="plus" size={5} />
+                </>
             }
         </ButtonNativeBase>
     )
