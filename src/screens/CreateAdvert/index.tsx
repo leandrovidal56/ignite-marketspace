@@ -2,9 +2,9 @@ import {  Checkbox, Radio, Row, ScrollView, Switch, Text, TextArea, VStack, useT
 import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
 import { Input } from "../../components/input";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components/button";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "../../routes/app.routes";
 import { useForm, Controller} from 'react-hook-form';
 import * as yup from 'yup';
@@ -102,20 +102,23 @@ export default function CreateAdvert (){
 
                     <AdvertPhoto 
                         setImage={setImage}
+                        image={image}
                         testando={0}
                     />
                        { image.length > 0 ? 
                         <AdvertPhoto 
                         setImage={setImage}
+                        image={image}
                         testando={1}
                         />
                     : ''}
                     { image.length > 1 ? 
                         <AdvertPhoto 
+                        image={image}
                         setImage={setImage}
                         testando={2}
                         />
-                    : ''}
+                    : ''} 
                     </Row>
                     <Text fontSize={14} fontWeight={"bold"}>Sobre o produto</Text>
                     <Controller
