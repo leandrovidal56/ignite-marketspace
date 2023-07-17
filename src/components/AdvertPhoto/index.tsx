@@ -8,15 +8,17 @@ import { IconComponent } from "../icon";
 
 type Props = IImageProps & {
     setImage:  React.Dispatch<React.SetStateAction<string[]>>
+    image:  string[]
     
     testando: number
 
 }
 
-export function AdvertPhoto({ setImage, testando,  ...rest}: Props){
-    const [advertPhoto, setAdvertPhoto] = useState('')
+export function AdvertPhoto({ setImage, image, testando,  ...rest}: Props){
+    const [hidePicure, setHidePicture] = useState(true)
     const toast = useToast()
     const { user } = useAuth()
+
     const pickImage = async () => {
         try{
             const result = await ImagePicker.launchImageLibraryAsync({
@@ -48,20 +50,22 @@ export function AdvertPhoto({ setImage, testando,  ...rest}: Props){
                     uri: result.assets[0].uri,
                     type: `${result.assets[0].type}/${fileExtension}`
                 } as any
-                
+                setHidePicture(false)
+                if(image[testando]){
+                    return setImage( prevState => [...prevState, result.assets[0].uri])
+                }
                 setImage( prevState => [...prevState, result.assets[0].uri])
-                setAdvertPhoto(photoFile.uri)
             }
 
         } catch(err){
             console.log(err)
         }
     };
-      function newFunction(){
-          console.log('new function', testando)
-        setImage( prevState => [...prevState.splice(testando, 1)])
-      }
-    
+    function removeItem(){
+    setImage( prevState => [...prevState.splice(testando, 1)])
+    setHidePicture(true)
+    }
+
     return (
         <ButtonNativeBase 
             size={100}
@@ -70,21 +74,21 @@ export function AdvertPhoto({ setImage, testando,  ...rest}: Props){
             mr={2}
             background={'#D9D8DA'}
         >
-            {!advertPhoto ?
+            {hidePicure ?
             <IconComponent  name="plus" size={5} />
             :
             <>
              <Image
                 size={100}
                 borderRadius={6}
-                source={{ uri: advertPhoto }}
+                source={{ uri: image[testando] }}
                 background={'#D9D8DA'}
                 {...rest}
                 
                 alt="Image de Perfil"
                 />
 
-                <IconComponent onPress={newFunction} position={'absolute'} right={0}  name="plus" size={5} />
+                <IconComponent onPress={removeItem} position={'absolute'} right={0}  name="plus" size={5} />
                 </>
             }
         </ButtonNativeBase>
