@@ -5,6 +5,7 @@ import { Header } from '../../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import { BottomNavigation } from '../../components/bottomNavigation';
+import { api } from '../../services/api';
 export default function Adverts (){
     const [ select, setSelect] = useState('')
     const navigation = useNavigation<AppNavigatorRoutesProps>()
@@ -12,8 +13,33 @@ export default function Adverts (){
     function handleDetailsMyAdvert(){
         navigation.navigate('detailsMyAdverts')
     }
-    function handleCreateAdvert(){
-        navigation.navigate('createAdverts')
+    
+    async function handleCreateAdvert(){
+        console.log('passou aqui')
+        try{
+            const response = await api.get('/products/')
+            const { data }  = response
+            // console.log(data, 'take response')
+            // console.log(data?.[0].name, 'take response')
+            data.map(item => {
+                console.log(item)
+                console.log(item.id)
+                console.log(item.accept_trade)
+                console.log(item.is_new)
+                console.log(item.name)
+                console.log(item.price)
+                console.log(item.user.avatar)
+                console.log(item.payment_methods)
+                console.log(item.payment_methods[item].name)
+            })
+
+
+        }catch(error){
+            throw error
+        } finally{
+
+        }
+        // navigation.navigate('createAdverts')
     }
     
     return (
