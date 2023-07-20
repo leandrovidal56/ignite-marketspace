@@ -1,20 +1,41 @@
 import { Text, VStack, Row, Select} from 'native-base';
 import { BoxSale } from '../../components/boxSale';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Header } from '../../components/Header';
-import { useNavigation } from '@react-navigation/native';
+import {  useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import { BottomNavigation } from '../../components/bottomNavigation';
+import { api } from '../../services/api';
+import { Loading } from '../../components/loading';
 export default function Adverts (){
     const [ select, setSelect] = useState('')
+    const [ data, setData] = useState([])
     const navigation = useNavigation<AppNavigatorRoutesProps>()
+    const [loading, setIsLoading] = useState(false)
 
     function handleDetailsMyAdvert(){
         navigation.navigate('detailsMyAdverts')
     }
-    function handleCreateAdvert(){
+
+    async function loadMyProducts(){
+        try{
+            setIsLoading(true)
+            const response = await api.get('/products/')
+            setData(response.data)
+        }catch(error){
+            throw error
+        } finally{
+            setIsLoading(false)
+        }
+
+    }
+    async function handleCreateAdvert(){
         navigation.navigate('createAdverts')
     }
+
+    useEffect(() => {
+        loadMyProducts()
+    },[])
     
     return (
         <>
@@ -45,48 +66,23 @@ export default function Adverts (){
                         <Select.Item label="Backend Development" value="backend" />
                 </Select>
             </Row>
-            <Row justifyContent={'space-between'}>
-                <BoxSale 
-                    price={45}
-                    title='Luminária pendente'
-                    type='novo'
-                    imageAdress='https://wallpaperaccess.com/thumb/246323.jpg'
-                    altImage='cidade'
-                    onPress={handleDetailsMyAdvert}
-                    hideProfilePicture={true}
-                    status='disable'
-                />
-                <BoxSale 
-                    price={80}
-                    title='Coturno feminino'
-                    type='novo'
-                    imageAdress='https://wallpaperaccess.com/thumb/216323.jpg'
-                    altImage='cidade'
-                    onPress={handleDetailsMyAdvert}
-                    hideProfilePicture={true}
-                    status="active"
-                />
-            </Row>
-            <Row justifyContent={'space-between'}>
-                <BoxSale 
-                    price={59}
-                    title='Tênis vermelho'
-                    type='usado'
-                    imageAdress='https://wallpaperaccess.com/thumb/296323.jpg'
-                    altImage='cidade'
-                    onPress={handleDetailsMyAdvert}
-                    hideProfilePicture={true}
-                />
-                <BoxSale 
-                    price={80}
-                    title='Tênis vermelho'
-                    type='usado'
-                    imageAdress='https://wallpaperaccess.com/thumb/246321.jpg'
-                    altImage='cidade'
-                    onPress={handleDetailsMyAdvert}
-                    hideProfilePicture={true}
-                />
-            </Row>
+            {
+                loading 
+                ? <Loading/>
+                :<Row justifyContent={'space-between'}>
+                    {data.map((item, index) => (
+                        <BoxSale 
+                            price={item.price}
+                            title={item.name}
+                            type={item.is_new ? 'novo' : 'usado'}
+                            imageAdress={item.user.avatar}
+                            altImage='Foto do anúncio'
+                            onPress={handleDetailsMyAdvert}
+                            hideProfilePicture={true}
+                        />  
+                    ))}
+                </Row>
+            }
         </VStack>
         <BottomNavigation/>
         </>
