@@ -1,4 +1,6 @@
 import { Avatar, Box, Button as ButtonNativeBase, IButtonProps, Image, Row, Text  } from "native-base"
+import { api } from "../../services/api";
+
 
 type Props = IButtonProps &{
     title: string;
@@ -17,7 +19,7 @@ export function BoxSale({title, type, price, status = 'active', imageAdress, alt
             <Box width={153} height={143} mb={6}>
                     <Image 
                         source={{
-                            uri: imageAdress
+                            uri: `${api.defaults.baseURL}/images/${imageAdress}`
                         }}
                         width={153}
                         height={100}
