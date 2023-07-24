@@ -127,7 +127,6 @@ export function AuthContextProvider({ children } : AuthContextProviderProps){
         try{
             setIsLoadingUserStorageData(true)
             const response = await storageProductGet()
-            console.log(response, '$$$$$')
             return response
 
         }catch(error){
