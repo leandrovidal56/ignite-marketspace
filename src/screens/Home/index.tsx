@@ -14,11 +14,12 @@ import { UserPhoto } from '../../components/UserPhoto';
 import { AppError } from '../../utils/AppError';
 import { Loading } from '../../components/loading';
 import { ProductDTO } from '../../dtos/productDTO';
+import { storageProductGetDatabase } from '../../storage/storageProduct';
 
 LogBox.ignoreLogs(['We can not support a function callback. See Github Issues for details https://github.com/adobe/react-spectrum/issues/2320'])
 
 export default function Home (){
-    const { user, productGet, productSaveStorage } = useAuth()
+    const { user, productGet, productSaveStorage, productGetStorageData } = useAuth()
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
 
@@ -77,14 +78,11 @@ export default function Home (){
 
     async function loadMyProducts(){
         try{
-            setIsLoading(true)
-            const response = await api.get('/products/')
-            console.log(response.data)
-            setData(response.data)
+            const productsSaved = await productGetStorageData()
+            console.log(productGetStorageData.length, 'products saved')
             
-            // console.log(storageProductGet, 'tankings')
-            //  setData(storageProductGet)
-            
+            setData(productsSaved)        
+
         }catch(error){
             const isAppError = error instanceof AppError
             const title = isAppError ? error.message : 'Não foi possível carregar seus anúncios. Tente novamente mais tarde.' 
@@ -134,8 +132,7 @@ export default function Home (){
                         iconLeftName='plus'
                         textWeight={'bold'}
                         iconColor='#F7F7F8'
-                        // onPress={handleNewAdvert}
-                        onPress={loadMyProducts}
+                        onPress={handleNewAdvert}
                     />
             </Center>
             
@@ -278,6 +275,7 @@ export default function Home (){
                             <Row justifyContent={'space-between'} mt={6}>
                                 {data.map((item, index) => (
                                     <BoxSale 
+                                    key={index}
                                     price={item.price}
                                     title={item.name}
                                     type={item.is_new ? 'novo' : 'usado'}

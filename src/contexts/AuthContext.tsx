@@ -4,7 +4,7 @@ import { api } from "../services/api";
 import { storageUserGet, storageUserRemove, storageUserSave } from "../storage/storageUser";
 import { ProductDTO } from "../dtos/productDTO";
 import { storageAuthTokenGet, storageAuthTokenRemove, storageAuthTokenSave } from "../storage/storageAuthToken";
-import { storageProductGet, storageProductSave } from "../storage/storageProduct";
+import { storageProductGet, storageProductSave, storageProductSaveDatabase } from "../storage/storageProduct";
 
 export type AuthContextDataProps = {
     user: UserDTO;
@@ -17,6 +17,7 @@ export type AuthContextDataProps = {
     productSave: () => void;
     productSaveStorage: (product: ProductDTO) => void;
     productGet: () => Promise<ProductDTO>;
+    productGetStorageData: () => Promise<any>;
     
 }
 
@@ -126,13 +127,33 @@ export function AuthContextProvider({ children } : AuthContextProviderProps){
     async function productGet(){
         try{
             setIsLoadingUserStorageData(true)
-            const response = await storageProductGet()
+            const response = await storageProductGet()          
             return response
 
         }catch(error){
             throw error
 
         } finally{
+            setIsLoadingUserStorageData(false)
+        }
+    }
+
+    async function productGetStorageData(){
+        try{
+            setIsLoadingUserStorageData(false)
+            const response1 = await api.get('/products/')
+            console.log( response1.data, '$$$$$$$$$$$$$-1')
+            
+            const response = await api.get('/products/')
+            await storageProductSaveDatabase(response.data)
+            console.log( response.data, '$$$$$$$$$$$$$')
+            return response.data
+
+        }catch(error){
+            console.log('passou aqui no catch')
+            throw error
+
+        }finally{
             setIsLoadingUserStorageData(false)
         }
     }
@@ -153,7 +174,7 @@ export function AuthContextProvider({ children } : AuthContextProviderProps){
             signOut, 
             isLoadingUserStorageData,
             product, setProduct, productSave, productGet,
-            productSaveStorage
+            productSaveStorage, productGetStorageData
              }}> 
             {children}
         </AuthContext.Provider>

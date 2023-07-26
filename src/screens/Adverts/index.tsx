@@ -8,12 +8,14 @@ import { BottomNavigation } from '../../components/bottomNavigation';
 import { api } from '../../services/api';
 import { Loading } from '../../components/loading';
 import { AppError } from '../../utils/AppError';
+import { useAuth } from '../../hookes/useAuth';
 export default function Adverts (){
     const [ select, setSelect] = useState('')
     const [ data, setData] = useState([])
     const navigation = useNavigation<AppNavigatorRoutesProps>()
     const [loading, setIsLoading] = useState(false)
     const toast = useToast()
+    const { productGetStorageData } = useAuth()
 
     function handleDetailsMyAdvert(){
         navigation.navigate('detailsMyAdverts')
@@ -22,8 +24,10 @@ export default function Adverts (){
     async function loadMyProducts(){
         try{
             setIsLoading(true)
-            const response = await api.get('/products/')
-            setData(response.data)
+            const productsSaved = await productGetStorageData()
+            
+            setData(productsSaved)    
+
         }catch(error){
             const isAppError = error instanceof AppError
             const title = isAppError ? error.message : 'Não foi possível carregar seus anúncios. Tente novamente mais tarde.' 
