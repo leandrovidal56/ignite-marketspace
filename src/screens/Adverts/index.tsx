@@ -88,7 +88,7 @@ export default function Adverts (){
                             price={item.price}
                             title={item.name}
                             type={item.is_new ? 'novo' : 'usado'}
-                            imageAdress={item.user.avatar}
+                            imageAdress={'jklasjflkasjf'}
                             altImage='Foto do anúncio'
                             onPress={handleDetailsMyAdvert}
                             hideProfilePicture={true}

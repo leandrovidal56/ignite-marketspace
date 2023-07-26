@@ -45,8 +45,8 @@ export default function Home (){
         navigation.navigate('adverts')
     }
 
-    function handleDetails(){
-        navigation.navigate('details')
+    function handleDetails(productId: string){
+        navigation.navigate('details', {productId})
     }
 
     function openModal(){
@@ -59,15 +59,17 @@ export default function Home (){
 
     function filter(){        
         data.map((item, index)=> {
+
             console.log(item)
             console.log(item.id)
             console.log(item.accept_trade)
             console.log(item.is_new)
             console.log(item.name)
             console.log(item.price)
-            console.log(item.user.avatar)
-            console.log(item.payment_methods)
-            console.log(item.payment_methods[index].name)
+            console.log(item.payment_methods[0].name)
+            console.log(index, 'take index')
+            // console.log(item.payment_methods.name)
+            // console.log(item.payment_methods[index].name)
         })
         // console.log(data.payment_methods.name, 'take payment method')
         // const result = data.filter(item => item.is_new !== true);
@@ -79,6 +81,9 @@ export default function Home (){
     async function loadMyProducts(){
         try{
             const productsSaved = await productGetStorageData()
+            
+
+            
             console.log(productGetStorageData.length, 'products saved')
             
             setData(productsSaved)        
@@ -241,8 +246,7 @@ export default function Home (){
                             textColor='#364D9D'
                             iconColor='#364D9D'
                             mr={5}
-                            // onPress={handleGoMyAdvert}
-                            onPress={filter}
+                            onPress={handleGoMyAdvert}
                         
                         />
                     </Row>
@@ -279,9 +283,9 @@ export default function Home (){
                                     price={item.price}
                                     title={item.name}
                                     type={item.is_new ? 'novo' : 'usado'}
-                                    imageAdress={item.user.avatar}
+                                    imageAdress={item?.product_images[index]?.name}
                                     altImage='Foto do anúncio'
-                                    onPress={filter}
+                                    onPress={() => handleDetails(item.id)}
                                     hideProfilePicture={true}
                                     />  
                                     ))}

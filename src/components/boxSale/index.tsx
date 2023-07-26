@@ -19,7 +19,8 @@ export function BoxSale({title, type, price, status = 'active', imageAdress, alt
             <Box width={153} height={143} mb={6}>
                     <Image 
                         source={{
-                            uri: `${api.defaults.baseURL}/images/${imageAdress}`
+                            // uri: `${api.defaults.baseURL}/images/${imageAdress}`
+                            uri: 'https://e7.pngegg.com/pngimages/348/800/png-clipart-man-wearing-blue-shirt-illustration-computer-icons-avatar-user-login-avatar-blue-child.png'
                         }}
                         width={153}
                         height={100}

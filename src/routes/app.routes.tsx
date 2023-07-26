@@ -11,7 +11,7 @@ import Preview from "../screens/Preview";
 
 type AppRoutes ={ 
     home: undefined;
-    details: undefined;
+    details: {productId: string};
     adverts: undefined;
     createAdverts: undefined;
     editAdverts: undefined;
