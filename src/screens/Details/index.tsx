@@ -10,6 +10,7 @@ import { api } from '../../services/api';
 import { useEffect, useState } from 'react';
 import { Loading } from '../../components/loading';
 import { AppError } from '../../utils/AppError';
+import { ProductDetailsDTO } from '../../dtos/productDetailsDTO';
 
 type RouteParamsProps = {
     productId: string;
@@ -19,32 +20,27 @@ export default function Details (){
     const testando1 = ['https://wallpaperaccess.com/full/317501.jpg', 'https://wallpaperaccess.com/full/317502.jpg', 'https://wallpaperaccess.com/full/317503.jpg']
     const route = useRoute();
     const [loading, setIsLoading] = useState(false)
-    const [ data, setData] = useState([])
+    const [ data, setData ] = useState<ProductDetailsDTO>({ } as ProductDetailsDTO)
     const toast = useToast()
+    const { productId } = route.params as RouteParamsProps;
     async function loadProductDetails(productId:string){
         try{
             setIsLoading(true)
             const response = await api.get(`/products/${productId}`)
-            console.log(response, 'take a moment response')
-            console.log(response.data, 'take a moment response')
             setData(response.data)
         } catch (error) {
-            console.log(error, 'take error')
             const isAppError = error instanceof AppError
             const title = isAppError ? error.message : 'Não foi possível carregar os detalhes do produto. Tente novamente mais tarde.' 
-        
             toast.show({
                 title,
                 placement: 'top',
                 bgColor: 'red.500'
             })
-
         }finally{
             setIsLoading(false)
         }
-
     }
-    const { productId } = route.params as RouteParamsProps;
+  
 
     function showLogs(){
 
@@ -69,17 +65,18 @@ export default function Details (){
     }
             
     useEffect(()=>{
+        
         loadProductDetails(productId)
-    }, [])
+    }, [productId])
     
     return (
             
         <SafeAreaView>
-                <Header back/>
-                {
+            <Header back/>
+            {
             loading ? 
             <Loading/>
-        :
+            :
                 <ScrollView>
                     <Center>
                         <Carousel
@@ -101,20 +98,20 @@ export default function Details (){
                         <Row alignItems={'center'} >
                             <Avatar size={6} mr={2}/>
                             <Text>{data.name}</Text>
-                            {/* <Text>Teste</Text> */}
                         </Row>
                         <Box width={43} height={17} borderRadius={20} bgColor={'gray.300'} mt={6} alignItems={'center'} justifyContent={'center'}>
-                            {/* <Text fontSize={10} >{data.is_new ? 'novo' : 'usado'}</Text> */}
-                            <Text fontSize={10} >novo</Text>
+                            <Text fontSize={10} >{data.is_new ? 'novo' : 'usado'}</Text>
                         </Box>
                         <Row justifyContent={'space-between'} mt={2}>
-                            <Text fontSize={20} fontWeight={'semibold'}>Bicicleta</Text>
-                            <Text color={"#647ac7"}  fontWeight={'bold'} fontSize={20} >R$ 120,00</Text>
+                            <Text fontSize={20} fontWeight={'semibold'}>{data.name}</Text>
+                            <Text color={"#647ac7"}  fontWeight={'bold'} fontSize={20} >R$ {data.price}</Text>
                         </Row>
-                        <Text mt={2} fontWeight={'400'} fontSize={14} lineHeight={18.2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis voluptas accusantium, delectus eius fugit enim, debitis dolor cumque eveniet consequatur soluta distinctio maxime libero. Nobis asperiores doloremque saepe eius velit.</Text>
+                        <Text mt={2} fontWeight={'400'} fontSize={14} lineHeight={18.2}>
+                            {data.description}
+                        </Text>
                         <Row mt={6}>
                             <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Aceitar troca?</Text>
-                            <Text ml={2}>Sim</Text>
+                            <Text ml={2}>{data.accept_trade ? 'Sim' : 'Não'}</Text>
                         </Row>
                         <Column>
                             <Text>Meios de pagamento:</Text>
@@ -144,7 +141,7 @@ export default function Details (){
                         <Row justifyContent={'space-between'} alignItems={'center'}>
                             <Text fontSize={24} color={"#364d9d"} fontWeight={'bold'}>
                                 <Text fontSize={12}>R$</Text>
-                                120,00
+                                {data.price}
                             </Text>
                             <Button 
                                 iconLeftName={'phone'}
@@ -157,8 +154,8 @@ export default function Details (){
                         </Row>
                     </VStack>
                 </ScrollView>
-                }
-                </SafeAreaView>
+            }
+        </SafeAreaView>
             
     );
 }

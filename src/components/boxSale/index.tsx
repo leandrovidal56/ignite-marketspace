@@ -1,5 +1,4 @@
 import { Avatar, Box, Button as ButtonNativeBase, IButtonProps, Image, Row, Text  } from "native-base"
-import { api } from "../../services/api";
 
 
 type Props = IButtonProps &{

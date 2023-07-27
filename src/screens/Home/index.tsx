@@ -10,20 +10,16 @@ import { BottomNavigation } from '../../components/bottomNavigation';
 import { SafeAreaView, LogBox } from 'react-native';
 import { api } from '../../services/api';
 import { useAuth } from '../../hookes/useAuth';
-import { UserPhoto } from '../../components/UserPhoto';
 import { AppError } from '../../utils/AppError';
 import { Loading } from '../../components/loading';
-import { ProductDTO } from '../../dtos/productDTO';
-import { storageProductGetDatabase } from '../../storage/storageProduct';
 
 LogBox.ignoreLogs(['We can not support a function callback. See Github Issues for details https://github.com/adobe/react-spectrum/issues/2320'])
 
 export default function Home (){
-    const { user, productGet, productSaveStorage, productGetStorageData } = useAuth()
+    const { user, productGetStorageData } = useAuth()
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
 
-    const [avatar, setAvatar] = useState({ })
     const [newProduct, setNewProduct] = useState(false)
     const [usedProduct, setUsedProduct] = useState(false)
     const [loading, setIsLoading] = useState(false)
@@ -57,37 +53,11 @@ export default function Home (){
         setShowModal(false)
     }
 
-    function filter(){        
-        data.map((item, index)=> {
-
-            console.log(item)
-            console.log(item.id)
-            console.log(item.accept_trade)
-            console.log(item.is_new)
-            console.log(item.name)
-            console.log(item.price)
-            console.log(item.payment_methods[0].name)
-            console.log(index, 'take index')
-            // console.log(item.payment_methods.name)
-            // console.log(item.payment_methods[index].name)
-        })
-        // console.log(data.payment_methods.name, 'take payment method')
-        // const result = data.filter(item => item.is_new !== true);
-        // const result = data.filter(item => item.accept_trade !== false);
-        
-        
-    }
 
     async function loadMyProducts(){
         try{
             const productsSaved = await productGetStorageData()
-            
-
-            
-            console.log(productGetStorageData.length, 'products saved')
-            
             setData(productsSaved)        
-
         }catch(error){
             const isAppError = error instanceof AppError
             const title = isAppError ? error.message : 'Não foi possível carregar seus anúncios. Tente novamente mais tarde.' 
@@ -110,7 +80,6 @@ export default function Home (){
     const [change, setChange] = useState(false);
 
     return (
-        
         <SafeAreaView style={{ backgroundColor: '#EDECEE', flex: 1}} >
         {
             loading 

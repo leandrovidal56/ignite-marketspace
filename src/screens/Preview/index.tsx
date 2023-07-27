@@ -20,7 +20,6 @@ export default function Preview (){
     const navigation = useNavigation<AppNavigatorRoutesProps>()
     const { product, user, productSave } = useAuth()
     const toast = useToast()
-    console.log(product.image, 'take images')
     
 
 

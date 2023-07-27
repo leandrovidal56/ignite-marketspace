@@ -1,10 +1,10 @@
-import {  Checkbox, Radio, Row, ScrollView, Switch, Text, TextArea, VStack, useToast } from "native-base";
+import { Checkbox, Radio, Row, ScrollView, Switch, Text, TextArea, VStack, useToast } from "native-base";
 import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
 import { Input } from "../../components/input";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "../../components/button";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "../../routes/app.routes";
 import { useForm, Controller} from 'react-hook-form';
 import * as yup from 'yup';
