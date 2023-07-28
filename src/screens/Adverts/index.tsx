@@ -1,4 +1,4 @@
-import { Text, VStack, Row, Select, useToast} from 'native-base';
+import { Text, VStack, Row, Select, useToast, FlatList} from 'native-base';
 import { BoxSale } from '../../components/boxSale';
 import { useEffect, useState } from 'react';
 import { Header } from '../../components/Header';
@@ -9,6 +9,7 @@ import { Loading } from '../../components/loading';
 import { AppError } from '../../utils/AppError';
 import { useAuth } from '../../hookes/useAuth';
 export default function Adverts (){
+
     const [ select, setSelect] = useState('')
     const [ data, setData] = useState([])
     const navigation = useNavigation<AppNavigatorRoutesProps>()
@@ -24,7 +25,6 @@ export default function Adverts (){
         try{
             setIsLoading(true)
             const productsSaved = await productGetStorageData()
-            
             setData(productsSaved)    
 
         }catch(error){
@@ -39,8 +39,8 @@ export default function Adverts (){
         } finally{
             setIsLoading(false)
         }
-
     }
+    
     async function handleCreateAdvert(){
         navigation.navigate('createAdverts')
     }
@@ -62,7 +62,7 @@ export default function Adverts (){
                 />
             </Row>
             <Row justifyContent={'space-between'} mb={5}>
-                <Text color="#3E3A40">9 anúncios</Text>
+                <Text color="#3E3A40">{data.length} anúncios</Text>
                 <Select 
                     selectedValue={select} 
                     minWidth="111" 
@@ -81,8 +81,10 @@ export default function Adverts (){
             {
                 loading 
                 ? <Loading/>
-                :<Row justifyContent={'space-between'}>
-                    {data.map((item, index) => (
+                : <FlatList 
+                    data={data} 
+                    numColumns={2}
+                    renderItem={({item}) => 
                         <BoxSale 
                             price={item.price}
                             title={item.name}
@@ -92,11 +94,11 @@ export default function Adverts (){
                             onPress={handleDetailsMyAdvert}
                             hideProfilePicture={true}
                         />  
-                    ))}
-                </Row>
+                    }
+                />
             }
-        </VStack>
-        <BottomNavigation/>
+            <BottomNavigation/>
+            </VStack>
         </>
     );
 }

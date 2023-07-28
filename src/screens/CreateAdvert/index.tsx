@@ -122,17 +122,17 @@ export default function CreateAdvert (){
                     </Row>
                     <Text fontSize={14} fontWeight={"bold"}>Sobre o produto</Text>
                     <Controller
-                            control={control}
-                            name="name"
-                            render={({field: {onChange, value}}) => (
-                                <Input 
-                                    placeholder="Título do anúncio"
-                                    autoCapitalize='none'
-                                    onChangeText={onChange}
-                                    value={value}
-                                    errorMessage={errors.name?.message}
-                                />
-                            )}
+                        control={control}
+                        name="name"
+                        render={({field: {onChange, value}}) => (
+                            <Input 
+                                placeholder="Título do anúncio"
+                                autoCapitalize='none'
+                                onChangeText={onChange}
+                                value={value}
+                                errorMessage={errors.name?.message}
+                            />
+                        )}
                     />
                     <TextArea onChangeText={setDescription} value={description} borderRadius={8} borderColor={'#F7F7F8'} bgColor={'#F7F7F8'} h={40} mt={4} w="100%" placeholder="Descrição do produto" autoCompleteType={'none'} />
                         <Radio.Group 
@@ -220,7 +220,7 @@ export default function CreateAdvert (){
                     />
                 </Row>
         </ScrollView>
-            </SafeAreaView>
+    </SafeAreaView>
     )
 
 }

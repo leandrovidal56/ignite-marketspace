@@ -141,12 +141,10 @@ export function AuthContextProvider({ children } : AuthContextProviderProps){
     async function productGetStorageData(){
         try{
             setIsLoadingUserStorageData(false)
-            const response1 = await api.get('users/products/')
-            console.log( response1.data, '$$$$$$$$$$$$$-1')
             
             const response = await api.get('users/products/')
+            console.log(response.data.length)
             await storageProductSaveDatabase(response.data)
-            console.log( response.data, '$$$$$$$$$$$$$')
             return response.data
 
         }catch(error){

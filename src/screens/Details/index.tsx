@@ -3,7 +3,7 @@ import {  MaterialCommunityIcons  } from '@expo/vector-icons'
 import { Button } from '../../components/button';
 import { IconComponent } from '../../components/icon';
 import { Header } from '../../components/Header';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView} from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import { useRoute } from '@react-navigation/native';
 import { api } from '../../services/api';
@@ -11,6 +11,8 @@ import { useEffect, useState } from 'react';
 import { Loading } from '../../components/loading';
 import { AppError } from '../../utils/AppError';
 import { ProductDetailsDTO } from '../../dtos/productDetailsDTO';
+import { getIconName, transformLabel } from '../Preview/types';
+import {  AntDesign  } from '@expo/vector-icons'
 
 type RouteParamsProps = {
     productId: string;
@@ -23,11 +25,12 @@ export default function Details (){
     const [ data, setData ] = useState<ProductDetailsDTO>({ } as ProductDetailsDTO)
     const toast = useToast()
     const { productId } = route.params as RouteParamsProps;
+
     async function loadProductDetails(productId:string){
         try{
             setIsLoading(true)
             const response = await api.get(`/products/${productId}`)
-            setData(response.data)
+            await setData(response.data)
         } catch (error) {
             const isAppError = error instanceof AppError
             const title = isAppError ? error.message : 'Não foi possível carregar os detalhes do produto. Tente novamente mais tarde.' 
@@ -43,32 +46,18 @@ export default function Details (){
   
 
     function showLogs(){
-
-        
-        // console.log(productId)
-        // console.log(data)
-        // console.log(data.accept_trade ? 'sim' : 'não')
-        // console.log(data.is_active ? 'sim' : 'não')
-        // console.log(data.is_new ? 'sim' : 'não')
-    
         console.log(data.payment_methods)
         data.payment_methods.map((item, index) =>{
-                    console.log(item.name)
-                } )
-                // console.log(data.price)
-                // console.log(data.user)
-                // console.log(data.user.name)
-                // console.log(data.user.avatar)
-                // console.log(data.user.tel)
-                // console.log(data.description)
-            
+            console.log(item.name)
+        } )
     }
             
-    useEffect(()=>{
-        
+    useEffect(() => {
         loadProductDetails(productId)
-    }, [productId])
+    }, [])
     
+ 
+
     return (
             
         <SafeAreaView>
@@ -76,8 +65,8 @@ export default function Details (){
             {
             loading ? 
             <Loading/>
-            :
-                <ScrollView>
+            :   <VStack>
+                <ScrollView height={'650px'} >
                     <Center>
                         <Carousel
                             width={390}
@@ -93,7 +82,7 @@ export default function Details (){
                             )}
                         />
                     </Center>
-                    <VStack padding={6} bgColor={"#EDECEE"}>
+                    <VStack height={'full'} padding={6} bgColor={"#EDECEE"}>
 
                         <Row alignItems={'center'} >
                             <Avatar size={6} mr={2}/>
@@ -106,37 +95,33 @@ export default function Details (){
                             <Text fontSize={20} fontWeight={'semibold'}>{data.name}</Text>
                             <Text color={"#647ac7"}  fontWeight={'bold'} fontSize={20} >R$ {data.price}</Text>
                         </Row>
-                        <Text mt={2} fontWeight={'400'} fontSize={14} lineHeight={18.2}>
-                            {data.description}
-                        </Text>
+                            <Text mt={2} fontWeight={'400'} fontSize={14} lineHeight={18.2}>
+                                {data.description}
+                            </Text>
                         <Row mt={6}>
                             <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Aceitar troca?</Text>
                             <Text ml={2}>{data.accept_trade ? 'Sim' : 'Não'}</Text>
                         </Row>
-                        <Column>
-                            <Text>Meios de pagamento:</Text>
-                            <Row mt={1}>
-                                <IconComponent name='barcode' size={5} mr={2} />
-                                <Text>Boleto</Text>
-                            </Row>
-                            <Row mt={1}>
-                            <IconComponent name='qrcode' size={5} mr={2} />
-                                <Text>Pix</Text>
-                            </Row>
-                            <Row mt={1}>
-                                <IconComponent name='cash' familyIcon={MaterialCommunityIcons} size={5} mr={2} />
-                                <Text>Dinheiro</Text>
-                            </Row>
-                            <Row mt={1}>
-                                <IconComponent name='creditcard' size={5} mr={2} />       
-                                <Text>Cartão de Crédito</Text>
-                            </Row>
-                            <Row mt={1}>   
-                                <IconComponent name='bank' size={5} mr={2} />
-                                <Text>Depósito Bancário</Text>
-                            </Row>
-                        </Column>
+                            {data.payment_methods?.length > 0  ? 
+                            <>
+                                <Column>
+                                <Text>Meios de pagamento:</Text>
+                                    {data.payment_methods?.map(item => {
+                                        return (
+                                            <Row mt={1}>
+                                                <IconComponent familyIcon={item.name === "Dinheiro" ? MaterialCommunityIcons : AntDesign } 
+                                                name={getIconName(item.name)} size={5} mr={2} />
+                                                <Text>{transformLabel(item.name)}</Text>
+                                            </Row>
+                                        )
+                                    })}
+                                </Column>
+                            </>
+                            :
+                        <Loading/>
+                        }
                     </VStack>
+                </ScrollView>
                     <VStack padding={6} marginBottom={4} >
                         <Row justifyContent={'space-between'} alignItems={'center'}>
                             <Text fontSize={24} color={"#364d9d"} fontWeight={'bold'}>
@@ -153,7 +138,7 @@ export default function Details (){
                             />
                         </Row>
                     </VStack>
-                </ScrollView>
+                </VStack>
             }
         </SafeAreaView>
             

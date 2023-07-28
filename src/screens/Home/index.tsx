@@ -1,4 +1,4 @@
-import { Center, Heading, Text, Modal, VStack, Checkbox, ScrollView, Avatar, Row, Column, Divider, Switch, useToast} from 'native-base';
+import { Center, Heading, Text, Modal, VStack, Checkbox, ScrollView, Avatar, Row, Column, Divider, Switch, useToast, FlatList} from 'native-base';
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { BoxSale } from '../../components/boxSale';
@@ -56,8 +56,8 @@ export default function Home (){
 
     async function loadMyProducts(){
         try{
-            const productsSaved = await productGetStorageData()
-            setData(productsSaved)        
+            const response = await api.get('/products/')
+            setData(response.data)        
         }catch(error){
             const isAppError = error instanceof AppError
             const title = isAppError ? error.message : 'Não foi possível carregar seus anúncios. Tente novamente mais tarde.' 
@@ -243,11 +243,11 @@ export default function Home (){
                             }
                             placeholder='Buscar anúncio'
                         />
-                        
-
-                            <Row justifyContent={'space-between'} mt={6}>
-                                {data.map((item, index) => (
-                                    <BoxSale 
+                        <FlatList 
+                            data={data} 
+                            numColumns={2}
+                            renderItem={({item, index}) => 
+                                <BoxSale 
                                     key={index}
                                     price={item.price}
                                     title={item.name}
@@ -256,10 +256,9 @@ export default function Home (){
                                     altImage='Foto do anúncio'
                                     onPress={() => handleDetails(item.id)}
                                     hideProfilePicture={true}
-                                    />  
-                                    ))}
-                            </Row>
-
+                                />  
+                            }
+                        />
                 </VStack>
             </ScrollView>
             </VStack>
