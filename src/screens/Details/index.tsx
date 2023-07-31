@@ -24,13 +24,15 @@ export default function Details (){
     const [loading, setIsLoading] = useState(false)
     const [ data, setData ] = useState<ProductDetailsDTO>({ } as ProductDetailsDTO)
     const toast = useToast()
+
     const { productId } = route.params as RouteParamsProps;
 
     async function loadProductDetails(productId:string){
         try{
             setIsLoading(true)
             const response = await api.get(`/products/${productId}`)
-            await setData(response.data)
+            setData(response.data)
+            // setIsLoading(false)
         } catch (error) {
             const isAppError = error instanceof AppError
             const title = isAppError ? error.message : 'Não foi possível carregar os detalhes do produto. Tente novamente mais tarde.' 
@@ -102,8 +104,8 @@ export default function Details (){
                             <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Aceitar troca?</Text>
                             <Text ml={2}>{data.accept_trade ? 'Sim' : 'Não'}</Text>
                         </Row>
-                            {data.payment_methods?.length > 0  ? 
-                            <>
+                            {/* {data.payment_methods?.length > 0  ? 
+                            <> */}
                                 <Column>
                                 <Text>Meios de pagamento:</Text>
                                     {data.payment_methods?.map(item => {
@@ -116,10 +118,10 @@ export default function Details (){
                                         )
                                     })}
                                 </Column>
-                            </>
+                            {/* </>
                             :
-                        <Loading/>
-                        }
+                            <Loading/> */}
+                        {/* } */}
                     </VStack>
                 </ScrollView>
                     <VStack padding={6} marginBottom={4} >

@@ -1,5 +1,4 @@
 export const transformLabel = (paymentMethodName: string) => {
-    console.log(paymentMethodName, 'take transform label')
     const labelName = {
         'boleto' : 'Boleto',
         'Boleto' : 'Boleto',
@@ -7,14 +6,13 @@ export const transformLabel = (paymentMethodName: string) => {
         'cash' : 'Dinheiro',
         'Dinheiro' : 'Dinheiro',
         'card' : 'Cartão de Crédito',
-        'deposit' : 'Depósito Bancário '
+        'deposit' : 'Depósito Bancário',
+        'Depósito Bancário' : 'Depósito Bancário'
     }
-    console.log('return',  labelName[paymentMethodName as keyof typeof labelName])
     return labelName[paymentMethodName as keyof typeof labelName]
 }
 
 export const getIconName = (paymentMethodName: string) => {
-    console.log(paymentMethodName, 'take getIconName')
     const icon = {
         'boleto' :  'barcode',
         'Boleto' :  'barcode',
@@ -22,10 +20,10 @@ export const getIconName = (paymentMethodName: string) => {
         'Dinheiro' : 'cash',
         'cash' : 'cash',
         'card' : 'creditcard',
-        'deposit' : 'bank'
+        'deposit' : 'bank',
+        'Depósito Bancário' : 'bank'
 
     }
-    console.log('return getIconName', icon[paymentMethodName as keyof typeof icon])
     return icon[paymentMethodName as keyof typeof icon]
 }
 

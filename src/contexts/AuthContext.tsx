@@ -143,7 +143,6 @@ export function AuthContextProvider({ children } : AuthContextProviderProps){
             setIsLoadingUserStorageData(false)
             
             const response = await api.get('users/products/')
-            console.log(response.data.length)
             await storageProductSaveDatabase(response.data)
             return response.data
 

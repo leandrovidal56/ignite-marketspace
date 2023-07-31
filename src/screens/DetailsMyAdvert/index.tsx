@@ -1,4 +1,4 @@
-import { Center, Text, VStack, ScrollView, Avatar, Row, Column,  Image, Box, Modal} from 'native-base';
+import { Center, Text, VStack, ScrollView, Avatar, Row, Column,  Image, Box, Modal, useToast} from 'native-base';
 import {  MaterialCommunityIcons, FontAwesome  } from '@expo/vector-icons'
 
 import { Button } from '../../components/button';
@@ -6,17 +6,79 @@ import { IconComponent } from '../../components/icon';
 import { Header } from '../../components/Header';
 import { useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
+import { ProductDetailsDTO } from '../../dtos/productDetailsDTO';
+import { api } from '../../services/api';
+import { useRoute } from '@react-navigation/native';
+import { AppError } from '../../utils/AppError';
+import { Loading } from '../../components/loading';
+import { getIconName, transformLabel } from '../Preview/types';
+import {  AntDesign  } from '@expo/vector-icons'
+
+type RouteParamsProps = {
+    productId: string;
+}
+
 export default function DetailsMyAdverts (){
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
 
     const [showModal, setShowModal] = useState(false);
     const [active, setActive] = useState(true);
-    
+    const [loading, setIsLoading] = useState(false)
+    const [ data, setData ] = useState<ProductDetailsDTO>({ } as ProductDetailsDTO)
+    const toast = useToast();
+    const route = useRoute();
+
+    const { productId } = route.params as RouteParamsProps;
+
+    async function loadDetailsMyAdvert(productId:string){
+        try{
+            setIsLoading(true)
+            console.log(productId, 'take ')
+            const response = await api.get(`/products/${productId}`)
+            setData(response.data)
+
+        }catch(error){
+            const isAppError = error instanceof AppError
+            const title = isAppError ? error.message : 'Não foi possível carregar os detalhes do produto. Tente novamente mais tarde.' 
+            toast.show({
+                title,
+                placement: 'top',
+                bgColor: 'red.500'
+            })
+
+        }finally{
+            setIsLoading(false)
+        }
+    }
+
+    async function deleteMyProductAdvert(productId: string){
+        try{
+            setIsLoading(true)
+            console.log(productId, 'delete')
+            const response = await api.delete(`/products/${productId}`)
+            console.log(response)
+            console.log(response.data)
+            Alert.alert('Excluído com sucesso')
+            navigation.navigate('home')
+        }catch(error){ 
+            const isAppError = error instanceof AppError
+            const title = isAppError ? error.message : 'Não foi possível excluir seu anúncio. Tente novamente mais tarde.' 
+            toast.show({
+                title,
+                placement: 'top',
+                bgColor: 'red.500'
+            })
+
+        }finally{
+            setIsLoading(false)
+        }
+    }
+    // console.log(data, 'take data')
     function handleEditMyAdvert(){
-        navigation.navigate('editAdverts')
+        navigation.navigate('editAdverts', {data})
     }
     
     function openModal(){
@@ -26,6 +88,11 @@ export default function DetailsMyAdverts (){
         Alert.alert('Excluído com sucesso')
         navigation.navigate('home')
     }
+
+    useEffect(() => {
+        loadDetailsMyAdvert(productId)
+    }, [])
+    
 
     return (
         <VStack justifyContent={'center'} paddingTop={12}>
@@ -46,7 +113,7 @@ export default function DetailsMyAdverts (){
                                 title="Sim"
                                 backgroundColor={'#1A181B'}
                                 width={157}
-                                onPress={deleteAdvert}
+                                onPress={() => deleteMyProductAdvert(data.id)}
                             />
                         </Row>
                 </Modal.Body>
@@ -57,6 +124,10 @@ export default function DetailsMyAdverts (){
                 showIconRight
                 navigationIconRight={handleEditMyAdvert}
             />
+            {
+            loading ? 
+            <Loading/>
+            : 
         <ScrollView marginBottom={10}>
             <Center 
             background={active ? '#1A181B' : 'transparent'}
@@ -81,42 +152,33 @@ export default function DetailsMyAdverts (){
 
                 <Row alignItems={'center'} >
                     <Avatar size={6} mr={2}/>
-                    <Text>Markenna Baptista</Text>
+                    <Text>{data.name}</Text>
                 </Row>
                 <Box width={43} height={17} borderRadius={20} bgColor={'gray.300'} mt={6} alignItems={'center'} justifyContent={'center'}>
-                    <Text fontSize={10} >NOVO</Text>
+                <Text fontSize={10} >{data.is_new ? 'novo' : 'usado'}</Text>
                 </Box>
                 <Row justifyContent={'space-between'} mt={2}>
-                    <Text fontSize={20} fontWeight={'semibold'}>Bicicleta</Text>
-                    <Text color={"#647ac7"}  fontWeight={'bold'} fontSize={20} >R$ 120,00</Text>
+                    <Text fontSize={20} fontWeight={'semibold'}>{data.name}</Text>
+                    <Text color={"#647ac7"}  fontWeight={'bold'} fontSize={20} >R$ {data.price}</Text>
                 </Row>
-                <Text color={'#3E3A40'} fontWeight={'normal'} fontSize={14} lineHeight={18.2} mt={2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis voluptas accusantium, delectus eius fugit enim, debitis dolor cumque eveniet consequatur soluta distinctio maxime libero. Nobis asperiores doloremque saepe eius velit.</Text>
+                    <Text mt={2} fontWeight={'400'} fontSize={14} lineHeight={18.2}>
+                        {data.description}
+                    </Text>
                 <Row mt={6}>
                     <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Aceitar troca?</Text>
-                    <Text ml={2}>Sim</Text>
+                    <Text ml={2}>{data.accept_trade ? 'Sim' : 'Não'}</Text>
                 </Row>
                 <Column>
                     <Text fontSize={14} lineHeight={18} fontWeight={'bold'} mt={4}>Meios de pagamento:</Text>
-                    <Row mt={2}>
-                        <IconComponent name='barcode' size={5} mr={2} />
-                        <Text>Boleto</Text>
-                    </Row>
-                    <Row mt={1}>
-                    <IconComponent name='qrcode' size={5} mr={2} />
-                        <Text>Pix</Text>
-                    </Row>
-                    <Row mt={1}>
-                        <IconComponent name='cash' familyIcon={MaterialCommunityIcons} size={5} mr={2} />
-                        <Text>Dinheiro</Text>
-                    </Row>
-                    <Row mt={1}>
-                        <IconComponent name='creditcard' size={5} mr={2} />       
-                        <Text>Cartão de Crédito</Text>
-                    </Row>
-                    <Row mt={1}>   
-                        <IconComponent name='bank' size={5} mr={2} />
-                        <Text>Depósito Bancário</Text>
-                    </Row>
+                        {data.payment_methods?.map(item => {
+                            return (
+                                <Row mt={1}>
+                                    <IconComponent familyIcon={item.name === "Dinheiro" ? MaterialCommunityIcons : AntDesign } 
+                                    name={getIconName(item.name)} size={5} mr={2} />
+                                    <Text>{transformLabel(item.name)}</Text>
+                                </Row>
+                            )
+                        })}
                 </Column>
             </VStack>
             <VStack padding={6}>
@@ -135,10 +197,11 @@ export default function DetailsMyAdverts (){
                         height={42}
                         variant={'outline'}
                         mt={2}
-                        onPress={openModal}
+                        onPress={() => openModal(data.id)}
                     />
             </VStack>
             </ScrollView>
+            }
         </VStack>
     );
 }

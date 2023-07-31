@@ -17,8 +17,8 @@ export default function Adverts (){
     const toast = useToast()
     const { productGetStorageData } = useAuth()
 
-    function handleDetailsMyAdvert(){
-        navigation.navigate('detailsMyAdverts')
+    function handleDetailsMyAdvert(productId: string){
+        navigation.navigate('detailsMyAdverts', {productId} )
     }
 
     async function loadMyProducts(){
@@ -91,7 +91,7 @@ export default function Adverts (){
                             type={item.is_new ? 'novo' : 'usado'}
                             imageAdress={'jklasjflkasjf'}
                             altImage='Foto do anúncio'
-                            onPress={handleDetailsMyAdvert}
+                            onPress={() => handleDetailsMyAdvert(item.id)}
                             hideProfilePicture={true}
                         />  
                     }

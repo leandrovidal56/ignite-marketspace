@@ -4,10 +4,27 @@ import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
 import { Input } from "../../components/input";
 import { Button } from "../../components/button";
+import { api } from '../../services/api';
+import { useRoute } from '@react-navigation/native';
+import { ProductDetailsDTO } from "../../dtos/productDetailsDTO";
 
 export default function EditAdvert (){
-    const [value, setValue] = useState('Produto usado');
+    const [value, setValue] = useState();
     const [change, setChange] = useState(false);
+    const [ boleto, setBoleto] = useState(false);
+    const [ pix, setPix] = useState(false);
+    const [ dinheiro, setDinheiro] = useState(false);
+    const [ credito, setCredito] = useState(false);
+    const [ deposito, setDeposito] = useState(false);
+
+    const route = useRoute();
+
+    type RouteParamsProps = {
+        data: ProductDetailsDTO;
+    }
+
+    const { data } = route.params as RouteParamsProps;
+
 
     return (
         <SafeAreaView style={{ backgroundColor: '#EDECEE'}} >
@@ -20,12 +37,23 @@ export default function EditAdvert (){
                     <Text fontSize={14} fontWeight={"bold"}>Imagens</Text>
                     <Text mt={2}>Escolha até 3 imagens para mostrar o quanto o seu produto é incrível</Text>
                     <Text fontSize={14} fontWeight={"bold"} mt={8}>Sobre o produto</Text>
-                    <Input placeholder="Título do anúncio"/>
-                    <TextArea borderRadius={8} borderColor={'#F7F7F8'} bgColor={'#F7F7F8'} h={40} mt={4} w="100%" placeholder="Descrição do produto" autoCompleteType={'none'} />
+                    <Input placeholder="Título do anúncio" defaultValue={data.name}/>
+                    <TextArea 
+                        borderRadius={8} 
+                        borderColor={'#F7F7F8'} 
+                        bgColor={'#F7F7F8'} 
+                        h={40} 
+                        mt={4} 
+                        w="100%" 
+                        placeholder="Descrição do produto" 
+                        autoCompleteType={'none'} 
+                        defaultValue={data.description}
+                    />
                         <Radio.Group 
                             name="myRadioGroup" 
                             accessibilityLabel="favorite number" 
                             value={value} 
+                            defaultValue={data.is_new ? 'Produto novo' : 'Produto usado'}
                             onChange={nextValue => {
                                 setValue(nextValue);
                               }}>
@@ -39,32 +67,41 @@ export default function EditAdvert (){
                             </Row>
                         </Radio.Group>
                     <Text fontSize={14} fontWeight={"bold"} mt={8}>Venda</Text>
-                    <Input placeholder="Valor do produto"/>
+                    <Input placeholder="Valor do produto"  defaultValue={data.price}/>
                     <Text fontSize={14} fontWeight={"bold"} mt={4}>Aceita troca ?</Text>
-                    <Switch size="md" mt={3} mb={6} value={change} onChange={() => setChange(!change)}/>
+                    <Switch size="md" mt={3} mb={6}  
+                    value={change} 
+                    defaultIsChecked={data.accept_trade}
+                    onChange={() => setChange(!change)}
+                    />
                     <Text fontSize={14} fontWeight={"bold"}>Meios de pagamento aceitos</Text>
                     <Checkbox mt={3}
                         value="boleto"
+                        isChecked={boleto}
                         >
                         Boleto
                     </Checkbox>
                     <Checkbox mt={3}
                         value="pix"
+                        isChecked={pix}
                         >
                         Pix
                     </Checkbox>
                     <Checkbox mt={3}
                         value="dinheiro"
+                        isChecked={dinheiro}
                         >
                         Dinheiro
                     </Checkbox>
                     <Checkbox mt={3}
                         value="cartao de credito"
+                        isChecked={credito}
                         >
                         Cartão de Crédito
                     </Checkbox>
                     <Checkbox mt={3}
                         value="deposito bancario"
+                        isChecked={deposito}
                         >
                         Depósito Bancário
                     </Checkbox>
