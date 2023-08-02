@@ -2,7 +2,7 @@ import { Checkbox, Radio, Row, ScrollView, Switch, Text, TextArea, VStack, useTo
 import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
 import { Input } from "../../components/input";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../components/button";
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "../../routes/app.routes";
@@ -35,6 +35,7 @@ export default function CreateAdvert (){
     const [acceptTrade, setAceeptTrade] = useState(false);
     const [paymentMethods, setPaymentMethods] = React.useState<string[]>([]);
     const [isLoadingProductStorageData, setIsLoadingProductStorageData ] = useState(false)
+    const [loading, setIsLoading] = useState(false)
 
     const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
         resolver: yupResolver(createAdvertSchema)
@@ -85,9 +86,7 @@ export default function CreateAdvert (){
      function handleCanceled(){
         navigation.goBack();
     }
-
-   
-
+ 
     return (
         <SafeAreaView style={{ backgroundColor : '#EDECEE'}} >
                 <Header

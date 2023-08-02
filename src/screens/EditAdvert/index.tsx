@@ -24,6 +24,20 @@ export default function EditAdvert (){
     }
 
     const { data } = route.params as RouteParamsProps;
+    // const paymentOptions = {
+    //     'Depósito Bancário': false,
+    //     'Pix': false,
+    //     'Dinheiro': false,
+    //     'Boleto': false,
+    //     'Cartão de Crédito': false,
+    // };
+
+    // data.payment_methods.forEach(item => {
+    //     if (paymentOptions.hasOwnProperty(item.name)) {
+    //         paymentOptions[item.name] = true;
+    //     }
+    // });
+    // console.log(paymentOptions);
 
     function fillPaymentMethod(){
         data.payment_methods.map(item => {
