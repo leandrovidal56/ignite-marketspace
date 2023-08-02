@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Checkbox, Radio, Row, ScrollView, Switch, Text, TextArea, VStack } from "native-base";
 import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
@@ -24,6 +24,30 @@ export default function EditAdvert (){
     }
 
     const { data } = route.params as RouteParamsProps;
+
+    function fillPaymentMethod(){
+        data.payment_methods.map(item => {
+            if(item.name === 'Depósito Bancário'){
+                setDeposito(true)
+            }
+            if(item.name === 'Pix'){
+                setPix(true)
+            }
+            if(item.name === 'Dinheiro'){
+                setDinheiro(true)
+            }
+            if(item.name === 'Boleto'){
+                setBoleto(true)
+            }
+            if(item.name === 'Cartão de Crédito'){
+                setCredito(true)
+            }
+        })
+    }
+
+    useEffect(( ) => {
+        fillPaymentMethod()
+    }, [])
 
 
     return (

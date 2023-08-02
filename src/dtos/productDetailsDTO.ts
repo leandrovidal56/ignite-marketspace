@@ -6,6 +6,7 @@ export type ProductDetailsDTO = {
     product_images?: string[];
     accept_trade?: boolean;
     is_new?: boolean;
+    tel?: string;
     is_active?: boolean;
     payment_methods?: any[];
     user: {

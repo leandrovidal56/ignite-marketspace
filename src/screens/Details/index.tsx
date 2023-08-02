@@ -13,6 +13,7 @@ import { AppError } from '../../utils/AppError';
 import { ProductDetailsDTO } from '../../dtos/productDetailsDTO';
 import { getIconName, transformLabel } from '../Preview/types';
 import {  AntDesign  } from '@expo/vector-icons'
+import { Linking } from 'react-native';
 
 type RouteParamsProps = {
     productId: string;
@@ -24,7 +25,7 @@ export default function Details (){
     const [loading, setIsLoading] = useState(false)
     const [ data, setData ] = useState<ProductDetailsDTO>({ } as ProductDetailsDTO)
     const toast = useToast()
-
+console.log(data, 'take data')
     const { productId } = route.params as RouteParamsProps;
 
     async function loadProductDetails(productId:string){
@@ -47,11 +48,8 @@ export default function Details (){
     }
   
 
-    function showLogs(){
-        console.log(data.payment_methods)
-        data.payment_methods.map((item, index) =>{
-            console.log(item.name)
-        } )
+    async function openWhatsLink(){
+        await Linking.openURL(`http://wa.me/+${data.tel}`)
     }
             
     useEffect(() => {
@@ -104,24 +102,18 @@ export default function Details (){
                             <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Aceitar troca?</Text>
                             <Text ml={2}>{data.accept_trade ? 'Sim' : 'Não'}</Text>
                         </Row>
-                            {/* {data.payment_methods?.length > 0  ? 
-                            <> */}
-                                <Column>
-                                <Text>Meios de pagamento:</Text>
-                                    {data.payment_methods?.map(item => {
-                                        return (
-                                            <Row mt={1}>
-                                                <IconComponent familyIcon={item.name === "Dinheiro" ? MaterialCommunityIcons : AntDesign } 
-                                                name={getIconName(item.name)} size={5} mr={2} />
-                                                <Text>{transformLabel(item.name)}</Text>
-                                            </Row>
-                                        )
-                                    })}
-                                </Column>
-                            {/* </>
-                            :
-                            <Loading/> */}
-                        {/* } */}
+                            <Column>
+                            <Text>Meios de pagamento:</Text>
+                                {data.payment_methods?.map(item => {
+                                    return (
+                                        <Row mt={1}>
+                                            <IconComponent familyIcon={item.name === "Dinheiro" ? MaterialCommunityIcons : AntDesign } 
+                                            name={getIconName(item.name)} size={5} mr={2} />
+                                            <Text>{transformLabel(item.name)}</Text>
+                                        </Row>
+                                    )
+                                })}
+                            </Column>
                     </VStack>
                 </ScrollView>
                     <VStack padding={6} marginBottom={4} >
@@ -136,7 +128,7 @@ export default function Details (){
                                 title='Entrar em Contato'
                                 width={169}
                                 height={42}
-                                onPress={showLogs}
+                                onPress={openWhatsLink}
                             />
                         </Row>
                     </VStack>
