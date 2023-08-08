@@ -17,7 +17,7 @@ export function BottomNavigation(){
     }
 
     function handleGoDetais(){
-        navigation.navigate('details')
+        navigation.navigate('adverts')
     }
 
     function handleLogout(){

@@ -24,6 +24,7 @@ export default function Home (){
     const [usedProduct, setUsedProduct] = useState(false)
     const [loading, setIsLoading] = useState(false)
     const [ data, setData] = useState([])
+    const [myProduct, setMyProduct] = useState([])
     const toast = useToast()
 
     function clickNewProduct (){
@@ -57,6 +58,8 @@ export default function Home (){
     async function loadMyProducts(){
         try{
             const response = await api.get('/products/')
+            const lengthAdvert = await productGetStorageData()
+            setMyProduct(lengthAdvert)
             setData(response.data)        
         }catch(error){
             const isAppError = error instanceof AppError
@@ -110,7 +113,7 @@ export default function Home (){
                     />
             </Center>
             
-            <ScrollView width={350}  showsVerticalScrollIndicator={false}  >
+            <VStack width={350}  >
                 <Modal isOpen={showModal} onClose={closeModal}>
                     <Modal.Content width="400px" bottom={3} marginTop={'auto'}>
                     <Modal.CloseButton />
@@ -203,7 +206,7 @@ export default function Home (){
                                 color="#364D9D"                            
                             />
                             <Column ml={4}>
-                                <Heading color="#3E3A40">{data.length}</Heading>
+                                <Heading color="#3E3A40">{myProduct.length}</Heading>
                                 <Text color="#3E3A40">anúncios ativos</Text>
                             </Column>
                         </Row>
@@ -246,13 +249,15 @@ export default function Home (){
                         <FlatList 
                             data={data} 
                             numColumns={2}
+                            contentContainerStyle={{ justifyContent: 'space-between'}}
+                            showsVerticalScrollIndicator={false}
                             renderItem={({item, index}) => 
                                 <BoxSale 
                                     key={index}
                                     price={item.price}
                                     title={item.name}
                                     type={item.is_new ? 'novo' : 'usado'}
-                                    imageAdress={item?.product_images[index]?.name}
+                                    imageAdress={item?.product_images[index]?.path}
                                     altImage='Foto do anúncio'
                                     onPress={() => handleDetails(item.id)}
                                     hideProfilePicture={true}
@@ -260,7 +265,7 @@ export default function Home (){
                             }
                         />
                 </VStack>
-            </ScrollView>
+            </VStack>
             </VStack>
             <BottomNavigation/>
         </>
