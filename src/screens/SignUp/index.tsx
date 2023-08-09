@@ -13,7 +13,7 @@ import { AppError } from '../../utils/AppError';
 import { UserPhoto } from '../../components/UserPhoto';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import { Alert } from 'react-native';
-import { useAuth } from '../../hookes/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 
 type FormDataProps = {
     name: string;
@@ -47,7 +47,6 @@ export default function SignUp (){
         }
 
         try{
-            console.log(avatar, 'take avatar inside submit')
             setIsLoading(true);
 
             const data = new FormData()
@@ -63,9 +62,7 @@ export default function SignUp (){
                 headers: { "Content-Type": "multipart/form-data"}
             }
             );
-            console.log(response, 'take all response')
-            console.log(response.data, 'take data')
-            console.log(response.data.avatar, 'take dataAvatar')
+
             if(response.status === 200 || 201){
                 reset()
                 await signIn(email, password)

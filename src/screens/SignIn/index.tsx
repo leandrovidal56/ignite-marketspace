@@ -5,12 +5,10 @@ import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigatorRoutesProps } from '../../routes/auth.routes';
-import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import { useForm, Controller} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
-import { api } from '../../services/api';
-import { useAuth } from '../../hookes/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import { AppError } from '../../utils/AppError';
 import { useState } from 'react';
 
@@ -35,7 +33,6 @@ export default function SignIn (){
     });
 
     const navigation = useNavigation<AuthNavigatorRoutesProps>();
-    const appNavigation = useNavigation<AppNavigatorRoutesProps>()
 
     function handleNewAccount(){
         navigation.navigate('signUp')

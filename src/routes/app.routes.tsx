@@ -8,14 +8,15 @@ import CreateAdvert from "../screens/CreateAdvert";
 import EditAdvert from "../screens/EditAdvert";
 import DetailsMyAdverts from "../screens/DetailsMyAdvert";
 import Preview from "../screens/Preview";
+import { ProductDetailsDTO } from "../dtos/productDetailsDTO";
 
 type AppRoutes ={ 
     home: undefined;
-    details: undefined;
+    details: {productId: string};
     adverts: undefined;
     createAdverts: undefined;
-    editAdverts: undefined;
-    detailsMyAdverts: undefined;
+    editAdverts: {data: ProductDetailsDTO};
+    detailsMyAdverts: {productId: string};
     preview: undefined;
 }
 

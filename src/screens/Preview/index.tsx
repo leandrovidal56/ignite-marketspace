@@ -1,11 +1,11 @@
-import { Center, Text, VStack, ScrollView, Avatar, Row, Column, Image, Box, useToast} from 'native-base';
+import { Center, Text, VStack, Avatar, Row, Column, Image, Box, useToast} from 'native-base';
 import { Button } from '../../components/button';
 import { IconComponent } from '../../components/icon';
 import { useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import {  MaterialCommunityIcons  } from '@expo/vector-icons'
 import { SafeAreaView } from 'react-native';
-import { useAuth } from '../../hookes/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import { api } from '../../services/api';
 import { Loading } from '../../components/loading';
 import { getIconName, transformLabel } from './types';
@@ -20,7 +20,6 @@ export default function Preview (){
     const navigation = useNavigation<AppNavigatorRoutesProps>()
     const { product, user, productSave } = useAuth()
     const toast = useToast()
-    console.log(product.image, 'take images')
     
 
 
@@ -69,31 +68,30 @@ export default function Preview (){
                 É assim que seu produto vai aparecer</Text>
 
             </Box>
-        <ScrollView >
-        {!product.image ? 
-            <Loading/> : 
-            
-            <VStack justifyContent={'center'} bgColor={'#EDECEE'} >
+        
+        {!product.image 
+        ? <Loading/> 
+        : <VStack justifyContent={'center'} bgColor={'#EDECEE'} >
                 <Center>
-                <Carousel
-                    width={390}
-                    height={280}
-                    data={product.image}
-                    renderItem={({ index }) => (
-                        <Image 
-                            source={{ uri: `${product.image[index]}`}}
-                            width={390} 
-                            height={280}
-                            alt='foto'
-                        /> 
-                    )}
-                />
+                    <Carousel
+                        width={390}
+                        height={280}
+                        data={product.image}
+                        renderItem={({ index }) => (
+                            <Image 
+                                source={{ uri: `${product.image[index]}`}}
+                                width={390} 
+                                height={280}
+                                alt='foto'
+                            /> 
+                        )}
+                    />
                 </Center>
                 <VStack 
-                paddingX={6}
-                paddingTop={6}
-                bgColor={"#EDECEE"}
-                paddingBottom={'20'}
+                    paddingX={6}
+                    paddingTop={6}
+                    bgColor={"#EDECEE"}
+                    paddingBottom={'20'}
                 >
                     <Row alignItems={'center'} >
                         <Avatar size={6} mr={2} 
@@ -115,12 +113,11 @@ export default function Preview (){
                         <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Aceitar troca?</Text>
                         <Text ml={2}>{product.accept_trade ? 'Sim' : 'Não'}</Text>
                     </Row>
-                    <Column>
+                    <Column height={32} >
                         <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Meios de pagamento:</Text>
-                        
                         {product.payment_methods.map(item => {
                             return(
-                                <Row mt={1}>
+                                <Row mt={2}>
                                     <IconComponent familyIcon={item === "cash" ? MaterialCommunityIcons : AntDesign } name={getIconName(item)} size={5} mr={2} />
                                     <Text>{transformLabel(item)}</Text>
                                 </Row>
@@ -150,8 +147,7 @@ export default function Preview (){
                     </Row>
                 </VStack>
             </VStack>
-            }
-        </ScrollView>
+        }
     </SafeAreaView>
     );
 }

@@ -3,7 +3,7 @@ import { Button as ButtonNativeBase  } from "native-base"
 import { useState } from "react";
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
-import { useAuth } from "../../hookes/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { IconComponent } from "../icon";
 
 type Props = IImageProps & {
@@ -52,9 +52,12 @@ export function AdvertPhoto({ setImage, image, testando,  ...rest}: Props){
                 } as any
                 setHidePicture(false)
                 if(image[testando]){
-                    return setImage( prevState => [...prevState, result.assets[0].uri])
+                    const changeImage = image.splice(testando, 1, result.assets[0].uri)
+                    setImage(changeImage)
+                }else {
+                    console.log('passou no else')
+                    setImage( prevState => [...prevState, result.assets[0].uri])
                 }
-                setImage( prevState => [...prevState, result.assets[0].uri])
             }
 
         } catch(err){
@@ -62,8 +65,8 @@ export function AdvertPhoto({ setImage, image, testando,  ...rest}: Props){
         }
     };
     function removeItem(){
-    setImage( prevState => [...prevState.splice(testando, 1)])
-    setHidePicture(true)
+        image.splice(testando, 1)
+        setHidePicture(true)
     }
 
     return (

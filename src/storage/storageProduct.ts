@@ -11,6 +11,17 @@ export async function storageProductGet() {
     const storage = await AsyncStorage.getItem(PRODUCT_STORAGE);
 
     const product : ProductDTO = storage ? JSON.parse(storage) : { };
+}
+
+export async function storageProductSaveDatabase(product: never[]){
+    await AsyncStorage.setItem(PRODUCT_STORAGE, JSON.stringify(product));
+}
+
+export async function storageProductGetDatabase() {
+    const storage = await AsyncStorage.getItem(PRODUCT_STORAGE);
+
+    const product : ProductDTO = storage ? JSON.parse(storage) : { };
+    
 
     return product
 
