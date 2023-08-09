@@ -4,7 +4,6 @@ import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
 import { Input } from "../../components/input";
 import { Button } from "../../components/button";
-import { api } from '../../services/api';
 import { useRoute } from '@react-navigation/native';
 import { ProductDetailsDTO } from "../../dtos/productDetailsDTO";
 
@@ -108,9 +107,9 @@ export default function EditAdvert (){
                     <Input placeholder="Valor do produto"  defaultValue={data.price}/>
                     <Text fontSize={14} fontWeight={"bold"} mt={4}>Aceita troca ?</Text>
                     <Switch size="md" mt={3} mb={6}  
-                    value={change} 
-                    defaultIsChecked={data.accept_trade}
-                    onChange={() => setChange(!change)}
+                        value={change} 
+                        defaultIsChecked={data.accept_trade}
+                        onChange={() => setChange(!change)}
                     />
                     <Text fontSize={14} fontWeight={"bold"}>Meios de pagamento aceitos</Text>
                     <Checkbox mt={3}
@@ -144,9 +143,8 @@ export default function EditAdvert (){
                         Depósito Bancário
                     </Checkbox>
                 </VStack>
-                <Row height={90} justifyContent={'space-between'}  mt={6}   paddingX={6}
-                alignItems={'center'}
-                
+                <Row height={90} justifyContent={'space-between'}  mt={6}   
+                    paddingX={6} alignItems={'center'}
                 >
                     <Button 
                         title="Cancelar"

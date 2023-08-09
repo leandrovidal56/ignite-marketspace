@@ -3,7 +3,7 @@ import { Button as ButtonNativeBase  } from "native-base"
 import { useEffect, useState } from "react";
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
-import { useAuth } from "../../hookes/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { api } from "../../services/api";
 
 type Props = IImageProps & {
@@ -59,19 +59,9 @@ export function UserPhoto({ setImage, image, size, ...rest}: Props){
             console.log(err)
         }
       };
-
-      async function getAvatar(){
-        try{
-
-        }catch(error){
-            console.log(error, 'error response 1')
-
-        }
-      }
       
       useEffect(() => {
       }, [image])
-      console.log(avatar, 'get avatar')
 
     return (
         <ButtonNativeBase 

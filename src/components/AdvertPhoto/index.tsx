@@ -3,7 +3,7 @@ import { Button as ButtonNativeBase  } from "native-base"
 import { useState } from "react";
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
-import { useAuth } from "../../hookes/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { IconComponent } from "../icon";
 
 type Props = IImageProps & {

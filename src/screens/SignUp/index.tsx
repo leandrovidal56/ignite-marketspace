@@ -13,7 +13,7 @@ import { AppError } from '../../utils/AppError';
 import { UserPhoto } from '../../components/UserPhoto';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import { Alert } from 'react-native';
-import { useAuth } from '../../hookes/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 
 type FormDataProps = {
     name: string;

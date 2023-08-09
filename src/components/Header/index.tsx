@@ -11,17 +11,20 @@ type Props =  {
     
 }
 
-export function Header({ back = false, title, iconLeftName = 'edit', showIconRight = false, navigationIconRight }: Props){
-    
+export function Header({ 
+    back = false, title, 
+    iconLeftName = 'edit', 
+    showIconRight = false, navigationIconRight
+ }: Props){    
     const navigation = useNavigation();
 
     function handleGoBack(){
         navigation.goBack()
     }
-    
 
     return (
-        <Row width={"full"} paddingX={6} height={12} alignItems={'center'} justifyContent={'center'}>
+        <Row width={"full"} paddingX={6} 
+            height={12} alignItems={'center'} justifyContent={'center'}>
             {back ?
                 <Button left={4} position={'absolute'} background={'transparent'} onPress={handleGoBack}
                     leftIcon={ <IconComponent name="arrowleft" color={'black'} size={6} />} 
@@ -29,9 +32,7 @@ export function Header({ back = false, title, iconLeftName = 'edit', showIconRig
                 : 
                 ''
             }
-
             <Text  textAlign={'center'}  fontSize={20} fontWeight={"bold"}>{title}</Text>
-
             {showIconRight ?
                 <Button right={0} position={'absolute'} background={'transparent'} onPress={navigationIconRight}
                     rightIcon={

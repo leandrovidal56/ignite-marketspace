@@ -1,4 +1,4 @@
-import { Avatar, NativeBaseProvider } from 'native-base';
+import { NativeBaseProvider } from 'native-base';
 import { Routes } from './src/routes';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';

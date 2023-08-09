@@ -1,6 +1,5 @@
 import { Center, Text, VStack, ScrollView, Avatar, Row, Column,  Image, Box, Modal, useToast} from 'native-base';
 import {  MaterialCommunityIcons, FontAwesome  } from '@expo/vector-icons'
-
 import { Button } from '../../components/button';
 import { IconComponent } from '../../components/icon';
 import { Header } from '../../components/Header';
@@ -23,7 +22,6 @@ type RouteParamsProps = {
 export default function DetailsMyAdverts (){
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
-
     const [showModal, setShowModal] = useState(false);
     const [active, setActive] = useState(true);
     const [loading, setIsLoading] = useState(false)
@@ -76,17 +74,12 @@ export default function DetailsMyAdverts (){
             setIsLoading(false)
         }
     }
-    // console.log(data, 'take data')
     function handleEditMyAdvert(){
         navigation.navigate('editAdverts', {data})
     }
     
     function openModal(){
         setShowModal(true)
-    }
-    function deleteAdvert(){
-        Alert.alert('Excluído com sucesso')
-        navigation.navigate('home')
     }
 
     useEffect(() => {
@@ -97,28 +90,28 @@ export default function DetailsMyAdverts (){
     return (
         <VStack justifyContent={'center'} paddingTop={12}>
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-             <Modal.Content width="full" bottom={3} marginTop={'auto'}>
-            <Modal.CloseButton />
-                <Modal.Body>
-                    <Text fontSize={14} fontWeight={"bold"}>Deseja excluir o anúncio</Text>
-                        <Row justifyContent={'space-between'} mt={5}>
-                            <Button 
-                                title="Não"
-                                backgroundColor={'#D9D8DA'}
-                                width={157}
-                                variant={'outline'}
-                                onPress={() => setShowModal(false)}
-                            />
-                            <Button 
-                                title="Sim"
-                                backgroundColor={'#1A181B'}
-                                width={157}
-                                onPress={() => deleteMyProductAdvert(data.id)}
-                            />
-                        </Row>
-                </Modal.Body>
-            </Modal.Content>
-        </Modal>
+                <Modal.Content width="full" bottom={3} marginTop={'auto'}>
+                    <Modal.CloseButton />
+                    <Modal.Body>
+                        <Text fontSize={14} fontWeight={"bold"}>Deseja excluir o anúncio</Text>
+                            <Row justifyContent={'space-between'} mt={5}>
+                                <Button 
+                                    title="Não"
+                                    backgroundColor={'#D9D8DA'}
+                                    width={157}
+                                    variant={'outline'}
+                                    onPress={() => setShowModal(false)}
+                                />
+                                <Button 
+                                    title="Sim"
+                                    backgroundColor={'#1A181B'}
+                                    width={157}
+                                    onPress={() => deleteMyProductAdvert(data.id)}
+                                />
+                            </Row>
+                    </Modal.Body>
+                </Modal.Content>
+            </Modal>
             <Header 
                 back
                 showIconRight
@@ -128,60 +121,57 @@ export default function DetailsMyAdverts (){
             loading ? 
             <Loading/>
             : 
-        <ScrollView marginBottom={10}>
-            <Center 
-            background={active ? '#1A181B' : 'transparent'}
-            >
-                {active ? 
-                    <Text position={'absolute'} fontWeight={'bold'} color={'#F7F7F8'} zIndex={10}>
-                        Anúncio desativado
-                    </Text>
-                    : ''
-                }
-                <Image 
-                    source={{
-                        uri: 'https://wallpaperaccess.com/full/317501.jpg'
-                    }}
-                    width={390} 
-                    height={280}
-                    alt='foto'
-                    opacity={active ? 0.6 : 1}
-                />
-            </Center>
-            <VStack padding={6} bgColor={"#EDECEE"} >
-
-                <Row alignItems={'center'} >
-                    <Avatar size={6} mr={2}/>
-                    <Text>{data.name}</Text>
-                </Row>
-                <Box width={43} height={17} borderRadius={20} bgColor={'gray.300'} mt={6} alignItems={'center'} justifyContent={'center'}>
-                <Text fontSize={10} >{data.is_new ? 'novo' : 'usado'}</Text>
-                </Box>
-                <Row justifyContent={'space-between'} mt={2}>
-                    <Text fontSize={20} fontWeight={'semibold'}>{data.name}</Text>
-                    <Text color={"#647ac7"}  fontWeight={'bold'} fontSize={20} >R$ {data.price}</Text>
-                </Row>
-                    <Text mt={2} fontWeight={'400'} fontSize={14} lineHeight={18.2}>
-                        {data.description}
-                    </Text>
-                <Row mt={6}>
-                    <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Aceitar troca?</Text>
-                    <Text ml={2}>{data.accept_trade ? 'Sim' : 'Não'}</Text>
-                </Row>
-                <Column>
-                    <Text fontSize={14} lineHeight={18} fontWeight={'bold'} mt={4}>Meios de pagamento:</Text>
-                        {data.payment_methods?.map(item => {
-                            return (
-                                <Row mt={1}>
-                                    <IconComponent familyIcon={item.name === "Dinheiro" ? MaterialCommunityIcons : AntDesign } 
-                                    name={getIconName(item.name)} size={5} mr={2} />
-                                    <Text>{transformLabel(item.name)}</Text>
-                                </Row>
-                            )
-                        })}
-                </Column>
-            </VStack>
-            <VStack padding={6}>
+            <ScrollView marginBottom={10}>
+                <Center background={active ? '#1A181B' : 'transparent'}>
+                    {active ? 
+                        <Text position={'absolute'} fontWeight={'bold'} color={'#F7F7F8'} zIndex={10}>
+                            Anúncio desativado
+                        </Text>
+                        : ''
+                    }
+                    <Image 
+                        source={{
+                            uri: 'https://wallpaperaccess.com/full/317501.jpg'
+                        }}
+                        width={390} 
+                        height={280}
+                        alt='foto'
+                        opacity={active ? 0.6 : 1}
+                    />
+                </Center>
+                <VStack padding={6} bgColor={"#EDECEE"} >
+                    <Row alignItems={'center'} >
+                        <Avatar size={6} mr={2}/>
+                        <Text>{data.name}</Text>
+                    </Row>
+                    <Box width={43} height={17} borderRadius={20} bgColor={'gray.300'} mt={6} alignItems={'center'} justifyContent={'center'}>
+                        <Text fontSize={10} >{data.is_new ? 'novo' : 'usado'}</Text>
+                    </Box>
+                    <Row justifyContent={'space-between'} mt={2}>
+                        <Text fontSize={20} fontWeight={'semibold'}>{data.name}</Text>
+                        <Text color={"#647ac7"}  fontWeight={'bold'} fontSize={20} >R$ {data.price}</Text>
+                    </Row>
+                        <Text mt={2} fontWeight={'400'} fontSize={14} lineHeight={18.2}>
+                            {data.description}
+                        </Text>
+                    <Row mt={6}>
+                        <Text fontSize={14} lineHeight={18} fontWeight={'bold'}>Aceitar troca?</Text>
+                        <Text ml={2}>{data.accept_trade ? 'Sim' : 'Não'}</Text>
+                    </Row>
+                    <Column>
+                        <Text fontSize={14} lineHeight={18} fontWeight={'bold'} mt={4}>Meios de pagamento:</Text>
+                            {data.payment_methods?.map(item => {
+                                return (
+                                    <Row mt={1}>
+                                        <IconComponent familyIcon={item.name === "Dinheiro" ? MaterialCommunityIcons : AntDesign } 
+                                        name={getIconName(item.name)} size={5} mr={2} />
+                                        <Text>{transformLabel(item.name)}</Text>
+                                    </Row>
+                                )
+                            })}
+                    </Column>
+                </VStack>
+                <VStack padding={6}>
                     <Button 
                         iconLeftName='poweroff' 
                         iconColor='white'
@@ -199,7 +189,7 @@ export default function DetailsMyAdverts (){
                         mt={2}
                         onPress={() => openModal(data.id)}
                     />
-            </VStack>
+                </VStack>
             </ScrollView>
             }
         </VStack>

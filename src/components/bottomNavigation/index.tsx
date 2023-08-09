@@ -5,7 +5,7 @@ import { AppNavigatorRoutesProps } from "../../routes/app.routes";
 import { useNavigation } from "@react-navigation/native";
 import { Button } from "../button";
 import { useState } from "react";
-import { useAuth } from "../../hookes/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 
 export function BottomNavigation(){
     const navigation = useNavigation<AppNavigatorRoutesProps >()
@@ -31,8 +31,8 @@ export function BottomNavigation(){
     return (
         <>
          <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-             <Modal.Content width="full" bottom={3} marginTop={'auto'}>
-            <Modal.CloseButton />
+            <Modal.Content width="full" bottom={3} marginTop={'auto'}>
+                <Modal.CloseButton />
                 <Modal.Body>
                     <Text fontSize={14} fontWeight={"bold"}>Deseja sair ?</Text>
                         <Row justifyContent={'space-between'} mt={5}>

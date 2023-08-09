@@ -13,7 +13,13 @@ type Props = IButtonProps &{
     textWeight?: string;
 }
 
-export function Button({title, iconLeftName, iconRightName, iconColor, variant = 'solid', iconFamily, textColor = '#F7F7F8', textSize = 14,textWeight, ...rest}: Props){
+export function Button({
+    title, iconLeftName, 
+    iconRightName, iconColor, 
+    variant = 'solid', iconFamily, 
+    textColor = '#F7F7F8', 
+    textSize = 14,textWeight, ...rest
+    }: Props){
 
     return (
         <ButtonNativeBase 
@@ -58,6 +64,5 @@ export function Button({title, iconLeftName, iconRightName, iconColor, variant =
                 : ''}
             </Row>
         </ButtonNativeBase>
-
     )
 }

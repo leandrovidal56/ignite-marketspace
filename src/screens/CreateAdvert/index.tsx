@@ -2,7 +2,7 @@ import { Checkbox, Radio, Row, ScrollView, Switch, Text, TextArea, VStack, useTo
 import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
 import { Input } from "../../components/input";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "../../components/button";
 import { useNavigation } from "@react-navigation/native";
 import { AppNavigatorRoutesProps } from "../../routes/app.routes";
@@ -10,7 +10,7 @@ import { useForm, Controller} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ProductDTO } from "../../dtos/productDTO";
-import { useAuth } from "../../hookes/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { AppError } from "../../utils/AppError";
 import { AdvertPhoto } from "../../components/AdvertPhoto";
 import { Alert } from 'react-native';
@@ -89,35 +89,19 @@ export default function CreateAdvert (){
  
     return (
         <SafeAreaView style={{ backgroundColor : '#EDECEE'}} >
-                <Header
-                    back
-                    title="Criar anúncio"
-                />
-                <ScrollView  >
+            <Header
+                back
+                title="Criar anúncio"
+            />
+            <ScrollView >
                 <VStack paddingBottom={7} paddingX={6} background={'#EDECEE'} >
                     <Text fontSize={14} fontWeight={"bold"}>Imagens</Text>
                     <Text mt={2}>Escolha até 3 imagens para mostrar o quanto o seu produto é incrível</Text>
                     <Row>
-
-                    <AdvertPhoto 
-                        setImage={setImage}
-                        image={image}
-                        testando={0}
-                    />
-                       { image.length > 0 ? 
                         <AdvertPhoto 
-                        setImage={setImage}
-                        image={image}
-                        testando={1}
+                            setImage={setImage}
+                            image={image}
                         />
-                    : ''}
-                    { image.length > 1 ? 
-                        <AdvertPhoto 
-                        image={image}
-                        setImage={setImage}
-                        testando={2}
-                        />
-                    : ''} 
                     </Row>
                     <Text fontSize={14} fontWeight={"bold"}>Sobre o produto</Text>
                     <Controller
@@ -133,39 +117,43 @@ export default function CreateAdvert (){
                             />
                         )}
                     />
-                    <TextArea onChangeText={setDescription} value={description} borderRadius={8} borderColor={'#F7F7F8'} bgColor={'#F7F7F8'} h={40} mt={4} w="100%" placeholder="Descrição do produto" autoCompleteType={'none'} />
-                        <Radio.Group 
-                            name="myRadioGroup" 
-                            accessibilityLabel="favorite number" 
-                            value={productCondition} 
-                            onChange={nextValue => {
-                                setProductCondition(nextValue)
-                                nextValue === 'Produto novo' ? 
-                                setIsNew(true): 
-                                setIsNew(false)
-                            }}>
-                            <Row mt={4}>
-                                <Radio value="Produto novo" colorScheme="blue"  >
-                                    Produto novo
-                                </Radio>
-                                <Radio value="Produto usado" colorScheme="blue" ml={6}>
-                                    Produto usado
-                                </Radio>
-                            </Row>
-                        </Radio.Group>
+                    <TextArea onChangeText={setDescription} value={description} borderRadius={8} 
+                        borderColor={'#F7F7F8'} bgColor={'#F7F7F8'} 
+                        h={40} mt={4} w="100%" 
+                        placeholder="Descrição do produto" autoCompleteType={'none'} 
+                    />
+                    <Radio.Group 
+                        name="myRadioGroup" 
+                        accessibilityLabel="favorite number" 
+                        value={productCondition} 
+                        onChange={nextValue => {
+                            setProductCondition(nextValue)
+                            nextValue === 'Produto novo' ? 
+                            setIsNew(true): 
+                            setIsNew(false)
+                        }}>
+                        <Row mt={4}>
+                            <Radio value="Produto novo" colorScheme="blue"  >
+                                Produto novo
+                            </Radio>
+                            <Radio value="Produto usado" colorScheme="blue" ml={6}>
+                                Produto usado
+                            </Radio>
+                        </Row>
+                    </Radio.Group>
                     <Text fontSize={14} fontWeight={"bold"} mt={8}>Venda</Text>
                     <Controller
-                            control={control}
-                            name="price"
-                            render={({field: {onChange, value}}) => (
-                                <Input 
-                                    keyboardType="number-pad"  
-                                    placeholder="Valor do produto"
-                                    onChangeText={onChange}                                    
-                                    value={value}
-                                    errorMessage={errors.price?.message}
-                                />
-                            )}
+                        control={control}
+                        name="price"
+                        render={({field: {onChange, value}}) => (
+                            <Input 
+                                keyboardType="number-pad"  
+                                placeholder="Valor do produto"
+                                onChangeText={onChange}                                    
+                                value={value}
+                                errorMessage={errors.price?.message}
+                            />
+                        )}
                     />
                     <Text fontSize={14} fontWeight={"bold"} mt={4}>Aceita troca ?</Text>
                     <Switch size="md" mt={3} mb={6} value={acceptTrade} onValueChange={setAceeptTrade}  />
@@ -218,8 +206,7 @@ export default function CreateAdvert (){
                         isLoading={isLoadingProductStorageData}
                     />
                 </Row>
-        </ScrollView>
-    </SafeAreaView>
+            </ScrollView>
+        </SafeAreaView>
     )
-
 }
