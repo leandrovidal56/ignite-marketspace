@@ -5,6 +5,7 @@ import { storageUserGet, storageUserRemove, storageUserSave } from "../storage/s
 import { ProductDTO } from "../dtos/productDTO";
 import { storageAuthTokenGet, storageAuthTokenRemove, storageAuthTokenSave } from "../storage/storageAuthToken";
 import { storageProductGet, storageProductSave, storageProductSaveDatabase } from "../storage/storageProduct";
+import { IPhoto } from "../interfaces/IPhoto";
 
 export type AuthContextDataProps = {
     user: UserDTO;
@@ -18,7 +19,8 @@ export type AuthContextDataProps = {
     productSaveStorage: (product: ProductDTO) => void;
     productGet: () => Promise<ProductDTO>;
     productGetStorageData: () => Promise<any>;
-    
+    setImage:  React.Dispatch<React.SetStateAction<IPhoto[]>>
+    image:  IPhoto[]
 }
 
 type AuthContextProviderProps = { 
@@ -31,6 +33,7 @@ export function AuthContextProvider({ children } : AuthContextProviderProps){
     const [ user, setUser ] = useState<UserDTO>({ } as UserDTO)
     const [ product, setProduct ] = useState<ProductDTO>({ } as ProductDTO)
     const [ isLoadingUserStorageData, setIsLoadingUserStorageData ] = useState(true)
+    const [image, setImage] = useState<IPhoto[]>([]);
 
     async function userAndTokenUpdate(userData: UserDTO, token: string) {
         try{
@@ -193,7 +196,8 @@ export function AuthContextProvider({ children } : AuthContextProviderProps){
             signOut, 
             isLoadingUserStorageData,
             product, setProduct, productSave, productGet,
-            productSaveStorage, productGetStorageData
+            productSaveStorage, productGetStorageData,
+            image, setImage
              }}> 
             {children}
         </AuthContext.Provider>

@@ -12,9 +12,9 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { ProductDTO } from "../../dtos/productDTO";
 import { useAuth } from "../../hooks/useAuth";
 import { AppError } from "../../utils/AppError";
-import { AdvertPhoto } from "../../components/AdvertPhoto";
 import { Alert } from 'react-native';
 import { IPhoto } from "../../interfaces/IPhoto";
+import { AdvertPhotoNew } from "../../components/AdvertPhotoNew";
 
 
 type FormDataProps = {
@@ -97,27 +97,7 @@ export default function CreateAdvert (){
                 <VStack paddingBottom={7} paddingX={6} background={'#EDECEE'} >
                     <Text fontSize={14} fontWeight={"bold"}>Imagens</Text>
                     <Text mt={2}>Escolha até 3 imagens para mostrar o quanto o seu produto é incrível</Text>
-                    <Row>
-                        <AdvertPhoto 
-                            setImage={setImage}
-                            image={image}
-                            testando={0}
-                        />
-                        { image.length > 0 ? 
-                        <AdvertPhoto 
-                        setImage={setImage}
-                        image={image}
-                        testando={1}
-                        />
-                    : ''}
-                    { image.length > 1 ? 
-                        <AdvertPhoto 
-                        image={image}
-                        setImage={setImage}
-                        testando={2}
-                        />
-                    : ''} 
-                    </Row>
+                    <AdvertPhotoNew/>
                     <Text fontSize={14} fontWeight={"bold"}>Sobre o produto</Text>
                     <Controller
                         control={control}

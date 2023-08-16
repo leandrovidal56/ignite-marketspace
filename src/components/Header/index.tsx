@@ -1,24 +1,33 @@
-import {   Button,  Row, Text  } from "native-base"
+import { Button,  Row, Text } from "native-base"
 import { IconComponent } from "../icon";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../../hooks/useAuth";
 
-type Props =  {
+type Props = {
     back?: boolean;
+    clearImages?: boolean;
     title?: string;
     showIconRight?: boolean;
     iconLeftName?: 'edit' | 'plus';
-    navigationIconRight?: () => void;
+    navigationIconRight?: () => void;   
     
 }
 
 export function Header({ 
     back = false, title, 
     iconLeftName = 'edit', 
-    showIconRight = false, navigationIconRight
+    showIconRight = false, navigationIconRight,
+    clearImages,
+
  }: Props){    
     const navigation = useNavigation();
-
-    function handleGoBack(){
+    const { setImage } = useAuth()
+    async function handleGoBack(){
+        if(clearImages){
+            await setImage([])
+            navigation.goBack()
+        }
+        
         navigation.goBack()
     }
 

@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Checkbox, Radio, Row, ScrollView, Switch, Text, TextArea, VStack } from "native-base";
+import { Checkbox, Radio, Image, Row, ScrollView, Switch, Text, TextArea, VStack } from "native-base";
 import { Header } from "../../components/Header";
 import { SafeAreaView } from "react-native";
 import { Input } from "../../components/input";
 import { Button } from "../../components/button";
 import { useRoute } from '@react-navigation/native';
 import { ProductDetailsDTO } from "../../dtos/productDetailsDTO";
+import { AdvertPhoto } from "../../components/AdvertPhoto";
+import { IPhoto } from "../../interfaces/IPhoto";
+import { api } from "../../services/api";
+import Carousel from "react-native-reanimated-carousel";
+import { AdvertPhotoNew } from "../../components/AdvertPhotoNew";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function EditAdvert (){
     const [value, setValue] = useState();
@@ -15,6 +21,7 @@ export default function EditAdvert (){
     const [ dinheiro, setDinheiro] = useState(false);
     const [ credito, setCredito] = useState(false);
     const [ deposito, setDeposito] = useState(false);
+    const { image, setImage } = useAuth()
 
     const route = useRoute();
 
@@ -56,23 +63,29 @@ export default function EditAdvert (){
                 setCredito(true)
             }
         })
+        loadImages()
     }
 
+    function loadImages(){
+        setImage(data.product_images)
+    }
     useEffect(( ) => {
         fillPaymentMethod()
     }, [])
-
+    
 
     return (
         <SafeAreaView style={{ backgroundColor: '#EDECEE'}} >
             <ScrollView>
                 <VStack paddingBottom={7} paddingX={6} >
                     <Header
+                        clearImages
                         back
                         title="Editar anúncio"
                     />
                     <Text fontSize={14} fontWeight={"bold"}>Imagens</Text>
                     <Text mt={2}>Escolha até 3 imagens para mostrar o quanto o seu produto é incrível</Text>
+                        <AdvertPhotoNew/>
                     <Text fontSize={14} fontWeight={"bold"} mt={8}>Sobre o produto</Text>
                     <Input placeholder="Título do anúncio" defaultValue={data.name}/>
                     <TextArea 
