@@ -5,11 +5,11 @@ import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
 import { useAuth } from "../../hooks/useAuth";
 import { IconComponent } from "../icon";
+import { IPhoto } from "../../interfaces/IPhoto";
 
 type Props = IImageProps & {
-    setImage:  React.Dispatch<React.SetStateAction<string[]>>
-    image:  string[]
-    
+    setImage:  React.Dispatch<React.SetStateAction<IPhoto[]>>
+    image:  IPhoto[]
     testando: number
 
 }
@@ -46,17 +46,16 @@ export function AdvertPhoto({ setImage, image, testando,  ...rest}: Props){
                 const fileExtension = result.assets[0].uri.split('.').pop()
 
                 const photoFile = {
-                    name : `${user.name}.${fileExtension}`.toLowerCase(),
+                    name: `${fileExtension}`.toLowerCase(),
                     uri: result.assets[0].uri,
-                    type: `${result.assets[0].type}/${fileExtension}`
-                } as any
+                    type: `${result.assets[0].type}/${fileExtension}`,
+                  } as any;
                 setHidePicture(false)
                 if(image[testando]){
-                    const changeImage = image.splice(testando, 1, result.assets[0].uri)
-                    setImage(changeImage)
+                     image.splice(testando, 1, photoFile)
                 }else {
                     console.log('passou no else')
-                    setImage( prevState => [...prevState, result.assets[0].uri])
+                    setImage((prev) => [photoFile, ...prev]);
                 }
             }
 
@@ -84,7 +83,7 @@ export function AdvertPhoto({ setImage, image, testando,  ...rest}: Props){
              <Image
                 size={100}
                 borderRadius={6}
-                source={{ uri: image[testando] }}
+                source={{ uri: image[testando]?.uri }}
                 background={'#D9D8DA'}
                 {...rest}
                 

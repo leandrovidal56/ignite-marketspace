@@ -113,59 +113,37 @@ export function AuthContextProvider({ children } : AuthContextProviderProps){
             throw error
         } 
     }
-
-    async function saveImageProduct(images: any, product_id: string){
-        let formData = new FormData();
-        // console.log(product_id)
-        formData.append('product_id', product_id);
-
-        for (const item of images) {
-            const img = {
-                    fieldname: 'images',
-                    originalname: new Date().getTime(),
-                    encoding: '7bit',
-                    mimetype: 'image/jpeg',
-                    destination: '/Users/leandrovidal/ignite/react-native/challenges/marketspace/ignite-rn-2022-challenge-marketspace-api/tmp',
-                    filename: `${new Date().getTime()}.jpg`,
-                    path: item
-            }
-            formData.append('images', img);
-        }
-        
-           console.log(formData, 'form data ------')
-
-        try{
-            const responseImage =  await api.post('/products/images/', formData, {
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-            });
-            console.log(responseImage, 'takinnn$')
-        }catch(error){
-            console.log(error, 'error')
-        }
-    }
-
-    
     
 
     async function productSave(){
         try{
-           console.log(product, 'take alll the product')
            const response =  await api.post('/products/',  product)
            const product_id = response.data.id
-           
-           
            const images = product.image
 
-           await saveImageProduct(images, product_id)
+           let formData = new FormData();
+            formData.append('product_id', product_id);
+
+           images.map(( images ) => {
+            formData.append('images', images as any);
+            })
+            console.log(formData, 'form data ------')
            
+            try{
+                const responseImage =  await api.post('/products/images/', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                console.log(responseImage, 'takinnn$')
+            }catch(error){
+                console.log(error, 'error')
+            }
+            }catch(error){
+                throw error
+            } finally{
 
-        }catch(error){
-            throw error
-        } finally{
-
-        }
+            }
     }
 
     async function productGet(){

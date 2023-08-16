@@ -14,6 +14,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { AppError } from "../../utils/AppError";
 import { AdvertPhoto } from "../../components/AdvertPhoto";
 import { Alert } from 'react-native';
+import { IPhoto } from "../../interfaces/IPhoto";
 
 
 type FormDataProps = {
@@ -30,7 +31,7 @@ const createAdvertSchema = yup.object({
 export default function CreateAdvert (){
     const [isNew, setIsNew] = useState(true);
     const [productCondition, setProductCondition] = useState('Produto novo');
-    const [image, setImage] = useState<string[]>([]);
+    const [image, setImage] = useState<IPhoto[]>([]);
     const [description, setDescription] = useState('');
     const [acceptTrade, setAceeptTrade] = useState(false);
     const [paymentMethods, setPaymentMethods] = React.useState<string[]>([]);
@@ -86,7 +87,6 @@ export default function CreateAdvert (){
      function handleCanceled(){
         navigation.goBack();
     }
- 
     return (
         <SafeAreaView style={{ backgroundColor : '#EDECEE'}} >
             <Header
@@ -101,7 +101,22 @@ export default function CreateAdvert (){
                         <AdvertPhoto 
                             setImage={setImage}
                             image={image}
+                            testando={0}
                         />
+                        { image.length > 0 ? 
+                        <AdvertPhoto 
+                        setImage={setImage}
+                        image={image}
+                        testando={1}
+                        />
+                    : ''}
+                    { image.length > 1 ? 
+                        <AdvertPhoto 
+                        image={image}
+                        setImage={setImage}
+                        testando={2}
+                        />
+                    : ''} 
                     </Row>
                     <Text fontSize={14} fontWeight={"bold"}>Sobre o produto</Text>
                     <Controller

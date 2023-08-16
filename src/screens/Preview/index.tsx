@@ -79,7 +79,7 @@ export default function Preview (){
                         data={product.image}
                         renderItem={({ index }) => (
                             <Image 
-                                source={{ uri: `${product.image[index]}`}}
+                                source={{ uri: `${product.image[index].uri}`}}
                                 width={390} 
                                 height={280}
                                 alt='foto'

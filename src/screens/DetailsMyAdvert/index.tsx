@@ -14,6 +14,7 @@ import { AppError } from '../../utils/AppError';
 import { Loading } from '../../components/loading';
 import { getIconName, transformLabel } from '../Preview/types';
 import {  AntDesign  } from '@expo/vector-icons'
+import Carousel from 'react-native-reanimated-carousel';
 
 type RouteParamsProps = {
     productId: string;
@@ -24,7 +25,7 @@ export default function DetailsMyAdverts (){
     const navigation = useNavigation<AppNavigatorRoutesProps>()
     const [showModal, setShowModal] = useState(false);
     const [active, setActive] = useState(true);
-    const [loading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [ data, setData ] = useState<ProductDetailsDTO>({ } as ProductDetailsDTO)
     const toast = useToast();
     const route = useRoute();
@@ -34,10 +35,8 @@ export default function DetailsMyAdverts (){
     async function loadDetailsMyAdvert(productId:string){
         try{
             setIsLoading(true)
-            console.log(productId, 'take ')
             const response = await api.get(`/products/${productId}`)
             setData(response.data)
-
         }catch(error){
             const isAppError = error instanceof AppError
             const title = isAppError ? error.message : 'Não foi possível carregar os detalhes do produto. Tente novamente mais tarde.' 
@@ -55,10 +54,7 @@ export default function DetailsMyAdverts (){
     async function deleteMyProductAdvert(productId: string){
         try{
             setIsLoading(true)
-            console.log(productId, 'delete')
             const response = await api.delete(`/products/${productId}`)
-            console.log(response)
-            console.log(response.data)
             Alert.alert('Excluído com sucesso')
             navigation.navigate('home')
         }catch(error){ 
@@ -86,7 +82,7 @@ export default function DetailsMyAdverts (){
         loadDetailsMyAdvert(productId)
     }, [])
     
-
+  
     return (
         <VStack justifyContent={'center'} paddingTop={12}>
             <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -118,26 +114,33 @@ export default function DetailsMyAdverts (){
                 navigationIconRight={handleEditMyAdvert}
             />
             {
-            loading ? 
+            isLoading ? 
             <Loading/>
             : 
             <ScrollView marginBottom={10}>
                 <Center background={active ? '#1A181B' : 'transparent'}>
-                    {active ? 
+                    {!active ?
                         <Text position={'absolute'} fontWeight={'bold'} color={'#F7F7F8'} zIndex={10}>
                             Anúncio desativado
                         </Text>
-                        : ''
+                        :
+                        <Text position={'absolute'} fontWeight={'bold'} color={'#F7F7F8'} zIndex={10}>
+                        </Text>
                     }
-                    <Image 
-                        source={{
-                            uri: 'https://wallpaperaccess.com/full/317501.jpg'
-                        }}
+                    
+                    <Carousel
                         width={390} 
                         height={280}
-                        alt='foto'
-                        opacity={active ? 0.6 : 1}
-                    />
+                        data={data.product_images}
+                        renderItem={({ item }) => (
+                            <Image
+                                source={{ uri: `${api.defaults.baseURL}/images/${item.path}`}}
+                                alt='foto'
+                                width={390} 
+                                height={280}
+                            />
+                        )}
+                    />                
                 </Center>
                 <VStack padding={6} bgColor={"#EDECEE"} >
                     <Row alignItems={'center'} >
@@ -175,7 +178,7 @@ export default function DetailsMyAdverts (){
                     <Button 
                         iconLeftName='poweroff' 
                         iconColor='white'
-                        title={active? 'Reativar anúncio' : 'Desativar anúncio'}
+                        title={!active? 'Reativar anúncio' : 'Desativar anúncio'}
                         height={42}
                         background={!active? '#647AC7' : '#1A181B'}
                         textWeight={'bold'}
