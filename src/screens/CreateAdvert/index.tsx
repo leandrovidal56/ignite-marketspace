@@ -31,7 +31,6 @@ const createAdvertSchema = yup.object({
 export default function CreateAdvert (){
     const [isNew, setIsNew] = useState(true);
     const [productCondition, setProductCondition] = useState('Produto novo');
-    const [image, setImage] = useState<IPhoto[]>([]);
     const [description, setDescription] = useState('');
     const [acceptTrade, setAceeptTrade] = useState(false);
     const [paymentMethods, setPaymentMethods] = React.useState<string[]>([]);
@@ -42,7 +41,7 @@ export default function CreateAdvert (){
         resolver: yupResolver(createAdvertSchema)
     });
 
-    const { productSaveStorage } = useAuth()
+    const { productSaveStorage, image} = useAuth()
     const toast = useToast()
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()

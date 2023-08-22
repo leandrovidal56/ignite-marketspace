@@ -130,7 +130,6 @@ export function AuthContextProvider({ children } : AuthContextProviderProps){
            images.map(( images ) => {
             formData.append('images', images as any);
             })
-            console.log(formData, 'form data ------')
            
             try{
                 const responseImage =  await api.post('/products/images/', formData, {
