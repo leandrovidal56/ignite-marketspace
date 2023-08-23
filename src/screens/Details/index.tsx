@@ -25,7 +25,7 @@ export default function Details (){
     const [ data, setData ] = useState<ProductDetailsDTO>({ } as ProductDetailsDTO)
     const toast = useToast()
     const { productId } = route.params as RouteParamsProps;
-
+    
     async function loadProductDetails(productId:string){
         try{
             setIsLoading(true)
@@ -65,10 +65,10 @@ export default function Details (){
                             <Carousel
                                 width={390}
                                 height={280}
-                                data={images}
-                                renderItem={({ index }) => (
+                                data={data.product_images}
+                                renderItem={({ index, item }) => (
                                     <Image 
-                                        source={{ uri: `${images[index]}`}}
+                                        source={{ uri: `${api.defaults.baseURL}/images/${item.path}`}}
                                         width={390} 
                                         height={280}
                                         alt='foto'

@@ -1,7 +1,7 @@
 import { Button,  Row, Text } from "native-base"
 import { IconComponent } from "../icon";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "../../hooks/useAuth";
+import { useProduct } from '../../hooks/useProduct';
 
 type Props = {
     back?: boolean;
@@ -21,7 +21,7 @@ export function Header({
 
  }: Props){    
     const navigation = useNavigation();
-    const { setImage } = useAuth()
+    const { image, setImage } = useProduct()
     async function handleGoBack(){
         if(clearImages){
             await setImage([])

@@ -7,6 +7,7 @@ type Props = IButtonProps &{
     price: number;
     status?: 'disable' | 'active';
     imageAdress: string;
+    profilePicture?: string;
     hideProfilePicture?: boolean;
     altImage: string;
     onPress?: () => void;
@@ -20,11 +21,12 @@ export function BoxSale(
         status = 'active', 
         imageAdress, 
         altImage, 
+        profilePicture, 
         hideProfilePicture, 
         onPress,  
         ...rest
     }: Props){
-
+        
     return (
         <ButtonNativeBase backgroundColor={'transparent'} onPress={onPress} {...rest}>
             <Box width={153} height={143} mb={6}>
@@ -47,7 +49,7 @@ export function BoxSale(
                     } 
                     <Row justifyContent={'space-between'} padding={1} 
                         position={'absolute'} width={153}>
-                        {hideProfilePicture ?? <Avatar size={8} /> }
+                        {hideProfilePicture ?? <Avatar size={8} source={{ uri: `${api.defaults.baseURL}/images/${profilePicture}` }}  /> }
                         <Box width={50} height={17} 
                             background={ (type === 'novo') ?  '#364D9D' : '#3E3A40'} 
                             borderRadius={8} justifyContent={'center'} alignItems={'center'} >

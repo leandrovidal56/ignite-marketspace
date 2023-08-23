@@ -7,7 +7,7 @@ import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import { BottomNavigation } from '../../components/bottomNavigation';
 import { Loading } from '../../components/loading';
 import { AppError } from '../../utils/AppError';
-import { useAuth } from '../../hooks/useAuth';
+import { useProduct } from '../../hooks/useProduct';
 export default function Adverts (){
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
@@ -16,7 +16,7 @@ export default function Adverts (){
     const [ loading, setIsLoading] = useState(false)
     
     const toast = useToast()
-    const { productGetStorageData } = useAuth()
+    const {  productGetStorageData } = useProduct()
 
     function handleDetailsMyAdvert(productId: string){
         navigation.navigate('detailsMyAdverts', {productId} )

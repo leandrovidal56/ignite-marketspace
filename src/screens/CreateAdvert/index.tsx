@@ -10,7 +10,7 @@ import { useForm, Controller} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ProductDTO } from "../../dtos/productDTO";
-import { useAuth } from "../../hooks/useAuth";
+import { useProduct } from '../../hooks/useProduct';
 import { AppError } from "../../utils/AppError";
 import { Alert } from 'react-native';
 import { IPhoto } from "../../interfaces/IPhoto";
@@ -41,7 +41,7 @@ export default function CreateAdvert (){
         resolver: yupResolver(createAdvertSchema)
     });
 
-    const { productSaveStorage, image} = useAuth()
+    const { productSaveStorage, image } = useProduct()
     const toast = useToast()
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()

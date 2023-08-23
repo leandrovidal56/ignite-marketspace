@@ -3,7 +3,7 @@ import { Button as ButtonNativeBase  } from "native-base"
 import { useState } from "react";
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
-import { useAuth } from "../../hooks/useAuth";
+import { useProduct } from '../../hooks/useProduct';
 import { IconComponent } from "../icon";
 import { Loading } from "../loading";
 import { api } from "../../services/api";
@@ -15,9 +15,7 @@ type Props = IImageProps & {
 export function AdvertPhotoNew({ ...rest}: Props){
     const [hidePicure, setHidePicture] = useState(false)
     const toast = useToast()
-    const { image, setImage } = useAuth()
-
-    
+    const {  image, setImage } = useProduct()
 
     const changeImage = async (item?: number) => {
         try{

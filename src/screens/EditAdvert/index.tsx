@@ -8,7 +8,7 @@ import { useRoute } from '@react-navigation/native';
 import { ProductDetailsDTO } from "../../dtos/productDetailsDTO";
 import { api } from "../../services/api";
 import { AdvertPhotoNew } from "../../components/AdvertPhotoNew";
-import { useAuth } from "../../hooks/useAuth";
+import { useProduct } from '../../hooks/useProduct';
 import { useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '../../routes/app.routes';
 import { AppError } from '../../utils/AppError';
@@ -22,9 +22,9 @@ export default function EditAdvert (){
     const [price, setPrice] = useState('');
     const [isLoading, setIsLoading] = useState(false)
     const [acceptTrade, setAceeptTrade] = useState(false);
-    const [paymentMethods, setPaymentMethods] = React.useState<string[]>([]);
+    const [paymentMethods, setPaymentMethods] = useState<string[]>([]);
 
-    const { image, setImage  } = useAuth()
+    const { image, setImage  } = useProduct()
     const toast = useToast()
     const navigation = useNavigation<AppNavigatorRoutesProps>()
     
@@ -36,7 +36,7 @@ export default function EditAdvert (){
 
 
     const { data } = route.params as RouteParamsProps;
-
+    
     async function loadData() {
         if(data) {
             if(data.accept_trade) {
