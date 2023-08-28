@@ -184,7 +184,13 @@ export default function EditAdvert (){
                             </Row>
                         </Radio.Group>
                     <Text fontSize={14} fontWeight={"bold"} mt={8}>Venda</Text>
-                    <Input placeholder="Valor do produto"  
+                    <Input 
+                     leftElement={
+                        <Text color='gray.700' fontSize='md' ml='4'>
+                            R$
+                        </Text>
+                    }
+                    placeholder="Valor do produto"  
                     defaultValue={data.price?.toString()} 
                     onChangeText={ text => setPrice(Number(text))}
                     />

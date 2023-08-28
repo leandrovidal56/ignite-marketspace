@@ -13,7 +13,6 @@ import { ProductDTO } from "../../dtos/productDTO";
 import { useProduct } from '../../hooks/useProduct';
 import { AppError } from "../../utils/AppError";
 import { Alert } from 'react-native';
-import { IPhoto } from "../../interfaces/IPhoto";
 import { AdvertPhotoNew } from "../../components/AdvertPhotoNew";
 
 
@@ -141,9 +140,14 @@ export default function CreateAdvert (){
                         name="price"
                         render={({field: {onChange, value}}) => (
                             <Input 
+                                leftElement={
+                                    <Text color='gray.700' fontSize='md' ml='4'>
+                                        R$
+                                    </Text>
+                                }
                                 keyboardType="number-pad"  
                                 placeholder="Valor do produto"
-                                onChangeText={onChange}                                    
+                                onChangeText={onChange}             
                                 value={value}
                                 errorMessage={errors.price?.message}
                             />
