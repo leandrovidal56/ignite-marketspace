@@ -3,6 +3,7 @@ import { Routes } from './src/routes';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { AuthContextProvider } from './src/contexts/AuthContext';
+import { ProductContextProvider } from './src/contexts/ProductContext';
 
 export default function App() {
   return (
@@ -10,7 +11,9 @@ export default function App() {
       <NativeBaseProvider>
         <StatusBar style="auto"/>
         <AuthContextProvider>
-          <Routes/>
+          <ProductContextProvider>
+            <Routes/>
+          </ProductContextProvider>
         </AuthContextProvider>
       </NativeBaseProvider>
     </GestureHandlerRootView>

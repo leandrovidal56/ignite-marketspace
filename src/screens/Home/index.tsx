@@ -10,29 +10,30 @@ import { BottomNavigation } from '../../components/bottomNavigation';
 import { SafeAreaView, LogBox } from 'react-native';
 import { api } from '../../services/api';
 import { useAuth } from '../../hooks/useAuth';
+import { useProduct } from '../../hooks/useProduct';
 import { AppError } from '../../utils/AppError';
 import { Loading } from '../../components/loading';
+import { IProduct } from '../../interfaces/IProduct';
+import { IPaymentMethods } from '../../interfaces/IPaymentMethods';
 
 LogBox.ignoreLogs(['We can not support a function callback. See Github Issues for details https://github.com/adobe/react-spectrum/issues/2320'])
 
 export default function Home (){
-    const { user, productGetStorageData } = useAuth()
+    const { user } = useAuth()
+    const {  productGetStorageData } = useProduct()
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
 
-    const [newProduct, setNewProduct] = useState(false)
-    const [usedProduct, setUsedProduct] = useState(false)
+    const [showModal, setShowModal] = useState(false);
     const [loading, setIsLoading] = useState(false)
-    const [data, setData] = useState([])
+    const [data, setData] = useState<IProduct[]>([] as IProduct[]);
     const [myProduct, setMyProduct] = useState([])
+    const [paymentMethods, setPaymentMethods] = useState<IPaymentMethods[]>([]);
+    const [search, setSearch] = useState('');
     const toast = useToast()
+    const [acceptTrade, setAcceptTrade] = useState<boolean | null>(null);
+    const [isNew, setIsNew] = useState<boolean | null>(null);
 
-    function clickNewProduct (){
-        setNewProduct(!newProduct)
-    }
-    function clickUsedProduct (){
-        setUsedProduct(!usedProduct)
-    }
 
     function handleNewAdvert(){
         navigation.navigate('createAdverts')
@@ -54,13 +55,17 @@ export default function Home (){
         setShowModal(false)
     }
 
-
-    async function loadMyProducts(){
+    async function handleResetFilter(){
         try{
+            closeModal()
+            setIsLoading(true)
             const response = await api.get('/products/')
+            setData(response.data)        
             const lengthAdvert = await productGetStorageData()
             setMyProduct(lengthAdvert)
-            setData(response.data)        
+            setPaymentMethods([])
+            setIsNew(null)
+            setAcceptTrade(null)
         }catch(error){
             const isAppError = error instanceof AppError
             const title = isAppError ? error.message : 'Não foi possível carregar seus anúncios. Tente novamente mais tarde.' 
@@ -75,12 +80,50 @@ export default function Home (){
             setIsLoading(false)
         }
     }
-    useEffect(() => {
-        loadMyProducts()
-    }, [])
+
+
+    async function fetchFilterProducts(){
+        try{
+            let filter = `?query=${search}`;
+
+            if (isNew !== null) {
+            filter += `&is_new=${isNew}`;
+            }
+            if (acceptTrade !== null) {
+            filter += `&accept_trade=${acceptTrade}`;
+            }
+            if (paymentMethods.length > 0) {
+                let paymentMethodFilter = 'payment_methods'
+                let str = paymentMethods
+                str.map(item => {
+                    if(item){
+                        filter += `&${paymentMethodFilter}=${item}`
+                    }
+                })
+            }
+            console.log('filtro:', filter);
+            const lengthAdvert = await productGetStorageData()
+            setMyProduct(lengthAdvert)
+            const { data } = await api.get(`/products${filter}`);
+            setData(data)        
+        }catch(error){
+            
+        } finally{
+            closeModal()
+        }
+    }
     
-    const [showModal, setShowModal] = useState(false);
-    const [change, setChange] = useState(false);
+   function handleIsNew(value: boolean) {
+    if (isNew !== value) {
+      setIsNew(value);
+    } else {
+      setIsNew(null);
+    }
+  }
+
+  useEffect(() => {
+    fetchFilterProducts();
+  }, []);
 
     return (
         <SafeAreaView style={{ backgroundColor: '#EDECEE', flex: 1}} >
@@ -127,11 +170,11 @@ export default function Home (){
                                                 padding={0}
                                                 fontSize={10}
                                                 fontWeight={'bold'}
-                                                background={newProduct ? '#647AC7' : 'gray.300'}
+                                                background={isNew ? '#647AC7' : 'gray.300'}
                                                 borderRadius={20}
                                                 mr={2}
-                                                onPress={clickNewProduct}
-                                                iconRightName={newProduct ? 'close' : ''} 
+                                                onPress={() => handleIsNew(true)}
+                                                iconRightName={isNew ? 'close' : ''} 
                                                 iconColor='white'
                                             />
                                             <Button 
@@ -141,42 +184,47 @@ export default function Home (){
                                                 padding={0}
                                                 fontSize={10}
                                                 fontWeight={'bold'}
-                                                background={usedProduct ? '#647AC7' : 'gray.300'}
+                                                background={isNew === false ? '#647AC7' : 'gray.300'}
                                                 borderRadius={20}
                                                 mr={2}
-                                                onPress={clickUsedProduct}
-                                                iconRightName={usedProduct ? 'close' : ''} 
+                                                onPress={() => handleIsNew(false)}
+                                                iconRightName={isNew === false ? 'close' : ''} 
                                                 iconColor='white'
                                             />
                                         </Row>
                                         <Text fontSize={14} fontWeight={"bold"} mt={6}>Aceita troca ?</Text>
-                                        <Switch size="md" mt={3} mb={6} value={change} onChange={() => setChange(!change)}/>
+                                        <Switch size="md" mt={3} mb={6} value={acceptTrade} onToggle={setAcceptTrade}/>
                                         <Text fontSize={14} fontWeight={"bold"}>Meios de pagamento aceitos</Text>
-                                        <Checkbox mt={3}
-                                            value="boleto"
-                                            >
-                                            Boleto
-                                        </Checkbox>
-                                        <Checkbox mt={3}
-                                            value="pix"
-                                            >
-                                            Pix
-                                        </Checkbox>
-                                        <Checkbox mt={3}
-                                            value="dinheiro"
-                                            >
-                                            Dinheiro
-                                        </Checkbox>
-                                        <Checkbox mt={3}
-                                            value="cartao de credito"
-                                            >
-                                            Cartão de Crédito
-                                        </Checkbox>
-                                        <Checkbox mt={3}
-                                            value="deposito bancario"
-                                            >
-                                            Depósito Bancário
-                                        </Checkbox>
+                                        <Checkbox.Group 
+                                        onChange={setPaymentMethods} 
+                                        value={paymentMethods}
+                                         accessibilityLabel="choose numbers">
+                                            <Checkbox mt={3}
+                                                value="boleto"
+                                                >
+                                                Boleto
+                                            </Checkbox>
+                                            <Checkbox mt={3}
+                                                value="pix"
+                                                >
+                                                Pix
+                                            </Checkbox>
+                                            <Checkbox mt={3}
+                                                value="cash"
+                                                >
+                                                Dinheiro
+                                            </Checkbox>
+                                            <Checkbox mt={3}
+                                                value="card"     
+                                                >
+                                                Cartão de Crédito
+                                            </Checkbox>
+                                            <Checkbox mt={3}
+                                                value="deposit"
+                                                >
+                                                Depósito Bancário
+                                            </Checkbox>
+                                        </Checkbox.Group>
                                     </Modal.Body>
                                     <Row width={'full'} justifyContent={'space-between'} padding={4}>
                                         <Button 
@@ -184,13 +232,13 @@ export default function Home (){
                                             backgroundColor={'#D9D8DA'}
                                             width={157}
                                             variant={'outline'}
-                                            onPress={closeModal}
+                                            onPress={handleResetFilter}
                                         />
                                         <Button 
                                             title="Aplicar filtros"
                                             backgroundColor={'#1A181B'}
                                             width={157}
-                                            onPress={closeModal}
+                                            onPress={fetchFilterProducts}
                                         />
                                     </Row>
                                 </Modal.Content>
@@ -230,6 +278,7 @@ export default function Home (){
                                                     size={5}
                                                     color="#1E1E1E"
                                                     mr={3}
+                                                    onPress={fetchFilterProducts}
                                                 />
                                                 <Divider width={0.5} height={8} />
                                                 <IconComponent
@@ -243,6 +292,8 @@ export default function Home (){
                                                 
                                             </Row>
                                         }
+                                        onChangeText={setSearch}
+                                        onSubmitEditing={fetchFilterProducts}
                                         placeholder='Buscar anúncio'
                                     />
                                     <FlatList 
@@ -259,7 +310,7 @@ export default function Home (){
                                                 imageAdress={item?.product_images[index]?.path}
                                                 altImage='Foto do anúncio'
                                                 onPress={() => handleDetails(item.id)}
-                                                hideProfilePicture={true}
+                                                profilePicture={item.user.avatar}
                                             />  
                                         }
                                     />

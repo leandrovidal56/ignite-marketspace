@@ -13,12 +13,14 @@ import {  AntDesign  } from '@expo/vector-icons'
 import { useState } from 'react';
 import { AppError } from '../../utils/AppError';
 import Carousel from 'react-native-reanimated-carousel';
+import { useProduct } from '../../hooks/useProduct';
 
 export default function Preview (){
     const [isLoadingProductSave, setIsLoadingProductSave ] = useState(false)
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
-    const { product, user, productSave } = useAuth()
+    const { user } = useAuth()
+    const { product, productSave } = useProduct()
     const toast = useToast()
     
 
@@ -79,7 +81,7 @@ export default function Preview (){
                         data={product.image}
                         renderItem={({ index }) => (
                             <Image 
-                                source={{ uri: `${product.image[index]}`}}
+                                source={{ uri: `${product.image[index].uri}`}}
                                 width={390} 
                                 height={280}
                                 alt='foto'

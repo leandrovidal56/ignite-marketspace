@@ -10,10 +10,10 @@ import { useForm, Controller} from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ProductDTO } from "../../dtos/productDTO";
-import { useAuth } from "../../hooks/useAuth";
+import { useProduct } from '../../hooks/useProduct';
 import { AppError } from "../../utils/AppError";
-import { AdvertPhoto } from "../../components/AdvertPhoto";
 import { Alert } from 'react-native';
+import { AdvertPhotoNew } from "../../components/AdvertPhotoNew";
 
 
 type FormDataProps = {
@@ -30,7 +30,6 @@ const createAdvertSchema = yup.object({
 export default function CreateAdvert (){
     const [isNew, setIsNew] = useState(true);
     const [productCondition, setProductCondition] = useState('Produto novo');
-    const [image, setImage] = useState<string[]>([]);
     const [description, setDescription] = useState('');
     const [acceptTrade, setAceeptTrade] = useState(false);
     const [paymentMethods, setPaymentMethods] = React.useState<string[]>([]);
@@ -41,7 +40,7 @@ export default function CreateAdvert (){
         resolver: yupResolver(createAdvertSchema)
     });
 
-    const { productSaveStorage } = useAuth()
+    const { productSaveStorage, image } = useProduct()
     const toast = useToast()
 
     const navigation = useNavigation<AppNavigatorRoutesProps>()
@@ -86,7 +85,6 @@ export default function CreateAdvert (){
      function handleCanceled(){
         navigation.goBack();
     }
- 
     return (
         <SafeAreaView style={{ backgroundColor : '#EDECEE'}} >
             <Header
@@ -97,12 +95,7 @@ export default function CreateAdvert (){
                 <VStack paddingBottom={7} paddingX={6} background={'#EDECEE'} >
                     <Text fontSize={14} fontWeight={"bold"}>Imagens</Text>
                     <Text mt={2}>Escolha até 3 imagens para mostrar o quanto o seu produto é incrível</Text>
-                    <Row>
-                        <AdvertPhoto 
-                            setImage={setImage}
-                            image={image}
-                        />
-                    </Row>
+                    <AdvertPhotoNew/>
                     <Text fontSize={14} fontWeight={"bold"}>Sobre o produto</Text>
                     <Controller
                         control={control}
@@ -147,9 +140,14 @@ export default function CreateAdvert (){
                         name="price"
                         render={({field: {onChange, value}}) => (
                             <Input 
+                                leftElement={
+                                    <Text color='gray.700' fontSize='md' ml='4'>
+                                        R$
+                                    </Text>
+                                }
                                 keyboardType="number-pad"  
                                 placeholder="Valor do produto"
-                                onChangeText={onChange}                                    
+                                onChangeText={onChange}             
                                 value={value}
                                 errorMessage={errors.price?.message}
                             />
