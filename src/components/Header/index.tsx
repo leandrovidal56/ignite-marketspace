@@ -1,4 +1,4 @@
-import { Button,  Row, Text } from "native-base"
+import { Button, Row, Text } from "native-base"
 import { IconComponent } from "../icon";
 import { useNavigation } from "@react-navigation/native";
 import { useProduct } from '../../hooks/useProduct';
@@ -22,6 +22,7 @@ export function Header({
  }: Props){    
     const navigation = useNavigation();
     const { image, setImage } = useProduct()
+    
     async function handleGoBack(){
         if(clearImages){
             await setImage([])

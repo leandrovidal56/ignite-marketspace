@@ -32,7 +32,6 @@ export function Button({
             }}
             {...rest}
         >
-         
             <Row alignItems={'center'} justifyContent={'space-between'}>
                 {iconLeftName
                 ?

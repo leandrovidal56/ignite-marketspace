@@ -1,18 +1,17 @@
-import { Image, IImageProps, useToast, Row, Text, Center } from "native-base";
-import { Button as ButtonNativeBase  } from "native-base"
 import { useState } from "react";
+import { Image, useToast, Row, Center, Button as ButtonNativeBase } from "native-base";
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
+
 import { useProduct } from '../../hooks/useProduct';
+
 import { IconComponent } from "../icon";
 import { Loading } from "../loading";
+
 import { api } from "../../services/api";
 
-type Props = IImageProps & {
 
-}
-
-export function AdvertPhotoNew({ ...rest}: Props){
+export function AdvertPhotoNew(){
     const [hidePicure, setHidePicture] = useState(false)
     const toast = useToast()
     const {  image, setImage } = useProduct()
@@ -88,7 +87,6 @@ export function AdvertPhotoNew({ ...rest}: Props){
                         <Image
                             size={100}
                             borderRadius={6}
-                            // source={{ uri: image[index]?.uri }}
                             source={{ uri: image[index].path ? `${api.defaults.baseURL}/images/${image[index].path}`: image[index]?.uri }}
                             background={'#D9D8DA'}
                             {...rest}

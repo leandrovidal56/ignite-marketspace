@@ -1,4 +1,5 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
+
 import { UserDTO } from "../dtos/userDTO";
 import { api } from "../services/api";
 import { storageUserGet, storageUserRemove, storageUserSave } from "../storage/storageUser";

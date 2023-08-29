@@ -1,29 +1,31 @@
-import { Center, Text, VStack, Avatar, Row, Column, Image, Box, useToast} from 'native-base';
-import { Button } from '../../components/button';
-import { IconComponent } from '../../components/icon';
-import { useNavigation } from '@react-navigation/native';
-import { AppNavigatorRoutesProps } from '../../routes/app.routes';
-import {  MaterialCommunityIcons  } from '@expo/vector-icons'
-import { SafeAreaView } from 'react-native';
-import { useAuth } from '../../hooks/useAuth';
-import { api } from '../../services/api';
-import { Loading } from '../../components/loading';
-import { getIconName, transformLabel } from './types';
-import {  AntDesign  } from '@expo/vector-icons'
 import { useState } from 'react';
-import { AppError } from '../../utils/AppError';
+import { SafeAreaView } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
+import { useNavigation } from '@react-navigation/native';
+import {  AntDesign  } from '@expo/vector-icons'
+import {  MaterialCommunityIcons  } from '@expo/vector-icons'
+import { Center, Text, VStack, Avatar, Row, Column, Image, Box, useToast} from 'native-base';
+
+import { useAuth } from '../../hooks/useAuth';
 import { useProduct } from '../../hooks/useProduct';
 
+import { api } from '../../services/api';
+import { AppError } from '../../utils/AppError';
+import { getIconName, transformLabel } from './types';
+import { AppNavigatorRoutesProps } from '../../routes/app.routes';
+
+import { Button } from '../../components/button';
+import { Loading } from '../../components/loading';
+import { IconComponent } from '../../components/icon';
+
 export default function Preview (){
+    const navigation = useNavigation<AppNavigatorRoutesProps>()
+    const toast = useToast()
+    const { user } = useAuth()
+
     const [isLoadingProductSave, setIsLoadingProductSave ] = useState(false)
 
-    const navigation = useNavigation<AppNavigatorRoutesProps>()
-    const { user } = useAuth()
-    const { product, productSave } = useProduct()
-    const toast = useToast()
-    
-
+    const { product, productSave } = useProduct()    
 
     async function handleFinished(){
         try{
@@ -120,8 +122,8 @@ export default function Preview (){
                         {product.payment_methods.map(item => {
                             return(
                                 <Row mt={2}>
-                                    <IconComponent familyIcon={item === "cash" ? MaterialCommunityIcons : AntDesign } name={getIconName(item)} size={5} mr={2} />
-                                    <Text>{transformLabel(item)}</Text>
+                                    <IconComponent familyIcon={item.name === "cash" ? MaterialCommunityIcons : AntDesign } name={getIconName(item.name)} size={5} mr={2} />
+                                    <Text>{transformLabel(item.name)}</Text>
                                 </Row>
                             )
                         })}

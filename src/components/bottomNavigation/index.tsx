@@ -1,11 +1,13 @@
-import { Modal, Row, Text } from "native-base";
-import { IconComponent } from "../icon";
-import {  MaterialIcons  } from '@expo/vector-icons'
-import { AppNavigatorRoutesProps } from "../../routes/app.routes";
-import { useNavigation } from "@react-navigation/native";
-import { Button } from "../button";
 import { useState } from "react";
+import { Modal, Row, Text } from "native-base";
+import {  MaterialIcons  } from '@expo/vector-icons'
+import { useNavigation } from "@react-navigation/native";
+
+import { Button } from "../button";
+import { IconComponent } from "../icon";
 import { useAuth } from "../../hooks/useAuth";
+
+import { AppNavigatorRoutesProps } from "../../routes/app.routes";
 
 export function BottomNavigation(){
     const navigation = useNavigation<AppNavigatorRoutesProps >()
