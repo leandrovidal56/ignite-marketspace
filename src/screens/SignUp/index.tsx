@@ -1,19 +1,21 @@
+import { useState } from 'react';
+import { Alert } from 'react-native';
+import * as yup from 'yup';
+import { useForm, Controller} from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigation } from '@react-navigation/native';
 import { Center, Heading, Text, VStack, ScrollView, useToast} from 'native-base';
 
-import LogoSvg from '@assets/LogoSmall.svg'
+import { useAuth } from '../../hooks/useAuth';
+
+import { api } from '../../services/api';
+import LogoSvg from '@assets/LogoSmall.svg';
+import { AppError } from '../../utils/AppError';
+import { AppNavigatorRoutesProps } from '../../routes/app.routes';
+
+import { UserPhoto } from '../../components/UserPhoto';
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
-import { useNavigation } from '@react-navigation/native';
-import { useForm, Controller} from 'react-hook-form';
-import { api } from '../../services/api';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useState } from 'react';
-import { AppError } from '../../utils/AppError';
-import { UserPhoto } from '../../components/UserPhoto';
-import { AppNavigatorRoutesProps } from '../../routes/app.routes';
-import { Alert } from 'react-native';
-import { useAuth } from '../../hooks/useAuth';
 
 type FormDataProps = {
     name: string;
@@ -32,14 +34,16 @@ const signUpSchema = yup.object({
 })
 
 export default function SignUp (){
-    const [ loading, setIsLoading] = useState(false)
-    const [avatar, setAvatar] = useState<any>({ })
-    const navigation = useNavigation<AppNavigatorRoutesProps>();
-    const toast = useToast()
-    const { signIn } = useAuth()
     const { control, handleSubmit, formState: {errors}, reset } = useForm<FormDataProps>({
         resolver: yupResolver(signUpSchema)
     });
+    const navigation = useNavigation<AppNavigatorRoutesProps>();
+
+    const toast = useToast()
+    const { signIn } = useAuth()
+
+    const [ loading, setIsLoading] = useState(false)
+    const [avatar, setAvatar] = useState<any>({ })
     
     async function handleSignUp({ name, email, tel, password }: FormDataProps) {
         if(!avatar){
@@ -50,12 +54,11 @@ export default function SignUp (){
             setIsLoading(true);
 
             const data = new FormData()
-            data.append('name', name)
-            data.append('email', email)
-            data.append('tel', tel)
+            data.append('name', name);
+            data.append('email', email);
+            data.append('tel', tel);
             data.append('avatar', avatar);
-
-            data.append('password', password)
+            data.append('password', password);
             
             const response = await api.post('/users',  data, 
             {
@@ -67,8 +70,7 @@ export default function SignUp (){
                 reset()
                 await signIn(email, password)
             }
-        }
-        catch(error){
+        }catch(error){
             const isAppError = error instanceof AppError
             const title = isAppError ? error.message : 'Não foi possível criar a conta. Tente novamente mais tarde.' 
 
@@ -77,7 +79,7 @@ export default function SignUp (){
                 placement: 'top',
                 bgColor: 'red.500'
             })
-        } finally{
+        }finally{
             setIsLoading(false);
         }
     }

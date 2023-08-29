@@ -1,38 +1,47 @@
+import { useEffect, useState } from 'react';
+import { SafeAreaView, LogBox } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Center, Heading, Text, Modal, VStack, Checkbox, Avatar, Row, Column, Divider, Switch, useToast, FlatList} from 'native-base';
+
+import { AppNavigatorRoutesProps } from '../../routes/app.routes';
+
+import { api } from '../../services/api';
+
+import { useAuth } from '../../hooks/useAuth';
+import { useProduct } from '../../hooks/useProduct';
+
+import { AppError } from '../../utils/AppError';
+
+import { IProduct } from '../../interfaces/IProduct';
+import { IPaymentMethods } from '../../interfaces/IPaymentMethods';
+
+
+import { BottomNavigation } from '../../components/bottomNavigation';
+import { IconComponent } from '../../components/icon';
+import { Loading } from '../../components/loading';
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { BoxSale } from '../../components/boxSale';
-import { IconComponent } from '../../components/icon';
-import { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { AppNavigatorRoutesProps } from '../../routes/app.routes';
-import { BottomNavigation } from '../../components/bottomNavigation';
-import { SafeAreaView, LogBox } from 'react-native';
-import { api } from '../../services/api';
-import { useAuth } from '../../hooks/useAuth';
-import { useProduct } from '../../hooks/useProduct';
-import { AppError } from '../../utils/AppError';
-import { Loading } from '../../components/loading';
-import { IProduct } from '../../interfaces/IProduct';
-import { IPaymentMethods } from '../../interfaces/IPaymentMethods';
 
 LogBox.ignoreLogs(['We can not support a function callback. See Github Issues for details https://github.com/adobe/react-spectrum/issues/2320'])
 
 export default function Home (){
+    const navigation = useNavigation<AppNavigatorRoutesProps>()
+
     const { user } = useAuth()
     const {  productGetStorageData } = useProduct()
+    const toast = useToast()
 
-    const navigation = useNavigation<AppNavigatorRoutesProps>()
 
     const [showModal, setShowModal] = useState(false);
     const [loading, setIsLoading] = useState(false)
+
     const [data, setData] = useState<IProduct[]>([] as IProduct[]);
-    const [myProduct, setMyProduct] = useState([])
     const [paymentMethods, setPaymentMethods] = useState<IPaymentMethods[]>([]);
     const [search, setSearch] = useState('');
-    const toast = useToast()
     const [acceptTrade, setAcceptTrade] = useState<boolean | null>(null);
     const [isNew, setIsNew] = useState<boolean | null>(null);
+    const [myProduct, setMyProduct] = useState([])
 
 
     function handleNewAdvert(){
@@ -101,7 +110,6 @@ export default function Home (){
                     }
                 })
             }
-            console.log('filtro:', filter);
             const lengthAdvert = await productGetStorageData()
             setMyProduct(lengthAdvert)
             const { data } = await api.get(`/products${filter}`);

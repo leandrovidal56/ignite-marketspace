@@ -3,7 +3,7 @@ import { IPhoto } from './IPhoto';
 import { IPaymentMethods } from './IPaymentMethods';
 
 export interface IProduct {
-  id?: string;
+  id: string;
   name: string;
   description: string;
   is_new: boolean;

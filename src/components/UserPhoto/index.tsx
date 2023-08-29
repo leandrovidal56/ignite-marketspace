@@ -1,8 +1,8 @@
-import { Image, IImageProps, useToast } from "native-base";
-import { Button as ButtonNativeBase  } from "native-base"
 import { useEffect, useState } from "react";
+import { Image, IImageProps, useToast, Button as ButtonNativeBase } from "native-base";
 import * as FileSystem from 'expo-file-system';
 import * as ImagePicker from 'expo-image-picker';
+
 import { useAuth } from "../../hooks/useAuth";
 import { api } from "../../services/api";
 
@@ -26,12 +26,10 @@ export function UserPhoto({ setImage, image, size, ...rest}: Props){
             });
 
             if(result.canceled){
-                console.log('CANCELADO')
                 return
             }
 
             if(result.assets[0].uri){
-                console.log('aquii')
                 const photoInfo = await FileSystem.getInfoAsync(result.assets[0].uri)
 
                 if(photoInfo.size && (photoInfo.size / 1024 / 1024) > 5){
@@ -42,7 +40,6 @@ export function UserPhoto({ setImage, image, size, ...rest}: Props){
                     })
                 }
                 const fileExtension = result.assets[0].uri.split('.').pop()
-                console.log(fileExtension, 'take file extension')
 
                 const photoFile = {
                     name : `${user.name}.${fileExtension}`.toLowerCase(),
@@ -50,7 +47,6 @@ export function UserPhoto({ setImage, image, size, ...rest}: Props){
                     type: `${result.assets[0].type}/${fileExtension}`
                 } as any
 
-                console.log(photoFile, 'take photofile' )
                 setImage(photoFile)
                 setAvatar(photoFile.uri)
             }

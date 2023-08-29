@@ -1,16 +1,17 @@
+import { useState } from 'react';
+import * as yup from 'yup';
+import { useForm, Controller} from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useNavigation } from '@react-navigation/native';
 import { Center, Heading, Text, VStack, ScrollView, useToast} from 'native-base';
+
+import { useAuth } from '../../hooks/useAuth';
+import { AppError } from '../../utils/AppError';
+import { AuthNavigatorRoutesProps } from '../../routes/auth.routes';
 
 import LogoSvg from '@assets/Logo.svg'
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
-import { useNavigation } from '@react-navigation/native';
-import { AuthNavigatorRoutesProps } from '../../routes/auth.routes';
-import { useForm, Controller} from 'react-hook-form';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useAuth } from '../../hooks/useAuth';
-import { AppError } from '../../utils/AppError';
-import { useState } from 'react';
 
 type FormDataProps = {
     email: string;
@@ -24,15 +25,16 @@ const signIpSchema = yup.object({
 
 
 export default function SignIn (){
-    const [loading, setIsLoading] = useState(false)
-    const { signIn } = useAuth()
-    const toast = useToast()
-
     const { control, handleSubmit, formState: {errors}, reset  } = useForm<FormDataProps>({
         resolver: yupResolver(signIpSchema)
     });
 
     const navigation = useNavigation<AuthNavigatorRoutesProps>();
+
+    const { signIn } = useAuth()
+    const toast = useToast()
+    
+    const [loading, setIsLoading] = useState(false)
 
     function handleNewAccount(){
         navigation.navigate('signUp')

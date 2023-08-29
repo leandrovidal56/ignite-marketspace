@@ -11,6 +11,8 @@ export async function storageProductGet() {
     const storage = await AsyncStorage.getItem(PRODUCT_STORAGE);
 
     const product : ProductDTO = storage ? JSON.parse(storage) : { };
+    
+    return product
 }
 
 export async function storageProductSaveDatabase(product: never[]){
