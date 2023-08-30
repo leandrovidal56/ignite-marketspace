@@ -1,37 +1,37 @@
-import { BottomTabNavigationProp, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { type BottomTabNavigationProp, createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import Home from "../screens/Home";
-import Details from "../screens/Details";
-import Adverts from "../screens/Adverts";
-import CreateAdvert from "../screens/CreateAdvert";
-import EditAdvert from "../screens/EditAdvert";
-import DetailsMyAdverts from "../screens/DetailsMyAdvert";
-import Preview from "../screens/Preview";
-import { ProductDetailsDTO } from "../dtos/productDetailsDTO";
+import { type ProductDetailsDTO } from '../dtos/productDetailsDTO'
+import Adverts from '../screens/Adverts'
+import CreateAdvert from '../screens/CreateAdvert'
+import Details from '../screens/Details'
+import DetailsMyAdverts from '../screens/DetailsMyAdvert'
+import EditAdvert from '../screens/EditAdvert'
+import Home from '../screens/Home'
+import Preview from '../screens/Preview'
 
-type AppRoutes ={ 
-    home: undefined;
-    details: {productId: string};
-    adverts: undefined;
-    createAdverts: undefined;
-    editAdverts: {data: ProductDetailsDTO};
-    detailsMyAdverts: {productId: string};
-    preview: undefined;
+interface AppRoutes {
+  home: undefined
+  details: { productId: string }
+  adverts: undefined
+  createAdverts: undefined
+  editAdverts: { data: ProductDetailsDTO }
+  detailsMyAdverts: { productId: string }
+  preview: undefined
 }
 
 export type AppNavigatorRoutesProps = BottomTabNavigationProp<AppRoutes>
 
-const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>();
+const { Navigator, Screen } = createBottomTabNavigator<AppRoutes>()
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator()
 
-export function AppRoutes(){
-    return (
+export function AppRoutes () {
+  return (
         <Stack.Navigator
             screenOptions={{ headerShown: false }}
         >
-            <Stack.Screen 
+            <Stack.Screen
                 name="home"
                 component={Home}
             />
@@ -50,7 +50,7 @@ export function AppRoutes(){
                 name="createAdverts"
                 component={CreateAdvert}
             />
-            
+
             <Stack.Screen
                 name="editAdverts"
                 component={EditAdvert}
@@ -67,6 +67,5 @@ export function AppRoutes(){
             />
 
         </Stack.Navigator>
-    )
-    
+  )
 }

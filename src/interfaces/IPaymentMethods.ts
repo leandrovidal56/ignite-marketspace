@@ -1,1 +1,1 @@
-export type IPaymentMethods = 'pix' | 'card' | 'deposit' | 'cash' | 'boleto';
+export type IPaymentMethods = 'pix' | 'card' | 'deposit' | 'cash' | 'boleto'

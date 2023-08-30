@@ -1,4 +1,4 @@
-export type ProductImageDTO = {
-  id: string;
-  path: string;
-};
+export interface ProductImageDTO {
+  id: string
+  path: string
+}

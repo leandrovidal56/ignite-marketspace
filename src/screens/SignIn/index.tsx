@@ -1,68 +1,66 @@
-import { useState } from 'react';
-import * as yup from 'yup';
-import { useForm, Controller} from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useNavigation } from '@react-navigation/native';
-import { Center, Heading, Text, VStack, ScrollView, useToast} from 'native-base';
-
-import { useAuth } from '../../hooks/useAuth';
-import { AppError } from '../../utils/AppError';
-import { AuthNavigatorRoutesProps } from '../../routes/auth.routes';
+import { useState } from 'react'
 
 import LogoSvg from '@assets/Logo.svg'
-import { Input } from '../../components/input';
-import { Button } from '../../components/button';
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useNavigation } from '@react-navigation/native'
+import { Center, Heading, Text, VStack, ScrollView, useToast } from 'native-base'
+import { useForm, Controller } from 'react-hook-form'
+import * as yup from 'yup'
 
-type FormDataProps = {
-    email: string;
-    password: string;
+import { Button } from '../../components/button'
+import { Input } from '../../components/input'
+import { useAuth } from '../../hooks/useAuth'
+import { type AuthNavigatorRoutesProps } from '../../routes/auth.routes'
+import { AppError } from '../../utils/AppError'
+
+interface FormDataProps {
+  email: string
+  password: string
 }
 
 const signIpSchema = yup.object({
-    email: yup.string().required('Informe o e-mail.').email('E-mail inválido'),
-    password: yup.string().required('Informe a senha.').min(6, 'A senha deve ter pelo menos 6 caracteres' ),
+  email: yup.string().required('Informe o e-mail.').email('E-mail inválido'),
+  password: yup.string().required('Informe a senha.').min(6, 'A senha deve ter pelo menos 6 caracteres')
 })
 
+export default function SignIn () {
+  const { control, handleSubmit, formState: { errors }, reset } = useForm<FormDataProps>({
+    resolver: yupResolver(signIpSchema)
+  })
 
-export default function SignIn (){
-    const { control, handleSubmit, formState: {errors}, reset  } = useForm<FormDataProps>({
-        resolver: yupResolver(signIpSchema)
-    });
+  const navigation = useNavigation<AuthNavigatorRoutesProps>()
 
-    const navigation = useNavigation<AuthNavigatorRoutesProps>();
+  const { signIn } = useAuth()
+  const toast = useToast()
 
-    const { signIn } = useAuth()
-    const toast = useToast()
-    
-    const [loading, setIsLoading] = useState(false)
+  const [loading, setIsLoading] = useState(false)
 
-    function handleNewAccount(){
-        navigation.navigate('signUp')
+  function handleNewAccount () {
+    navigation.navigate('signUp')
+  }
+
+  async function handleLogin ({ email, password }: FormDataProps) {
+    try {
+      setIsLoading(true)
+      await signIn(email, password)
+      reset()
+    } catch (error) {
+      const isAppError = error instanceof AppError
+      const title = isAppError ? error.message : 'Não foi possível acessar a sua conta. Tente novamente mais tarde.'
+
+      toast.show({
+        title,
+        placement: 'top',
+        bgColor: 'red.500'
+      })
+    } finally {
+      setIsLoading(false)
     }
+  }
 
-    async function handleLogin({ email, password}: FormDataProps){
-        try{
-            setIsLoading(true)
-            await signIn(email, password)
-            reset()
-
-        }catch(error){
-            const isAppError = error instanceof AppError
-            const title = isAppError ? error.message : 'Não foi possível acessar a sua conta. Tente novamente mais tarde.' 
-        
-            toast.show({
-                title,
-                placement: 'top',
-                bgColor: 'red.500'
-            })
-        } finally{
-            setIsLoading(false)
-        }
-    }
-
-    return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1}} showsVerticalScrollIndicator={false} >
-            <VStack flex={1}  color="#f7f7f8">
+  return (
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false} >
+            <VStack flex={1} color="#f7f7f8">
                 <VStack bg='#EDECEE' px={10} rounded='xl'>
                     <Center my={24}>
                         <LogoSvg/>
@@ -74,8 +72,8 @@ export default function SignIn (){
                         <Controller
                             control={control}
                             name="email"
-                            render={({field: {onChange, value}}) => (
-                                <Input 
+                            render={({ field: { onChange, value } }) => (
+                                <Input
                                     placeholder='E-mail'
                                     keyboardType='email-address'
                                     autoCapitalize='none'
@@ -88,8 +86,8 @@ export default function SignIn (){
                           <Controller
                             control={control}
                             name="password"
-                            render={({field: {onChange, value}}) => (
-                                <Input 
+                            render={({ field: { onChange, value } }) => (
+                                <Input
                                     placeholder='Senha'
                                     secureTextEntry
                                     autoCapitalize='none'
@@ -121,5 +119,5 @@ export default function SignIn (){
                 </VStack>
             </VStack>
         </ScrollView>
-    );
+  )
 }

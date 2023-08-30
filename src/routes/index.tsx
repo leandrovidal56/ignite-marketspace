@@ -1,21 +1,21 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer } from '@react-navigation/native'
 
+import { Loading } from '../components/loading'
+import { useAuth } from '../hooks/useAuth'
 
-import { useAuth } from "../hooks/useAuth";
-import { AuthRoutes } from "./auth.routes";
-import { AppRoutes } from "./app.routes";
-import { Loading } from "../components/loading";
+import { AppRoutes } from './app.routes'
+import { AuthRoutes } from './auth.routes'
 
-export function Routes(){
-    const { user, isLoadingUserStorageData } = useAuth();
+export function Routes () {
+  const { user, isLoadingUserStorageData } = useAuth()
 
-    if(isLoadingUserStorageData){
-        return <Loading/>
-    }
+  if (isLoadingUserStorageData) {
+    return <Loading/>
+  }
 
-    return (
+  return (
         <NavigationContainer>
             {user.id ? <AppRoutes/> : <AuthRoutes/> }
         </NavigationContainer>
-    )
+  )
 }

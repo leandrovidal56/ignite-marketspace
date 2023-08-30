@@ -1,107 +1,104 @@
-import { Checkbox, Radio, Row, ScrollView, Switch, Text, TextArea, VStack, useToast } from "native-base";
-import { Header } from "../../components/Header";
-import { SafeAreaView } from "react-native";
-import { Input } from "../../components/input";
-import React, { useState } from "react";
-import { Button } from "../../components/button";
-import { useNavigation } from "@react-navigation/native";
-import { AppNavigatorRoutesProps } from "../../routes/app.routes";
-import { useForm, Controller} from 'react-hook-form';
-import * as yup from 'yup';
+import React, { useState } from 'react'
+import { SafeAreaView, Alert } from 'react-native'
+
 import { yupResolver } from '@hookform/resolvers/yup'
-import { ProductDTO } from "../../dtos/productDTO";
-import { useProduct } from '../../hooks/useProduct';
-import { AppError } from "../../utils/AppError";
-import { Alert } from 'react-native';
-import { AdvertPhotoNew } from "../../components/AdvertPhotoNew";
+import { useNavigation } from '@react-navigation/native'
+import { Checkbox, Radio, Row, ScrollView, Switch, Text, TextArea, VStack, useToast } from 'native-base'
+import { useForm, Controller } from 'react-hook-form'
+import * as yup from 'yup'
 
+import { AdvertPhotoNew } from '../../components/AdvertPhotoNew'
+import { Button } from '../../components/button'
+import { Header } from '../../components/Header'
+import { Input } from '../../components/input'
+import { type ProductDTO } from '../../dtos/productDTO'
+import { useProduct } from '../../hooks/useProduct'
+import { type AppNavigatorRoutesProps } from '../../routes/app.routes'
+import { AppError } from '../../utils/AppError'
 
-type FormDataProps = {
-    name: string;
-    price: number;
+interface FormDataProps {
+  name: string
+  price: number
 }
 
 const createAdvertSchema = yup.object({
-    name: yup.string().required('Informe o título do anúncio.'),
-    price: yup.number().required('Informe o valor do produto.'),
+  name: yup.string().required('Informe o título do anúncio.'),
+  price: yup.number().required('Informe o valor do produto.')
 })
 
+export default function CreateAdvert () {
+  const [isNew, setIsNew] = useState(true)
+  const [productCondition, setProductCondition] = useState('Produto novo')
+  const [description, setDescription] = useState('')
+  const [acceptTrade, setAceeptTrade] = useState(false)
+  const [paymentMethods, setPaymentMethods] = React.useState<string[]>([])
+  const [isLoadingProductStorageData, setIsLoadingProductStorageData] = useState(false)
+  const [loading, setIsLoading] = useState(false)
 
-export default function CreateAdvert (){
-    const [isNew, setIsNew] = useState(true);
-    const [productCondition, setProductCondition] = useState('Produto novo');
-    const [description, setDescription] = useState('');
-    const [acceptTrade, setAceeptTrade] = useState(false);
-    const [paymentMethods, setPaymentMethods] = React.useState<string[]>([]);
-    const [isLoadingProductStorageData, setIsLoadingProductStorageData ] = useState(false)
-    const [loading, setIsLoading] = useState(false)
+  const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
+    resolver: yupResolver(createAdvertSchema)
+  })
 
-    const { control, handleSubmit, formState: {errors} } = useForm<FormDataProps>({
-        resolver: yupResolver(createAdvertSchema)
-    });
+  const { productSaveStorage, image } = useProduct()
+  const toast = useToast()
 
-    const { productSaveStorage, image } = useProduct()
-    const toast = useToast()
+  const navigation = useNavigation<AppNavigatorRoutesProps>()
 
-    const navigation = useNavigation<AppNavigatorRoutesProps>()
-
-    async function handlePreviewAdverts({ name, price} : FormDataProps){
-
-        if(image.length <= 0){
-            return Alert.alert("Please fill image ")
-        }
-
-        try{
-            setIsLoadingProductStorageData(true)
-            
-            const productData = {
-                name, 
-                description,
-                is_new: isNew,
-                price,
-                image,
-                accept_trade: acceptTrade, 
-                payment_methods: paymentMethods            
-            } as ProductDTO
-
-            await productSaveStorage(productData)
-
-            navigation.navigate('preview');
-        }catch(error){
-            const isAppError = error instanceof AppError
-            const title = isAppError ? error.message : 'Não foi possível salvar seu produto. Tente novamente mais tarde.' 
-        
-            toast.show({
-                title,
-                placement: 'top',
-                bgColor: 'red.500'
-            })
-            
-        } finally{
-            setIsLoadingProductStorageData(false)
-        }
+  async function handlePreviewAdverts ({ name, price }: FormDataProps) {
+    if (image.length <= 0) {
+      Alert.alert('Please fill image '); return
     }
 
-     function handleCanceled(){
-        navigation.goBack();
+    try {
+      setIsLoadingProductStorageData(true)
+
+      const productData = {
+        name,
+        description,
+        is_new: isNew,
+        price,
+        image,
+        accept_trade: acceptTrade,
+        payment_methods: paymentMethods
+      } as ProductDTO
+
+      await productSaveStorage(productData)
+
+      navigation.navigate('preview')
+    } catch (error) {
+      const isAppError = error instanceof AppError
+      const title = isAppError ? error.message : 'Não foi possível salvar seu produto. Tente novamente mais tarde.'
+
+      toast.show({
+        title,
+        placement: 'top',
+        bgColor: 'red.500'
+      })
+    } finally {
+      setIsLoadingProductStorageData(false)
     }
-    return (
-        <SafeAreaView style={{ backgroundColor : '#EDECEE'}} >
+  }
+
+  function handleCanceled () {
+    navigation.goBack()
+  }
+  return (
+        <SafeAreaView style={{ backgroundColor: '#EDECEE' }} >
             <Header
                 back
                 title="Criar anúncio"
             />
             <ScrollView >
                 <VStack paddingBottom={7} paddingX={6} background={'#EDECEE'} >
-                    <Text fontSize={14} fontWeight={"bold"}>Imagens</Text>
+                    <Text fontSize={14} fontWeight={'bold'}>Imagens</Text>
                     <Text mt={2}>Escolha até 3 imagens para mostrar o quanto o seu produto é incrível</Text>
                     <AdvertPhotoNew/>
-                    <Text fontSize={14} fontWeight={"bold"}>Sobre o produto</Text>
+                    <Text fontSize={14} fontWeight={'bold'}>Sobre o produto</Text>
                     <Controller
                         control={control}
                         name="name"
-                        render={({field: {onChange, value}}) => (
-                            <Input 
+                        render={({ field: { onChange, value } }) => (
+                            <Input
                                 placeholder="Título do anúncio"
                                 autoCapitalize='none'
                                 onChangeText={onChange}
@@ -110,23 +107,23 @@ export default function CreateAdvert (){
                             />
                         )}
                     />
-                    <TextArea onChangeText={setDescription} value={description} borderRadius={8} 
-                        borderColor={'#F7F7F8'} bgColor={'#F7F7F8'} 
-                        h={40} mt={4} w="100%" 
-                        placeholder="Descrição do produto" autoCompleteType={'none'} 
+                    <TextArea onChangeText={setDescription} value={description} borderRadius={8}
+                        borderColor={'#F7F7F8'} bgColor={'#F7F7F8'}
+                        h={40} mt={4} w="100%"
+                        placeholder="Descrição do produto" autoCompleteType={'none'}
                     />
-                    <Radio.Group 
-                        name="myRadioGroup" 
-                        accessibilityLabel="favorite number" 
-                        value={productCondition} 
+                    <Radio.Group
+                        name="myRadioGroup"
+                        accessibilityLabel="favorite number"
+                        value={productCondition}
                         onChange={nextValue => {
-                            setProductCondition(nextValue)
-                            nextValue === 'Produto novo' ? 
-                            setIsNew(true): 
-                            setIsNew(false)
+                          setProductCondition(nextValue)
+                          nextValue === 'Produto novo'
+                            ? setIsNew(true)
+                            : setIsNew(false)
                         }}>
                         <Row mt={4}>
-                            <Radio value="Produto novo" colorScheme="blue"  >
+                            <Radio value="Produto novo" colorScheme="blue" >
                                 Produto novo
                             </Radio>
                             <Radio value="Produto usado" colorScheme="blue" ml={6}>
@@ -134,28 +131,28 @@ export default function CreateAdvert (){
                             </Radio>
                         </Row>
                     </Radio.Group>
-                    <Text fontSize={14} fontWeight={"bold"} mt={8}>Venda</Text>
+                    <Text fontSize={14} fontWeight={'bold'} mt={8}>Venda</Text>
                     <Controller
                         control={control}
                         name="price"
-                        render={({field: {onChange, value}}) => (
-                            <Input 
+                        render={({ field: { onChange, value } }) => (
+                            <Input
                                 leftElement={
                                     <Text color='gray.700' fontSize='md' ml='4'>
                                         R$
                                     </Text>
                                 }
-                                keyboardType="number-pad"  
+                                keyboardType="number-pad"
                                 placeholder="Valor do produto"
-                                onChangeText={onChange}             
+                                onChangeText={onChange}
                                 value={value}
                                 errorMessage={errors.price?.message}
                             />
                         )}
                     />
-                    <Text fontSize={14} fontWeight={"bold"} mt={4}>Aceita troca ?</Text>
-                    <Switch size="md" mt={3} mb={6} value={acceptTrade} onValueChange={setAceeptTrade}  />
-                    <Text fontSize={14} fontWeight={"bold"}>Meios de pagamento aceitos</Text>
+                    <Text fontSize={14} fontWeight={'bold'} mt={4}>Aceita troca ?</Text>
+                    <Switch size="md" mt={3} mb={6} value={acceptTrade} onValueChange={setAceeptTrade} />
+                    <Text fontSize={14} fontWeight={'bold'}>Meios de pagamento aceitos</Text>
                     <Checkbox.Group onChange={setPaymentMethods} value={paymentMethods} accessibilityLabel="choose numbers">
                         <Checkbox mt={3}
                             value="boleto"
@@ -184,19 +181,19 @@ export default function CreateAdvert (){
                         </Checkbox>
                     </Checkbox.Group>
                 </VStack>
-                <Row height={90} justifyContent={'space-between'} paddingBottom={7}  mt={6}   paddingX={6}
+                <Row height={90} justifyContent={'space-between'} paddingBottom={7} mt={6} paddingX={6}
                 alignItems={'center'}
                 background={'#F7F7F8'}
                 >
-                    <Button 
+                    <Button
                         title="Cancelar"
                         backgroundColor={'#D9D8DA'}
                         width={157}
                         variant={'outline'}
                         onPress={handleCanceled}
-                        
+
                     />
-                    <Button 
+                    <Button
                         title="Avançar"
                         backgroundColor={'#1A181B'}
                         width={157}
@@ -206,5 +203,5 @@ export default function CreateAdvert (){
                 </Row>
             </ScrollView>
         </SafeAreaView>
-    )
+  )
 }

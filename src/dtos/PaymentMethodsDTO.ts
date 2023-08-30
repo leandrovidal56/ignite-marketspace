@@ -1,5 +1,5 @@
-export type PaymentMethodsDTO = {
-  key: string;
-  name: string;
-  path: string;
-};
+export interface PaymentMethodsDTO {
+  key: string
+  name: string
+  path: string
+}

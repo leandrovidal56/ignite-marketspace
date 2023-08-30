@@ -1,13 +1,14 @@
-import { NativeBaseProvider } from 'native-base';
-import { Routes } from './src/routes';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
-import { AuthContextProvider } from './src/contexts/AuthContext';
-import { ProductContextProvider } from './src/contexts/ProductContext';
+import { StatusBar } from 'expo-status-bar'
+import { NativeBaseProvider } from 'native-base'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
-export default function App() {
+import { AuthContextProvider } from './src/contexts/AuthContext'
+import { ProductContextProvider } from './src/contexts/ProductContext'
+import { Routes } from './src/routes'
+
+export default function App () {
   return (
-    <GestureHandlerRootView style={{ flex: 1}}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <NativeBaseProvider>
         <StatusBar style="auto"/>
         <AuthContextProvider>
@@ -17,7 +18,5 @@ export default function App() {
         </AuthContextProvider>
       </NativeBaseProvider>
     </GestureHandlerRootView>
-  );
+  )
 }
-
-

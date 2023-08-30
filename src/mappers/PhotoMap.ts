@@ -1,16 +1,16 @@
-import { ProductImageDTO } from '../dtos/ProductImageDTO';
+import { type ProductImageDTO } from '../dtos/ProductImageDTO'
+import { type IPhoto } from '../interfaces/IPhoto'
 import { api } from '../services/api'
-import { IPhoto } from '../interfaces/IPhoto';
 
 class PhotoMap {
-  static toIPhoto({ id, path }: ProductImageDTO): IPhoto {
+  static toIPhoto ({ id, path }: ProductImageDTO): IPhoto {
     return {
       name: id,
       uri: `${api.defaults.baseURL}/images/${path}`,
-      path: path,
-      type: 'image',
-    };
+      path,
+      type: 'image'
+    }
   }
 }
 
-export { PhotoMap };
+export { PhotoMap }
